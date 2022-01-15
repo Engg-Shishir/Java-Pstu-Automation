@@ -7,6 +7,8 @@ package Pstu;
 
 
 import java.awt.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 /**
  *
@@ -17,9 +19,7 @@ public class loading extends javax.swing.JFrame {
     /**
      * Creates new form loading
      */
-    public loading() {
-        initComponents();
-    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,7 +47,7 @@ public class loading extends javax.swing.JFrame {
         team.setIcon(new javax.swing.ImageIcon(getClass().getResource("/photo/teamwork-and-team-building-removebg-preview.png"))); // NOI18N
         Backgroundpanel.add(team, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, -1, -1));
 
-        loadingbar.setBackground(new java.awt.Color(255, 0, 102));
+        loadingbar.setBackground(new java.awt.Color(255, 0, 0));
         Backgroundpanel.add(loadingbar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, 860, 10));
 
         loadingtext.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -86,46 +86,23 @@ public class loading extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    public loading() {
+        initComponents();
+    }
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(loading.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(loading.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(loading.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(loading.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        
+                loading sp = new loading();
+                sp.setVisible(true);
+                
+                int i = 0;
 
-        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//
-//            }
-//        });
-//        
-       
-
-            loading sp = new loading();
-            sp.setVisible(true);
-            
-            try{
-                for(int i=0;i<=100;i++){
-                  Thread.sleep(100);
-                  sp.loadingvalue.setText(i +"%");
+                for(i=0;i<=100;i++){
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(loading.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    sp.loadingvalue.setText(i +"%");
                   
                     if(i==10){
                      sp.loadingtext.setText("PSTU Turning on module...");
@@ -148,25 +125,20 @@ public class loading extends javax.swing.JFrame {
                     
                     if(i==100){
                         sp.loadingtext.setText("Wait a bit.");
-                        Thread.sleep(2000);
-                        sp.setVisible(false);
-                        login log = new login();
-                        log.setVisible(true); 
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException ex) {
+                                Logger.getLogger(loading.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        sp.dispose();
+                        new login().setVisible(true);
                     }
                     sp.loadingbar.setValue(i);
-                }
-                
-               
-               
-            }catch(Exception e) {
-              JOptionPane.showMessageDialog(null,e);
-            }
-        
-        
-           
-        
+                }  
         
     }
+    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Backgroundpanel;

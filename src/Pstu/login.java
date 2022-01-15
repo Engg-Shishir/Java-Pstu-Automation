@@ -6,6 +6,7 @@
 package Pstu;
 
 import java.sql.*;
+import javax.swing.JOptionPane;
 /**
  *
  * @author ASUS
@@ -238,18 +239,25 @@ public class login extends javax.swing.JFrame {
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
          // TODO add your handling code here:
           try{
-            conn c1 = new conn();
-  
-            String q = "select * from users";
-            ResultSet rs = c1.s.executeQuery(q); 
+            conn cc = new conn();
+            
+            String userName = username.getText();
+            String pss =    password.getText();
+            
+            
+            
+            String q = "select * from login where username='"+userName+"' and password='"+pss+"'";
+            ResultSet rs = cc.s.executeQuery(q); 
             
             if(rs.next()){
-                loading sp = new loading();
-                sp.setVisible(true);
-                setVisible(false);
+                    this.dispose();
+                    ToastAlert_Corner alert = new ToastAlert_Corner(userName+", Successfully Login ","checkToast.png","delete2.png");
+                    alert.setVisible(true);
+                    new AddStudent().setVisible(true);
             }else{
-//                setVisible(false);
+                    new ToastAlert("Credential is not match","warningToast.png","close1.png").setVisible(true);
             }
+
                         
                         
         }catch(Exception e){

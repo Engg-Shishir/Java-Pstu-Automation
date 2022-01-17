@@ -13,7 +13,7 @@ public class SendMailBySite {
 //  final String password="bismillah83@gmail.com180204308453";//change accordingly
  
   
-    String to = "shishirbhuiyan83@gmail.com"; // to address. It can be any like gmail, yahoo etc.
+    String to = "mehedihasan.cse18@gmail.com"; // to address. It can be any like gmail, yahoo etc.
   String from = "shishirbhuiyan83@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
   String password = "bismillah83@gmail.com180204308453"; // password for from gmail address that you have used in above line. 
 
@@ -38,7 +38,7 @@ public class SendMailBySite {
    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
    message.setSubject("Test Mail From Gmail Accocunt");
     //   message.setText("Mail From Java Code Using Gmail...");
-    message.setContent("<h1 style='color:red;'>This is actual message</h1>", "text/html");
+    message.setContent("<h1 style='color:red;'>Hello my sweet heart Mahedi</h1>", "text/html");
    Transport.send(message);
 
    System.out.println("Mail Sent...");

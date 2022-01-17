@@ -47,7 +47,7 @@ public class loading extends javax.swing.JFrame {
         team.setIcon(new javax.swing.ImageIcon(getClass().getResource("/photo/teamwork-and-team-building-removebg-preview.png"))); // NOI18N
         Backgroundpanel.add(team, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, -1, -1));
 
-        loadingbar.setBackground(new java.awt.Color(255, 0, 0));
+        loadingbar.setForeground(new java.awt.Color(204, 0, 51));
         Backgroundpanel.add(loadingbar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, 860, 10));
 
         loadingtext.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -131,10 +131,11 @@ public class loading extends javax.swing.JFrame {
                                 Logger.getLogger(loading.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         sp.dispose();
-                        new login().setVisible(true);
+//                        new Background().setVisible(true);
+                        new login().setVisible(true);  
                     }
                     sp.loadingbar.setValue(i);
-                }  
+                }
         
     }
     

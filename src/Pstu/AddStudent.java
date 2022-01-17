@@ -32,7 +32,7 @@ public class AddStudent extends JFrame implements  ActionListener{
         Border emptyBorder = BorderFactory.createEmptyBorder();
         
         background=new JLabel();
-        background.setBounds(0,0,1000,600);
+        background.setBounds(0,0,1090,670);
         background.setLayout(null);
         background.setOpaque(true);
         background.setBackground(new Color(0, 10, 66));
@@ -250,28 +250,28 @@ public class AddStudent extends JFrame implements  ActionListener{
         close.setBorder(emptyBorder);
         background.add(close);
         
-        closeBtn = new JButton();
-        closeBtn.setBounds(900,30,30,30);
-        closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("university/management/system/icons/Button/close1.png"));
-        Image i3 = img.getImage().getScaledInstance(30, 30,Image.SCALE_DEFAULT);
-        ImageIcon icc3 = new ImageIcon(i3);
-        closeBtn.setIcon(icc3);
-        closeBtn.setBorder(emptyBorder);
-        background.add(closeBtn);
+//        closeBtn = new JButton();
+//        closeBtn.setBounds(900,30,30,30);
+//        closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+//        ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("university/management/system/icons/Button/close.png"));
+//        Image i3 = img.getImage().getScaledInstance(30, 30,Image.SCALE_DEFAULT);
+//        ImageIcon icc3 = new ImageIcon(i3);
+//        closeBtn.setIcon(icc3);
+//        closeBtn.setBorder(emptyBorder);
+//        background.add(closeBtn);
         
         
 
         
         
         
-        closeBtn.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                  System.exit(0);
-            }
-
-        });
+//        closeBtn.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                  dispose();
+//            }
+//
+//        });
         
        
         submit.addActionListener(this);
@@ -280,8 +280,8 @@ public class AddStudent extends JFrame implements  ActionListener{
        
         setUndecorated(true);
         setVisible(true);
-        setSize(1000,600);
-        setLocationRelativeTo(null); 
+        setSize(1110,710);
+        setLocation(634, 216); 
     }
 //name,fname,mname,roll,reg,dob,email,addr,fac,phone,hall,image,nid,blood
     public void actionPerformed(ActionEvent ae){

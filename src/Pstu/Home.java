@@ -169,12 +169,7 @@ public class Home extends javax.swing.JFrame {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
-         
             conn cc = new conn();
-            
-            
-            
-//                String q = "select * from student";
                     String q = "select * from student where name='"+logedUser+"'";
         try { 
             ResultSet rs = cc.s.executeQuery(q);

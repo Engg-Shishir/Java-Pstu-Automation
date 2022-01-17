@@ -14,6 +14,10 @@ import javax.swing.border.Border;
 
 import java.io.*;
 import java.nio.file.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,9 +29,27 @@ public class adminDashboard extends JFrame {
     JButton close,minimize,sCardTitle,tCardBtn,hCardBtn,dCardBtn,lCardBtn,fcardBtn,ocardBtn,trCardBtn,gCardBtn;
     
     
+    public String getImageName = "";
+    
     
     public adminDashboard(String username, String identity){
         Border emptyBorder = BorderFactory.createEmptyBorder();
+        
+//        
+        conn cc = new conn();
+        String q = "select * from student where name='"+username+"'";
+        try { 
+            ResultSet rs = cc.s.executeQuery(q);
+            if(rs.next()){
+             getImageName = rs.getString(16);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+                System.out.println(getImageName);
+        
         
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -58,8 +80,8 @@ public class adminDashboard extends JFrame {
         profilePic=new JLabel();
         profilePic.setBounds(50,50,200,200);
         profilePic.setLayout(null);
-        ImageIcon profilePicImg = new ImageIcon(ClassLoader.getSystemResource("photo/bg5.jpg"));
-        Image profilePicIcon = profilePicImg.getImage().getScaledInstance(200, 200,Image.SCALE_FAST);
+        ImageIcon profilePicImg = new ImageIcon(ClassLoader.getSystemResource("university/management/system/upload/"+getImageName));
+        Image profilePicIcon = profilePicImg.getImage().getScaledInstance(profilePic.getWidth(), profilePic.getHeight(),Image.SCALE_FAST);
         ImageIcon profilePicBg = new ImageIcon(profilePicIcon);
         profilePic.setIcon(profilePicBg);
         background.add(profilePic);
@@ -219,7 +241,7 @@ public class adminDashboard extends JFrame {
         fCard.setIcon(fCardBg);
         background.add(fCard);
         //##################################################
-        fcardBtn = new JButton("Library");
+        fcardBtn = new JButton("Faculty");
         fcardBtn.setBounds(60,620,130,40);
         fcardBtn.setFont(new Font("serif",Font.BOLD,20));
         fcardBtn.setForeground(Color.WHITE);

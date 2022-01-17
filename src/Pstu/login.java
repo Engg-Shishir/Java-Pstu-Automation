@@ -264,7 +264,7 @@ public class login extends javax.swing.JFrame {
                         this.setVisible(false);
                         
                         if("admin".equals(user)){
-                            Home home = new Home(logeduser,logedUserIdentity);
+                            adminDashboard home = new adminDashboard(logeduser,logedUserIdentity);
                             home.setVisible(true);
                             ToastAlert_Corner alert = new ToastAlert_Corner(userName+", Successfully Login ","checkToast.png","delete2.png");
                             alert.setVisible(true);

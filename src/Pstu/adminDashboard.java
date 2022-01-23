@@ -24,12 +24,14 @@ import java.util.logging.Logger;
  * @author ASUS
  */
 public class adminDashboard extends JFrame {
-    JLabel background,profilePic,showName,showEmail,sCard,tCard,hCard,dCard,lCard,fCard,oCard,trCard,gcard;
+    JLabel background,sdeComponent,profilePic,showName,showEmail,sCard,tCard,hCard,dCard,lCard,fCard,oCard,trCard,gcard;
     JButton ChangeProfile,logout,student,teacher,hall,doctor,library,organization,transport,guard;
     JButton close,minimize,sCardTitle,tCardBtn,hCardBtn,dCardBtn,lCardBtn,fcardBtn,ocardBtn,trCardBtn,gCardBtn;
-    
+    JPanel mainBackground;
     
     public String getImageName = "";
+    public static int adminTeacherVisible = 0,adminStudentVisible = 0;
+//    new adminStudent().setVisible(true);
     
     
     public adminDashboard(String username, String identity){
@@ -48,8 +50,6 @@ public class adminDashboard extends JFrame {
         }
         
         
-                System.out.println(getImageName);
-        
         
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -65,7 +65,7 @@ public class adminDashboard extends JFrame {
         background.setIcon(iconBg);
         add(background);
         
-        //##################################################
+               //##################################################
         close = new JButton();
         close.setBounds(width-350,15,30,30);
         close.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -76,31 +76,55 @@ public class adminDashboard extends JFrame {
         close.setBorder(emptyBorder);
         background.add(close);
         
+        
+        
+//        sdeComponent=new JLabel();
+//        sdeComponent.setBounds(483,0,1137,height-200);
+//        sdeComponent.setLayout(null);
+//        ImageIcon sdeComponentmg = new ImageIcon(ClassLoader.getSystemResource("photo/bg6.jpg"));
+//        Image sdeComponentIcon = sdeComponentmg.getImage().getScaledInstance(width, height,Image.SCALE_FAST);
+//        ImageIcon sdeComponentBg = new ImageIcon(sdeComponentIcon);
+//        sdeComponent.setIcon(sdeComponentBg);
+//        background.add(sdeComponent);
+//        
+        
+        
+        
+        
+ 
         //##################################################
         profilePic=new JLabel();
-        profilePic.setBounds(50,50,200,200);
+        profilePic.setBounds(60,15,150,150);
         profilePic.setLayout(null);
-        ImageIcon profilePicImg = new ImageIcon(ClassLoader.getSystemResource("university/management/system/upload/"+getImageName));
+        ImageIcon profilePicImg;
+        if(getImageName==null){
+            profilePicImg = new ImageIcon(ClassLoader.getSystemResource("university/management/system/upload/default.png"));
+        }else{
+            profilePicImg = new ImageIcon(ClassLoader.getSystemResource("university/management/system/upload/"+getImageName));
+        }
+        
         Image profilePicIcon = profilePicImg.getImage().getScaledInstance(profilePic.getWidth(), profilePic.getHeight(),Image.SCALE_FAST);
         ImageIcon profilePicBg = new ImageIcon(profilePicIcon);
         profilePic.setIcon(profilePicBg);
         background.add(profilePic);
         //##################################################
         showName = new JLabel("Loged User namme");
-        showName.setBounds(width-600,50,400,60);
-        showName.setFont(new Font("serif",Font.BOLD,30));
+        showName.setBounds(60,150,400,60);
+        showName.setFont(new Font("serif",Font.BOLD,25));
         showName.setForeground(Color.WHITE);
         background.add(showName); 
+        
+        
         //##################################################
         showEmail = new JLabel("shishir@gmail.com");
-        showEmail.setBounds(width-600,80,400,60);
+        showEmail.setBounds(60,175,400,60);
         showEmail.setFont(new Font("serif",Font.BOLD,20));
         showEmail.setForeground(Color.WHITE);
         background.add(showEmail); 
         //##################################################
         JSeparator sep = new JSeparator();  
         sep.setOrientation(SwingConstants.HORIZONTAL);
-        sep.setBounds(width-600,130,250,50);
+        sep.setBounds(60,230,250,100);
         sep.setBackground(Color.white);
         background.add(sep);
         
@@ -115,6 +139,8 @@ public class adminDashboard extends JFrame {
         ImageIcon sCardBg = new ImageIcon(sCardIcon);
         sCard.setIcon(sCardBg);
         background.add(sCard);
+        
+        
         //##################################################
         sCardTitle = new JButton("Student");
         sCardTitle.setBounds(60,440,130,40);
@@ -132,7 +158,10 @@ public class adminDashboard extends JFrame {
         sCardTitle.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                  new AddStudent().setVisible(true);
+                if(adminStudentVisible==0){
+                    adminStudentVisible=1;
+                    new adminStudent().setVisible(true);
+                }
             }
 
         });
@@ -160,6 +189,19 @@ public class adminDashboard extends JFrame {
         tCardBtn.setIcon(icontCardBtn);
         tCardBtn.setBorder(emptyBorder);
         background.add(tCardBtn);
+        
+        tCardBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(adminTeacherVisible==0){
+                    adminTeacherVisible=1;
+                    new adminTeacher().setVisible(true);
+                }
+            }
+
+        });
+        
+        
         //##################################################
         hCard=new JLabel();
         hCard.setBounds(340,310,130,130);
@@ -331,7 +373,8 @@ public class adminDashboard extends JFrame {
         close.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                  setVisible(false);
+                    // Minimize JFrame
+                    setState(JFrame.ICONIFIED);
             }
 
         });
@@ -349,7 +392,7 @@ public class adminDashboard extends JFrame {
     }
     
     public static void main(String[] args) {
-        String user="", identity="";
+        String user="shishir", identity="";
         new adminDashboard(user,identity).setVisible(true);
     }
 }

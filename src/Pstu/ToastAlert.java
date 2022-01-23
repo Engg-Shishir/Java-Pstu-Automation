@@ -74,11 +74,11 @@ public class ToastAlert extends JFrame {
         setVisible(true);
         setSize(500,80);
         
-        setLocationRelativeTo(null);
+//        setLocationRelativeTo(null);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int height = screenSize.height;
         int width = screenSize.width;
-//        setLocation(width-550, 50);
+        setLocation(width-670, 80);
     }
     
     public static void main(String[ ] arg){

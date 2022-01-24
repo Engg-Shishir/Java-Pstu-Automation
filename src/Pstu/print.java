@@ -5,6 +5,7 @@
  */
 package Pstu;
 
+import ImageInsert_ImageShow.Insert;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -12,8 +13,13 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -28,10 +34,29 @@ public class print extends javax.swing.JFrame {
      */
     public String getId = "";
     public String getImageName = "";
+     String s;
+     ResultSet rs;
     public print(String id) {
         getId = id;
         initComponents();
     }
+    
+    
+        public class func{
+            public ResultSet find(String s) throws SQLException{
+
+                try{      
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/java","root","");
+                    PreparedStatement ps=con.prepareStatement("Select * from  student where roll = ?");
+                    ps.setString(1,s);
+                    rs  = ps.executeQuery(); 
+                }catch(ClassNotFoundException ev){
+                }
+                return rs;
+
+            }
+        }
     
  
 
@@ -51,7 +76,6 @@ public class print extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         underText = new javax.swing.JLabel();
         forDeanfac = new javax.swing.JLabel();
-        profilepic = new javax.swing.JLabel();
         name2 = new javax.swing.JLabel();
         name7 = new javax.swing.JLabel();
         name6 = new javax.swing.JLabel();
@@ -89,6 +113,7 @@ public class print extends javax.swing.JFrame {
         Jid = new javax.swing.JLabel();
         name13 = new javax.swing.JLabel();
         dot3 = new javax.swing.JLabel();
+        profilePic = new javax.swing.JLabel();
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -103,7 +128,7 @@ public class print extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         printbtn.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/print.png"))); // NOI18N
+        printbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/print.png"))); // NOI18N
         printbtn.setText("Print");
         printbtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         printbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -113,7 +138,7 @@ public class print extends javax.swing.JFrame {
         });
         getContentPane().add(printbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 50));
 
-        View.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/close Jframe.png"))); // NOI18N
+        View.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/printClose.png"))); // NOI18N
         View.setText("Close");
         View.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         View.addActionListener(new java.awt.event.ActionListener() {
@@ -143,9 +168,6 @@ public class print extends javax.swing.JFrame {
         forDeanfac.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         forDeanfac.setText("Computer Science & Engineering");
         print.add(forDeanfac, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 1050, 260, 30));
-
-        profilepic.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
-        print.add(profilepic, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 260, 180, 200));
 
         name2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         name2.setText("Name ");
@@ -290,7 +312,7 @@ public class print extends javax.swing.JFrame {
         jSeparator2.setForeground(new java.awt.Color(0, 0, 0));
         print.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 1040, 300, 10));
 
-        border1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/photo/vactorimage/under line design .png"))); // NOI18N
+        border1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/under line design .png"))); // NOI18N
         print.add(border1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 160, 640, 60));
 
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
@@ -307,6 +329,9 @@ public class print extends javax.swing.JFrame {
         dot3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         dot3.setText(":");
         print.add(dot3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 410, 20, 40));
+
+        profilePic.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        print.add(profilePic, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 250, 230, 220));
 
         background.setBackground(new java.awt.Color(255, 255, 255));
         background.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
@@ -356,38 +381,40 @@ public class print extends javax.swing.JFrame {
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
         
-//            facultyText.setText(faculty+" :- "+session);
-                conn cc = new conn();
-            try {
-//                ResultSet rs = cc.s.executeQuery("select * from student where session='"+getsession+"' AND fac='"+getfaculty+"' AND roll='"+getId+"' ");
-                
-                ResultSet rs = cc.s.executeQuery("select * from student where roll='"+getId+"' ");
-                if(rs.next()){
-                    jnames.setText(rs.getNString(2));
-                    jphones.setText(rs.getNString(6));
-                    Jreg.setText(rs.getNString(9));
-                    Jsession.setText(rs.getNString(10));
-                    Jid.setText(rs.getNString(8));
-                    JBlood.setText(rs.getNString(13));
-                    Jdob.setText(rs.getNString(11));
-                    Jnid.setText(rs.getNString(7));
-                    Jsem.setText("Second");
-                    Jhall.setText(rs.getNString(15));
-                    getImageName = rs.getNString(16);
-                    
-//                    //##################################################
-//                    profilePic=new JLabel();
-//                    profilePic.setBounds(60,15,150,150);
-//                    profilePic.setLayout(null);
-//                    ImageIcon profilePicImg = new ImageIcon(ClassLoader.getSystemResource("university/management/system/upload/"+getImageName));
-//                    Image profilePicIcon = profilePicImg.getImage().getScaledInstance(profilePic.getWidth(), profilePic.getHeight(),Image.SCALE_FAST);
-//                    ImageIcon profilePicBg = new ImageIcon(profilePicIcon);
-//                    profilePic.setIcon(profilePicBg);
-//                    background.add(profilePic);
-                }
-                cc.s.close();
-            }catch(SQLException e){
-            }
+                    // Call func meathoad
+                   print.func f = new print.func();
+                    try {
+                        
+                        //  recive func meathoad return query result                   
+                        rs = f.find(getId);
+                        if(rs.next()){
+                                byte[] img = rs.getBytes("photo");
+                                System.out.println(img);
+                                ImageIcon MyImage1 = new ImageIcon(img);
+                                Image img1 = MyImage1.getImage();
+                                Image newImage1 = img1.getScaledInstance(profilePic.getWidth(), profilePic.getHeight(), Image.SCALE_SMOOTH);
+                                ImageIcon image1 = new ImageIcon(newImage1);
+                                profilePic.setIcon(image1);
+                                
+                                
+                                jnames.setText(rs.getString(2));
+                                jphones.setText(rs.getString(6));
+                                Jreg.setText(rs.getString(9));
+                                Jsession.setText(rs.getString(10));
+                                Jid.setText(rs.getString(8));
+                                JBlood.setText(rs.getString(13));
+                                Jdob.setText(rs.getString(11));
+                                Jnid.setText(rs.getString(7));
+                                Jsem.setText("Second");
+                                Jhall.setText(rs.getString(15));
+                                getImageName = rs.getString(16);
+                                
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Insert.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+        
+
     }//GEN-LAST:event_formComponentShown
 
     /**
@@ -419,7 +446,7 @@ public class print extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new print("").setVisible(true);
+            new print("1234567").setVisible(true);
         });
     }
 
@@ -467,7 +494,7 @@ public class print extends javax.swing.JFrame {
     private javax.swing.JLabel name9;
     private javax.swing.JPanel print;
     private javax.swing.JButton printbtn;
-    public javax.swing.JLabel profilepic;
+    private javax.swing.JLabel profilePic;
     private javax.swing.JTable result;
     private javax.swing.JLabel underText;
     // End of variables declaration//GEN-END:variables

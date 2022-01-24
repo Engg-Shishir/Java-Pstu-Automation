@@ -220,6 +220,7 @@ public class addStudent extends javax.swing.JFrame {
             }
         });
 
+        adminTeacherPanel.setBackground(new java.awt.Color(0, 204, 204));
         adminTeacherPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 adminTeacherPanelComponentShown(evt);
@@ -501,6 +502,7 @@ public class addStudent extends javax.swing.JFrame {
         });
         adminTeacherPanel.add(dobVal, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 460, 300, 40));
 
+        background.setBackground(new java.awt.Color(0, 153, 153));
         background.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/photo/1115855.png"))); // NOI18N
         background.setToolTipText("");

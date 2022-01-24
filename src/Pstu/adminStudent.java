@@ -32,16 +32,6 @@ public class adminStudent extends javax.swing.JFrame {
     private void initComponents() {
 
         adminTeacherPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jLabel5 = new javax.swing.JLabel();
-        jComboBox5 = new javax.swing.JComboBox<>();
-        jLabel6 = new javax.swing.JLabel();
-        jComboBox6 = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jComboBox7 = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
@@ -70,71 +60,6 @@ public class adminStudent extends javax.swing.JFrame {
             }
         });
         adminTeacherPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/photo/vactorimage/Faculty/cse.png"))); // NOI18N
-        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        adminTeacherPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270, 160, 130));
-
-        jComboBox2.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Secect Session", "2015 - 2016", "2016 - 20117", "2017 - 2018", "2018 - 2019", "2019  - 2020", "2020 - 2021", " " }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
-        adminTeacherPanel.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 400, 160, 40));
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/photo/vactorimage/Faculty/Ag.png"))); // NOI18N
-        jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        adminTeacherPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 270, 160, 130));
-
-        jComboBox3.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Secect Session", "2015 - 2016", "2016 - 20117", "2017 - 2018", "2018 - 2019", "2019  - 2020", "2020 - 2021" }));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
-            }
-        });
-        adminTeacherPanel.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 400, 160, 40));
-
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/photo/vactorimage/Faculty/fish.png"))); // NOI18N
-        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        adminTeacherPanel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 270, 160, 130));
-
-        jComboBox4.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Secect Session", "2015 - 2016", "2016 - 20117", "2017 - 2018", "2018 - 2019", "2019  - 2020", "2020 - 2021" }));
-        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox4ActionPerformed(evt);
-            }
-        });
-        adminTeacherPanel.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 400, 160, 40));
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/photo/vactorimage/Faculty/nfs.png"))); // NOI18N
-        jLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        adminTeacherPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 270, 160, 130));
-
-        jComboBox5.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Secect Session", "2015 - 2016", "2016 - 20117", "2017 - 2018", "2018 - 2019", "2019  - 2020", "2020 - 2021" }));
-        jComboBox5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox5ActionPerformed(evt);
-            }
-        });
-        adminTeacherPanel.add(jComboBox5, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 400, 160, 40));
-
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/photo/vactorimage/Faculty/bba.png"))); // NOI18N
-        jLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        adminTeacherPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 270, 160, 130));
-
-        jComboBox6.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Secect Session", "2015 - 2016", "2016 - 20117", "2017 - 2018", "2018 - 2019", "2019  - 2020", "2020 - 2021" }));
-        jComboBox6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox6ActionPerformed(evt);
-            }
-        });
-        adminTeacherPanel.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 400, 160, 40));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/photo/vactorimage/Faculty/land.png"))); // NOI18N
         jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -283,26 +208,6 @@ public class adminStudent extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_adminTeacherPanelComponentShown
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
-
-    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox4ActionPerformed
-
-    private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox5ActionPerformed
-
-    private void jComboBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox6ActionPerformed
-
     private void jComboBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox7ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox7ActionPerformed
@@ -384,20 +289,10 @@ public class adminStudent extends javax.swing.JFrame {
     private javax.swing.JLabel background;
     private javax.swing.JLabel bottomrightborder;
     private javax.swing.JButton close;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JComboBox<String> jComboBox6;
     private javax.swing.JComboBox<String> jComboBox7;
     private javax.swing.JComboBox<String> jComboBox8;
     private javax.swing.JComboBox<String> jComboBox9;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JTextField serchIdField;

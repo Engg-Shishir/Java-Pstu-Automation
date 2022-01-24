@@ -44,24 +44,24 @@ public class loading extends javax.swing.JFrame {
         Backgroundpanel.setPreferredSize(new java.awt.Dimension(900, 500));
         Backgroundpanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        team.setIcon(new javax.swing.ImageIcon(getClass().getResource("/photo/teamwork-and-team-building-removebg-preview.png"))); // NOI18N
-        Backgroundpanel.add(team, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, -1, -1));
+        team.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstulogo400_400.png"))); // NOI18N
+        Backgroundpanel.add(team, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, 400, 410));
 
         loadingbar.setForeground(new java.awt.Color(204, 0, 51));
-        Backgroundpanel.add(loadingbar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, 860, 10));
+        Backgroundpanel.add(loadingbar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, 860, 15));
 
         loadingtext.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         loadingtext.setForeground(new java.awt.Color(255, 51, 51));
         loadingtext.setText("Loading...");
-        Backgroundpanel.add(loadingtext, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, 510, 20));
+        Backgroundpanel.add(loadingtext, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 510, 20));
 
         loadingvalue.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         loadingvalue.setForeground(new java.awt.Color(255, 255, 255));
         loadingvalue.setText("0 %");
         loadingvalue.setToolTipText("");
-        Backgroundpanel.add(loadingvalue, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 430, 70, 30));
+        Backgroundpanel.add(loadingvalue, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 420, 70, 40));
 
-        bgimage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/photo/grd2.jpg"))); // NOI18N
+        bgimage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Background/bg5.jpg"))); // NOI18N
         Backgroundpanel.add(bgimage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -163,9 +163,9 @@ public class Insert extends javax.swing.JFrame {
         try {
             rs = f.find(nameField.getText());
             if(rs.next()){
-               byte[] img = rs.getBytes("image");
-               
-                     ImageIcon MyImage1 = new ImageIcon(img);
+                   byte[] img = rs.getBytes("image");
+                   System.out.println(img);
+                    ImageIcon MyImage1 = new ImageIcon(img);
                     Image img1 = MyImage1.getImage();
                     Image newImage1 = img1.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH);
                     ImageIcon image1 = new ImageIcon(newImage1);
@@ -177,17 +177,15 @@ public class Insert extends javax.swing.JFrame {
     }//GEN-LAST:event_retribesActionPerformed
 
     /**
-     * @param args the command line arguments
+     * @param imafePaths
+     * @return 
      */
     public ImageIcon ResizeImage(String imafePaths){
         ImageIcon MyImage = new ImageIcon(imafePaths);
         Image img = MyImage.getImage();
         Image newImage = img.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon image = new ImageIcon(newImage);
-//        Image newImage = image.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOTH);
         return image;
-       
-       
     }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

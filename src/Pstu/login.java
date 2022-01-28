@@ -28,6 +28,22 @@ public class login extends javax.swing.JFrame {
     public login(){
         initComponents();
     }
+    
+    
+    public  void alert(String command, String msg){
+        if(command=="true"){
+            alert.setVisible(true);
+            alertText.setVisible(true);
+            alertText.setText(msg);
+            alertLogo.setVisible(true);
+            alertClose.setVisible(true);
+        }else{
+            alert.setVisible(false);
+            alertText.setVisible(false);
+            alertLogo.setVisible(false);
+            alertClose.setVisible(false);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -38,9 +54,12 @@ public class login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        contentPanel = new javax.swing.JPanel();
+        Login_Forgot = new javax.swing.JTabbedPane();
+        loginPanel = new javax.swing.JPanel();
+        LoginPanelSideLogo = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        LoginPanelInputField = new javax.swing.JPanel();
         userIdentity = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
         username = new javax.swing.JTextField();
@@ -49,30 +68,64 @@ public class login extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         password = new javax.swing.JPasswordField();
         jSeparator4 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
+        loginBtn = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
+        gorgotPasswordBtn = new javax.swing.JLabel();
+        alertText = new javax.swing.JLabel();
+        alertLogo = new javax.swing.JLabel();
+        alertClose = new javax.swing.JButton();
+        alert = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        ForgotPanel = new javax.swing.JPanel();
+        LoginPanelSideLogo1 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
+        LoginPanelInputField1 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        username1 = new javax.swing.JTextField();
+        jSeparator6 = new javax.swing.JSeparator();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        password1 = new javax.swing.JPasswordField();
+        jSeparator7 = new javax.swing.JSeparator();
+        alertText1 = new javax.swing.JLabel();
+        alertLogo1 = new javax.swing.JLabel();
+        alertClose1 = new javax.swing.JButton();
+        alert1 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        loginBtn2 = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        gorgotPasswordBtn1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        setSize(new java.awt.Dimension(908, 500));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
             }
         });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(0, 51, 51));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        contentPanel.setBackground(new java.awt.Color(255, 255, 255));
+        contentPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(107, 2, 65));
-        jPanel2.setForeground(new java.awt.Color(107, 2, 65));
-        jPanel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        Login_Forgot.setPreferredSize(new java.awt.Dimension(908, 530));
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/login.png"))); // NOI18N
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 320, 80));
+        loginPanel.setPreferredSize(new java.awt.Dimension(908, 500));
+        loginPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        LoginPanelSideLogo.setBackground(new java.awt.Color(74, 31, 61));
+        LoginPanelSideLogo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstall420_420.png"))); // NOI18N
+        LoginPanelSideLogo.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 380, 370));
+
+        loginPanel.add(LoginPanelSideLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 500));
+
+        LoginPanelInputField.setBackground(new java.awt.Color(107, 2, 65));
+        LoginPanelInputField.setForeground(new java.awt.Color(107, 2, 65));
+        LoginPanelInputField.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        LoginPanelInputField.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         userIdentity.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         userIdentity.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select yuor identity", "Student", "Teacher", "Admin" }));
@@ -82,16 +135,16 @@ public class login extends javax.swing.JFrame {
                 userIdentityActionPerformed(evt);
             }
         });
-        jPanel2.add(userIdentity, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, 210, 40));
+        LoginPanelInputField.add(userIdentity, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 250, 40));
 
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/user.png"))); // NOI18N
         jLabel13.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, 30, 40));
+        LoginPanelInputField.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 30, 40));
 
         username.setBackground(new java.awt.Color(107, 2, 65));
-        username.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        username.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         username.setForeground(new java.awt.Color(255, 255, 255));
-        username.setText("Enter username / email / Id");
+        username.setText("Enter your email / username");
         username.setBorder(null);
         username.addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentRemoved(java.awt.event.ContainerEvent evt) {
@@ -103,23 +156,23 @@ public class login extends javax.swing.JFrame {
                 usernameFocusGained(evt);
             }
         });
-        jPanel2.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 200, 350, 40));
+        LoginPanelInputField.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 270, 350, 40));
 
         jSeparator5.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel2.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, 410, 20));
+        LoginPanelInputField.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 410, 20));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/key.png"))); // NOI18N
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, 40, 40));
+        LoginPanelInputField.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 40, 40));
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Password  ");
         jLabel12.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(88, 260, 70, 40));
+        LoginPanelInputField.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 330, 80, 40));
 
         password.setBackground(new java.awt.Color(107, 2, 65));
-        password.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        password.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         password.setForeground(new java.awt.Color(255, 255, 255));
         password.setBorder(null);
         password.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -132,51 +185,208 @@ public class login extends javax.swing.JFrame {
                 passwordActionPerformed(evt);
             }
         });
-        jPanel2.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 260, 270, 40));
+        LoginPanelInputField.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 270, 40));
 
         jSeparator4.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel2.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 300, 410, 10));
+        LoginPanelInputField.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, 410, 10));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/login.png"))); // NOI18N
-        jButton1.setText("Login");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        loginBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/login.png"))); // NOI18N
+        loginBtn.setText("Login");
+        loginBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                loginBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 340, -1, -1));
+        LoginPanelInputField.add(loginBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 400, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Forgot Password ?");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, -1, 30));
+        LoginPanelInputField.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 410, -1, 30));
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/refresh.png"))); // NOI18N
-        jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 350, 40, 30));
+        gorgotPasswordBtn.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        gorgotPasswordBtn.setForeground(new java.awt.Color(0, 153, 153));
+        gorgotPasswordBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/refresh.png"))); // NOI18N
+        gorgotPasswordBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        gorgotPasswordBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                gorgotPasswordBtnMouseClicked(evt);
+            }
+        });
+        LoginPanelInputField.add(gorgotPasswordBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 410, 40, 30));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 0, 480, 420));
+        alertText.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        alertText.setForeground(new java.awt.Color(255, 255, 255));
+        LoginPanelInputField.add(alertText, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 290, 60));
 
-        jPanel4.setBackground(new java.awt.Color(74, 31, 61));
-        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        alertLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/warning.png"))); // NOI18N
+        alertLogo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        LoginPanelInputField.add(alertLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 50, 60));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstuall.jpg"))); // NOI18N
-        jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, 350, 340));
+        alertClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/close.png"))); // NOI18N
+        alertClose.setBorder(null);
+        alertClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        alertClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alertCloseActionPerformed(evt);
+            }
+        });
+        LoginPanelInputField.add(alertClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 30, 40, 40));
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 430, 420));
+        alert.setBackground(new java.awt.Color(74, 31, 61));
+        alert.setOpaque(true);
+        LoginPanelInputField.add(alert, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 420, 60));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 908, Short.MAX_VALUE)
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/login.png"))); // NOI18N
+        LoginPanelInputField.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, -1, 70));
+
+        loginPanel.add(LoginPanelInputField, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 0, 470, 500));
+
+        Login_Forgot.addTab("tab1", loginPanel);
+
+        ForgotPanel.setBackground(new java.awt.Color(255, 255, 255));
+        ForgotPanel.setPreferredSize(new java.awt.Dimension(908, 500));
+
+        LoginPanelSideLogo1.setBackground(new java.awt.Color(0, 5, 42));
+        LoginPanelSideLogo1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        LoginPanelSideLogo1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstulogo400_400.png"))); // NOI18N
+        LoginPanelSideLogo1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 380, 370));
+
+        LoginPanelInputField1.setBackground(new java.awt.Color(0, 5, 42));
+        LoginPanelInputField1.setForeground(new java.awt.Color(107, 2, 65));
+        LoginPanelInputField1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        LoginPanelInputField1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/user.png"))); // NOI18N
+        jLabel14.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        LoginPanelInputField1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, 30, 40));
+
+        username1.setBackground(new java.awt.Color(0, 5, 42));
+        username1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        username1.setForeground(new java.awt.Color(255, 255, 255));
+        username1.setText("Enter your email / username");
+        username1.setBorder(null);
+        username1.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentRemoved(java.awt.event.ContainerEvent evt) {
+                username1ComponentRemoved(evt);
+            }
+        });
+        username1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                username1FocusGained(evt);
+            }
+        });
+        LoginPanelInputField1.add(username1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 350, 40));
+
+        jSeparator6.setForeground(new java.awt.Color(255, 255, 255));
+        LoginPanelInputField1.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 410, 20));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/key.png"))); // NOI18N
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        LoginPanelInputField1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 40, 40));
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel15.setText("Code");
+        jLabel15.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        LoginPanelInputField1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 270, 50, 40));
+
+        password1.setBackground(new java.awt.Color(0, 5, 42));
+        password1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        password1.setForeground(new java.awt.Color(255, 255, 255));
+        password1.setBorder(null);
+        password1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                password1FocusGained(evt);
+            }
+        });
+        password1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                password1ActionPerformed(evt);
+            }
+        });
+        LoginPanelInputField1.add(password1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 270, 300, 40));
+
+        jSeparator7.setForeground(new java.awt.Color(255, 255, 255));
+        LoginPanelInputField1.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 410, 10));
+
+        alertText1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        alertText1.setForeground(new java.awt.Color(255, 255, 255));
+        LoginPanelInputField1.add(alertText1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 290, 60));
+
+        alertLogo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/warning.png"))); // NOI18N
+        alertLogo1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        LoginPanelInputField1.add(alertLogo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 50, 60));
+
+        alertClose1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/close.png"))); // NOI18N
+        alertClose1.setBorder(null);
+        alertClose1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        alertClose1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alertClose1ActionPerformed(evt);
+            }
+        });
+        LoginPanelInputField1.add(alertClose1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 30, 40, 40));
+
+        alert1.setBackground(new java.awt.Color(74, 31, 61));
+        alert1.setOpaque(true);
+        LoginPanelInputField1.add(alert1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 420, 60));
+
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/verify.png"))); // NOI18N
+        LoginPanelInputField1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, -1, 70));
+
+        loginBtn2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        loginBtn2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/verify.png"))); // NOI18N
+        loginBtn2.setText("Verify");
+        loginBtn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginBtn2ActionPerformed(evt);
+            }
+        });
+        LoginPanelInputField1.add(loginBtn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 330, -1, -1));
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Back to Login");
+        LoginPanelInputField1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 410, 110, 30));
+
+        gorgotPasswordBtn1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        gorgotPasswordBtn1.setForeground(new java.awt.Color(0, 153, 153));
+        gorgotPasswordBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/refresh.png"))); // NOI18N
+        gorgotPasswordBtn1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        gorgotPasswordBtn1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                gorgotPasswordBtn1MouseClicked(evt);
+            }
+        });
+        LoginPanelInputField1.add(gorgotPasswordBtn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 410, 40, 30));
+
+        javax.swing.GroupLayout ForgotPanelLayout = new javax.swing.GroupLayout(ForgotPanel);
+        ForgotPanel.setLayout(ForgotPanelLayout);
+        ForgotPanelLayout.setHorizontalGroup(
+            ForgotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ForgotPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(LoginPanelInputField1, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(LoginPanelSideLogo1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
+        ForgotPanelLayout.setVerticalGroup(
+            ForgotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ForgotPanelLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(ForgotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LoginPanelSideLogo1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LoginPanelInputField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
+
+        Login_Forgot.addTab("tab2", ForgotPanel);
+
+        contentPanel.add(Login_Forgot, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -30, 908, 530));
+
+        getContentPane().add(contentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 908, 500));
 
         pack();
         setLocationRelativeTo(null);
@@ -198,7 +408,7 @@ public class login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_userIdentityActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
         // TODO add your handling code here:
         try{
             conn cc = new conn();
@@ -207,41 +417,54 @@ public class login extends javax.swing.JFrame {
             user = user.toLowerCase();
             String userName = username.getText();
             String pss =    password.getText();
-
-            String q = "select * from users where username='"+userName+"' and password='"+pss+"'";
             
-            String query = "SELECT * FROM users where(email='"+userName+"' and role='"+user+"' and password='"+pss+"') "
-                    + "or(uid='"+userName+"' and role='"+user+"' and password='"+pss+"')"
-                    + "or(username='"+userName+"' and role='"+user+"' and password='"+pss+"')";
-            
-            ResultSet rs = cc.s.executeQuery(query);
+            if("student".equals(user)){ 
+                    String query = "SELECT * FROM student where(email='"+userName+"' and password='"+pss+"')"
+                                    + "or(roll='"+userName+"' and password='"+pss+"')"
+                                    + "or(username='"+userName+"' and password='"+pss+"')";
 
-            if(rs.next()){
-                if(rs.getString(4).equals(user)){
+                    ResultSet rs = cc.s.executeQuery(query);
+
+                    if(rs.next()){
+                        logeduser = userName;
+                        logedUserIdentity=user;
+                        this.setVisible(false);
+
+                        AdminDashboards home = new AdminDashboards(logeduser,logedUserIdentity);
+                        home.setVisible(true);
+                    } else{
+                          alert("true","You not alowed for this identity");
+                    }
+            }else{ 
+                String query = "SELECT * FROM users where(email='"+userName+"' and role='"+user+"' and password='"+pss+"')"
+                        + "or(uid='"+userName+"' and role='"+user+"' and password='"+pss+"')"
+                        + "or(username='"+userName+"' and role='"+user+"' and password='"+pss+"')";
+
+                ResultSet rs = cc.s.executeQuery(query);
+
+                if(rs.next()){
                     logeduser = userName;
                     logedUserIdentity=user;
                     this.setVisible(false);
 
-                    if("admin".equals(user)){
-                        AdminDashboards home = new AdminDashboards(logeduser,logedUserIdentity);
-                        home.setVisible(true);
-//                        ToastAlert_Corner alert = new ToastAlert_Corner(userName+", Successfully Login ","checkToast.png","delete2.png");
-//                        alert.setVisible(true);
-                    }
-                }else{
-//                    new ToastAlert("You not alowed for this identity","warningToast.png","close1.png").setVisible(true);
+                    AdminDashboards home = new AdminDashboards(logeduser,logedUserIdentity);
+                    home.setVisible(true);
+                } else{
+                      alert("true","You not alowed for this identity");
                 }
-            } else{
-//                new ToastAlert("Credential is not match","warningToast.png","close1.png").setVisible(true);
+            
             }
+
+
 
         }catch(SQLException e){
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_loginBtnActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
         
+        alert("false","");
         username.setBorder(BorderFactory.createCompoundBorder(username.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
         password.setBorder(BorderFactory.createCompoundBorder(password.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
     }//GEN-LAST:event_formComponentShown
@@ -251,58 +474,96 @@ public class login extends javax.swing.JFrame {
         username.setText("Enter username / email / Id");
     }//GEN-LAST:event_usernameComponentRemoved
 
+    private void alertCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alertCloseActionPerformed
+        // TODO add your handling code here:
+        alert("false","");
+    }//GEN-LAST:event_alertCloseActionPerformed
+
+    private void gorgotPasswordBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_gorgotPasswordBtnMouseClicked
+        // TODO add your handling code here:
+         Login_Forgot.setSelectedIndex(1);
+    }//GEN-LAST:event_gorgotPasswordBtnMouseClicked
+
+    private void username1ComponentRemoved(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_username1ComponentRemoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_username1ComponentRemoved
+
+    private void username1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_username1FocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_username1FocusGained
+
+    private void password1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password1FocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_password1FocusGained
+
+    private void password1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_password1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_password1ActionPerformed
+
+    private void alertClose1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alertClose1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_alertClose1ActionPerformed
+
+    private void loginBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtn2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_loginBtn2ActionPerformed
+
+    private void gorgotPasswordBtn1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_gorgotPasswordBtn1MouseClicked
+        // TODO add your handling code here:
+        
+         Login_Forgot.setSelectedIndex(0);
+    }//GEN-LAST:event_gorgotPasswordBtn1MouseClicked
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new login().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JPanel ForgotPanel;
+    private javax.swing.JPanel LoginPanelInputField;
+    private javax.swing.JPanel LoginPanelInputField1;
+    private javax.swing.JPanel LoginPanelSideLogo;
+    private javax.swing.JPanel LoginPanelSideLogo1;
+    private javax.swing.JTabbedPane Login_Forgot;
+    private javax.swing.JLabel alert;
+    private javax.swing.JLabel alert1;
+    private javax.swing.JButton alertClose;
+    private javax.swing.JButton alertClose1;
+    private javax.swing.JLabel alertLogo;
+    private javax.swing.JLabel alertLogo1;
+    private javax.swing.JLabel alertText;
+    private javax.swing.JLabel alertText1;
+    private javax.swing.JPanel contentPanel;
+    private javax.swing.JLabel gorgotPasswordBtn;
+    private javax.swing.JLabel gorgotPasswordBtn1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JButton loginBtn;
+    private javax.swing.JButton loginBtn2;
+    private javax.swing.JPanel loginPanel;
     private javax.swing.JPasswordField password;
+    private javax.swing.JPasswordField password1;
     private javax.swing.JComboBox<String> userIdentity;
     private javax.swing.JTextField username;
+    private javax.swing.JTextField username1;
     // End of variables declaration//GEN-END:variables
 }

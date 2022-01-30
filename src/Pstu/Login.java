@@ -25,7 +25,7 @@ import javax.mail.internet.MimeMessage;
  *
  * @author ASUS
  */
-public class Logins extends javax.swing.JFrame {
+public class Login extends javax.swing.JFrame {
 
     /**
      * Creates new form Logins
@@ -42,7 +42,7 @@ public class Logins extends javax.swing.JFrame {
     Boolean mailSendSuccessStatus = false;
     
     
-    public Logins() {
+    public Login() {
         initComponents();
     }
     //    Alert Show and hide
@@ -680,7 +680,7 @@ public class Logins extends javax.swing.JFrame {
                                     alert("error","true","Your creadential is not match");
                                 }
                             } catch (SQLException ex) {
-                                Logger.getLogger(Logins.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }else{
                             String query = "SELECT * FROM users where(email='"+userName+"' and token='"+vkey+"')";
@@ -693,7 +693,7 @@ public class Logins extends javax.swing.JFrame {
                                     alert("error","true","Your creadential is not match");
                                 }
                             } catch (SQLException ex) {
-                                Logger.getLogger(Logins.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                     }
@@ -805,7 +805,7 @@ public class Logins extends javax.swing.JFrame {
                 try {
                     sendmail(identity,email);
                 } catch (SQLException ex) {
-                    Logger.getLogger(Logins.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } 
         }
@@ -856,20 +856,21 @@ public class Logins extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Logins.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Logins.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Logins.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Logins.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Logins().setVisible(true);
+                new Login().setVisible(true);
             }
         });
     }

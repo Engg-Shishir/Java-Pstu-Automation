@@ -132,7 +132,7 @@ public class loading extends javax.swing.JFrame {
                             }
                         sp.dispose();
 //                        new Background().setVisible(true);
-                        new login().setVisible(true);  
+                        new Login().setVisible(true);  
                     }
                     sp.loadingbar.setValue(i);
                 }

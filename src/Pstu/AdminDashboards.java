@@ -185,9 +185,9 @@ public class AdminDashboards extends javax.swing.JFrame {
 
         try{
             conn cc = new conn();
-
-                String query = "INSERT INTO `student`(`name`, `fname`, `mname`, `addr`, `nid`,`dob`, `roll`, `reg`, `session`, `blood`, `fac`, `hall`) "
-                        + "VALUES ('"+data[0]+"','"+data[1]+"','"+data[2]+"','"+data[3]+"','"+data[4]+"','"+data[5]+"','"+data[6]+"','"+data[7]+"','"+data[8]+"','"+data[9]+"','"+data[10]+"','"+data[11]+"')";
+                int random = new Random().nextInt(900000) + 100000;
+                String query = "INSERT INTO `student`(`name`,`password`, `fname`, `mname`, `addr`, `nid`,`dob`, `roll`, `reg`, `session`, `blood`, `fac`, `hall`) "
+                        + "VALUES ('"+data[0]+"','"+random+"','"+data[1]+"','"+data[2]+"','"+data[3]+"','"+data[4]+"','"+data[5]+"','"+data[6]+"','"+data[7]+"','"+data[8]+"','"+data[9]+"','"+data[10]+"','"+data[11]+"')";
                 int i = cc.s.executeUpdate(query);
                 if(i==1){
                    alert("error","false","");
@@ -202,7 +202,7 @@ public class AdminDashboards extends javax.swing.JFrame {
 
             try{      
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3307/java","root","Bismillah");
+                Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/java","root","@Bismillah");
 
                 PreparedStatement ps=con.prepareStatement("SELECT * FROM users where(email='"+usernames+"' and role='"+identy+"') "
                 + "or(uid='"+usernames+"' and role='"+identy+"')"
@@ -226,7 +226,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     public class test {
             public ResultSet finds(String usernames, String identy) throws SQLException, ClassNotFoundException, FileNotFoundException{
                     Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3307/java","root","Bismillah");
+                    Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/java","root","@Bismillah");
                     File f=new File(imagePath);
                     fs=new FileInputStream(f);
                     ps= con.prepareStatement("UPDATE users SET photo=? Where uid=?");
@@ -4421,7 +4421,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
         // TODO add your handling code here:
         dispose();
-                login log = new login();
+                Login log = new Login();
                 log.setVisible(true);
     }//GEN-LAST:event_logoutActionPerformed
 

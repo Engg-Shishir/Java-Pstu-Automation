@@ -202,7 +202,7 @@ public class AdminDashboards extends javax.swing.JFrame {
 
             try{      
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/java","root","");
+                Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3307/java","root","Bismillah");
 
                 PreparedStatement ps=con.prepareStatement("SELECT * FROM users where(email='"+usernames+"' and role='"+identy+"') "
                 + "or(uid='"+usernames+"' and role='"+identy+"')"
@@ -226,7 +226,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     public class test {
             public ResultSet finds(String usernames, String identy) throws SQLException, ClassNotFoundException, FileNotFoundException{
                     Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/java","root","");
+                    Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3307/java","root","Bismillah");
                     File f=new File(imagePath);
                     fs=new FileInputStream(f);
                     ps= con.prepareStatement("UPDATE users SET photo=? Where uid=?");
@@ -286,13 +286,16 @@ public class AdminDashboards extends javax.swing.JFrame {
             }
     }   
     public void status(String user,String mode) throws SQLException{ 
+        System.out.println(user);
+        System.out.println(mode);
           
             conn cc = new conn();
+            
             if("student".equals(user)){
-              if("Active".equals(mode)){ 
+                if("Active".equals(mode)){ 
                     ps= cc.c.prepareStatement("UPDATE student SET status=? Where roll=?");
                     // set status 1 as a active symble
-                    ps.setInt(1, 1);
+                    ps.setString(1, "1");
                     ps.setString(2, sid.getText());
                     int count = ps.executeUpdate();
                     if(count > 0) { 
@@ -301,9 +304,9 @@ public class AdminDashboards extends javax.swing.JFrame {
                         sstatusBtn.setForeground(Color.BLACK);
                         alert("success","true","This account Active now");
                     } 
-              }else{ 
+                }else{ 
                     ps= cc.c.prepareStatement("UPDATE student SET status=? Where roll=?");
-                    ps.setInt(1, 0);
+                    ps.setString(1, "0");
                     ps.setString(2, sid.getText());
                     int count = ps.executeUpdate();
                     if(count > 0) { 
@@ -317,7 +320,7 @@ public class AdminDashboards extends javax.swing.JFrame {
               // user code here
             }
         
-        }
+    }
     public String getfirstLeter_replace_some_speacial_charecter_and_word(String str)
     {
         // First remove and,& from string        
@@ -867,7 +870,6 @@ public class AdminDashboards extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1465, 855));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -2903,6 +2905,11 @@ public class AdminDashboards extends javax.swing.JFrame {
         AdminTabedPane.addTab("tab2", profileViewPanel02);
 
         studentPanel03.setBackground(new java.awt.Color(0, 5, 42));
+        studentPanel03.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                studentPanel03ComponentShown(evt);
+            }
+        });
         studentPanel03.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/student.png"))); // NOI18N
@@ -2934,7 +2941,7 @@ public class AdminDashboards extends javax.swing.JFrame {
         studentPanel03.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 60, 200, 200));
 
         serchIdField.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        serchIdField.setText("     Search with student id");
+        serchIdField.setText("Search with student id");
         serchIdField.setBorder(null);
         serchIdField.setMargin(new java.awt.Insets(2, 20, 2, 2));
         serchIdField.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -2943,6 +2950,11 @@ public class AdminDashboards extends javax.swing.JFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 serchIdFieldFocusLost(evt);
+            }
+        });
+        serchIdField.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                serchIdFieldComponentShown(evt);
             }
         });
         serchIdField.addActionListener(new java.awt.event.ActionListener() {
@@ -3720,7 +3732,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        addStudent14.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 680, 100, 40));
+        addStudent14.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 670, 100, 40));
 
         bottomrightborder4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/bordertop left270_270.png"))); // NOI18N
         addStudent14.add(bottomrightborder4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 260, 240));
@@ -4506,8 +4518,13 @@ public class AdminDashboards extends javax.swing.JFrame {
     private void addNewStudent2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewStudent2ActionPerformed
         // TODO add your handling code here:
              studentsDetailsId = serchIdField.getText();
-             AdminTabedPane.setSelectedIndex(16);
+             if("".equals(studentsDetailsId) || "Search with student id".equals(studentsDetailsId)){ 
+             
+                alert("error","true","Insert student id");
+             }else{ 
+             AdminTabedPane.setSelectedIndex(16);     
             serchIdField.setText("Search with student id");
+             }
 //        System.out.println(serchIdField.getText());
 ////        new print(serchIdField.getText()).setVisible(true);
 //        print ok = new print(serchIdField.getText());
@@ -4676,12 +4693,14 @@ public class AdminDashboards extends javax.swing.JFrame {
                 logeduserid = rs.getString(6);
                 
                 byte[] img = rs.getBytes("photo");
-                ImageIcon MyImage1 = new ImageIcon(img);
-                Image img1 = MyImage1.getImage();
-                Image newImage1 = img1.getScaledInstance(profilepic.getWidth(), profilepic.getHeight(), Image.SCALE_SMOOTH);
-                ImageIcon image1 = new ImageIcon(newImage1);
-                profilepic.setIcon(image1);
-                UpdateProfilePic.setIcon(image1);
+                if(img != null){ 
+                    ImageIcon MyImage1 = new ImageIcon(img);
+                    Image img1 = MyImage1.getImage();
+                    Image newImage1 = img1.getScaledInstance(profilepic.getWidth(), profilepic.getHeight(), Image.SCALE_SMOOTH);
+                    ImageIcon image1 = new ImageIcon(newImage1);
+                    profilepic.setIcon(image1);
+                    UpdateProfilePic.setIcon(image1);
+                }
                 
                 adminName.setText(rs.getString(2));
                 adminNid.setText(rs.getString(8));
@@ -4825,8 +4844,8 @@ public class AdminDashboards extends javax.swing.JFrame {
             random = new Random().nextInt(900000) + 100000;
             
             String to = adminEmail.getText(); // to address. It can be any like gmail, yahoo etc.
-            String from = "shishirbhuiyan83@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
-            String password = "bismillah83@gmail.com180204308453"; // password for from gmail address that you have used in above line. 
+            String from = "somethingisw@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
+            String password = "bismillahw@gmail.com180204308453"; // password for from gmail address that you have used in above line. 
 
             Properties prop = new Properties();
             prop.put("mail.smtp.host", "smtp.gmail.com");
@@ -5083,12 +5102,12 @@ public class AdminDashboards extends javax.swing.JFrame {
 
                 if(rs.next())
                     do{
-                        String name = rs.getString(2);
-                        String id = rs.getString(8);
-                        String reg = rs.getString(9);
-                        String email = rs.getString(12);
-                        String phone = rs.getString(6);
-                        String hall = rs.getString(15);
+                        String name = rs.getString("name");
+                        String id = rs.getString("roll");
+                        String reg = rs.getString("reg");
+                        String email = rs.getString("email");
+                        String phone = rs.getString("phone");
+                        String hall = rs.getString("hall");
                         String st[] = {name,id,reg,email,phone,hall};
                         table.addRow(st);
                     }while(rs.next());
@@ -5251,14 +5270,14 @@ public class AdminDashboards extends javax.swing.JFrame {
                                     sDetailsProfilePic.setIcon(null);
                                }
                                
-                               if(rs.getInt("status")!=0){
-                                    sstatusBtn.setText("Active");
-                                    sstatusBtn.setBackground(Color.GREEN);
-                                    sstatusBtn.setForeground(Color.BLACK);
-                               }else{ 
+                               if(rs.getInt("status")== 0){
                                     sstatusBtn.setText("Disable");
                                     sstatusBtn.setBackground(Color.RED);
                                     sstatusBtn.setForeground(Color.WHITE);
+                               }else{ 
+                                    sstatusBtn.setText("Active");
+                                    sstatusBtn.setBackground(Color.GREEN);
+                                    sstatusBtn.setForeground(Color.BLACK);
                                }
                                 
                                 
@@ -5289,6 +5308,7 @@ public class AdminDashboards extends javax.swing.JFrame {
              DefaultTableModel table = (DefaultTableModel)allStudentsByFaculty.getModel();
              int id = allStudentsByFaculty.getSelectedRow();
              studentsDetailsId = table.getValueAt(id,1).toString();
+             
     }//GEN-LAST:event_allStudentsByFacultyMouseClicked
 
     private void printbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtnActionPerformed
@@ -5316,13 +5336,13 @@ public class AdminDashboards extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
             }
-       }else{ 
+        }else{ 
             try {
                 status("student","Active");
             } catch (SQLException ex) {
                 Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
             }
-       }
+        }
     }//GEN-LAST:event_sstatusBtnActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -5757,6 +5777,15 @@ public class AdminDashboards extends javax.swing.JFrame {
     private void profileViewPanel3ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_profileViewPanel3ComponentShown
         // TODO add your handling code here:
     }//GEN-LAST:event_profileViewPanel3ComponentShown
+
+    private void serchIdFieldComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_serchIdFieldComponentShown
+        // TODO add your handling code here:
+         serchIdField.setBorder(BorderFactory.createCompoundBorder(regVal.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+    }//GEN-LAST:event_serchIdFieldComponentShown
+
+    private void studentPanel03ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_studentPanel03ComponentShown
+        // TODO add your handling code here:
+    }//GEN-LAST:event_studentPanel03ComponentShown
 
     /**
      * @param args the command line arguments

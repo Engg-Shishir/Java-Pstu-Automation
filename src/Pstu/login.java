@@ -55,6 +55,11 @@ public class login extends javax.swing.JFrame {
     private void initComponents() {
 
         contentPanel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        alertLogo = new javax.swing.JLabel();
+        alertClose = new javax.swing.JButton();
+        alertText = new javax.swing.JLabel();
+        alert = new javax.swing.JLabel();
         Login_Forgot = new javax.swing.JTabbedPane();
         loginPanel = new javax.swing.JPanel();
         LoginPanelSideLogo = new javax.swing.JPanel();
@@ -71,10 +76,6 @@ public class login extends javax.swing.JFrame {
         loginBtn = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         gorgotPasswordBtn = new javax.swing.JLabel();
-        alertText = new javax.swing.JLabel();
-        alertLogo = new javax.swing.JLabel();
-        alertClose = new javax.swing.JButton();
-        alert = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         ForgotPanel = new javax.swing.JPanel();
         LoginPanelSideLogo1 = new javax.swing.JPanel();
@@ -87,10 +88,6 @@ public class login extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         password1 = new javax.swing.JPasswordField();
         jSeparator7 = new javax.swing.JSeparator();
-        alertText1 = new javax.swing.JLabel();
-        alertLogo1 = new javax.swing.JLabel();
-        alertClose1 = new javax.swing.JButton();
-        alert1 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         loginBtn2 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
@@ -109,12 +106,39 @@ public class login extends javax.swing.JFrame {
         contentPanel.setBackground(new java.awt.Color(255, 255, 255));
         contentPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBackground(new java.awt.Color(107, 2, 65));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        alertLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/warning.png"))); // NOI18N
+        alertLogo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel1.add(alertLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 50, 40));
+
+        alertClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/close.png"))); // NOI18N
+        alertClose.setBorder(null);
+        alertClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        alertClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alertCloseActionPerformed(evt);
+            }
+        });
+        jPanel1.add(alertClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 20, 40, 40));
+
+        alertText.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        alertText.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.add(alertText, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 290, 60));
+
+        alert.setBackground(new java.awt.Color(74, 31, 61));
+        alert.setOpaque(true);
+        jPanel1.add(alert, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 420, 60));
+
+        contentPanel.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 0, 440, 80));
+
         Login_Forgot.setPreferredSize(new java.awt.Dimension(908, 530));
 
         loginPanel.setPreferredSize(new java.awt.Dimension(908, 500));
         loginPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        LoginPanelSideLogo.setBackground(new java.awt.Color(74, 31, 61));
+        LoginPanelSideLogo.setBackground(new java.awt.Color(107, 2, 65));
         LoginPanelSideLogo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstall420_420.png"))); // NOI18N
@@ -135,7 +159,7 @@ public class login extends javax.swing.JFrame {
                 userIdentityActionPerformed(evt);
             }
         });
-        LoginPanelInputField.add(userIdentity, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 250, 40));
+        LoginPanelInputField.add(userIdentity, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 240, 40));
 
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/user.png"))); // NOI18N
         jLabel13.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -159,7 +183,7 @@ public class login extends javax.swing.JFrame {
         LoginPanelInputField.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 270, 350, 40));
 
         jSeparator5.setForeground(new java.awt.Color(255, 255, 255));
-        LoginPanelInputField.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 410, 20));
+        LoginPanelInputField.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 390, 20));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/key.png"))); // NOI18N
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -188,7 +212,7 @@ public class login extends javax.swing.JFrame {
         LoginPanelInputField.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 270, 40));
 
         jSeparator4.setForeground(new java.awt.Color(255, 255, 255));
-        LoginPanelInputField.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, 410, 10));
+        LoginPanelInputField.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, 390, 10));
 
         loginBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/login.png"))); // NOI18N
         loginBtn.setText("Login");
@@ -215,28 +239,6 @@ public class login extends javax.swing.JFrame {
         });
         LoginPanelInputField.add(gorgotPasswordBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 410, 40, 30));
 
-        alertText.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        alertText.setForeground(new java.awt.Color(255, 255, 255));
-        LoginPanelInputField.add(alertText, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 290, 60));
-
-        alertLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/warning.png"))); // NOI18N
-        alertLogo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        LoginPanelInputField.add(alertLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 50, 60));
-
-        alertClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/close.png"))); // NOI18N
-        alertClose.setBorder(null);
-        alertClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        alertClose.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                alertCloseActionPerformed(evt);
-            }
-        });
-        LoginPanelInputField.add(alertClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 30, 40, 40));
-
-        alert.setBackground(new java.awt.Color(74, 31, 61));
-        alert.setOpaque(true);
-        LoginPanelInputField.add(alert, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 420, 60));
-
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/login.png"))); // NOI18N
         LoginPanelInputField.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, -1, 70));
 
@@ -246,15 +248,17 @@ public class login extends javax.swing.JFrame {
 
         ForgotPanel.setBackground(new java.awt.Color(255, 255, 255));
         ForgotPanel.setPreferredSize(new java.awt.Dimension(908, 500));
+        ForgotPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        LoginPanelSideLogo1.setBackground(new java.awt.Color(0, 5, 42));
-        LoginPanelSideLogo1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        LoginPanelSideLogo1.setBackground(new java.awt.Color(107, 2, 65));
         LoginPanelSideLogo1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstulogo400_400.png"))); // NOI18N
         LoginPanelSideLogo1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 380, 370));
 
-        LoginPanelInputField1.setBackground(new java.awt.Color(0, 5, 42));
+        ForgotPanel.add(LoginPanelSideLogo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 500));
+
+        LoginPanelInputField1.setBackground(new java.awt.Color(107, 2, 65));
         LoginPanelInputField1.setForeground(new java.awt.Color(107, 2, 65));
         LoginPanelInputField1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         LoginPanelInputField1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -263,7 +267,7 @@ public class login extends javax.swing.JFrame {
         jLabel14.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         LoginPanelInputField1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, 30, 40));
 
-        username1.setBackground(new java.awt.Color(0, 5, 42));
+        username1.setBackground(new java.awt.Color(107, 2, 65));
         username1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         username1.setForeground(new java.awt.Color(255, 255, 255));
         username1.setText("Enter your email / username");
@@ -281,7 +285,7 @@ public class login extends javax.swing.JFrame {
         LoginPanelInputField1.add(username1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 350, 40));
 
         jSeparator6.setForeground(new java.awt.Color(255, 255, 255));
-        LoginPanelInputField1.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 410, 20));
+        LoginPanelInputField1.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 380, 20));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/key.png"))); // NOI18N
         jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -293,7 +297,7 @@ public class login extends javax.swing.JFrame {
         jLabel15.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         LoginPanelInputField1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 270, 50, 40));
 
-        password1.setBackground(new java.awt.Color(0, 5, 42));
+        password1.setBackground(new java.awt.Color(107, 2, 65));
         password1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         password1.setForeground(new java.awt.Color(255, 255, 255));
         password1.setBorder(null);
@@ -310,29 +314,7 @@ public class login extends javax.swing.JFrame {
         LoginPanelInputField1.add(password1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 270, 300, 40));
 
         jSeparator7.setForeground(new java.awt.Color(255, 255, 255));
-        LoginPanelInputField1.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 410, 10));
-
-        alertText1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        alertText1.setForeground(new java.awt.Color(255, 255, 255));
-        LoginPanelInputField1.add(alertText1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 290, 60));
-
-        alertLogo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/warning.png"))); // NOI18N
-        alertLogo1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        LoginPanelInputField1.add(alertLogo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 50, 60));
-
-        alertClose1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/close.png"))); // NOI18N
-        alertClose1.setBorder(null);
-        alertClose1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        alertClose1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                alertClose1ActionPerformed(evt);
-            }
-        });
-        LoginPanelInputField1.add(alertClose1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 30, 40, 40));
-
-        alert1.setBackground(new java.awt.Color(74, 31, 61));
-        alert1.setOpaque(true);
-        LoginPanelInputField1.add(alert1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 420, 60));
+        LoginPanelInputField1.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, 380, 10));
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/verify.png"))); // NOI18N
         LoginPanelInputField1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, -1, 70));
@@ -345,7 +327,7 @@ public class login extends javax.swing.JFrame {
                 loginBtn2ActionPerformed(evt);
             }
         });
-        LoginPanelInputField1.add(loginBtn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 330, -1, -1));
+        LoginPanelInputField1.add(loginBtn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 330, -1, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -363,28 +345,11 @@ public class login extends javax.swing.JFrame {
         });
         LoginPanelInputField1.add(gorgotPasswordBtn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 410, 40, 30));
 
-        javax.swing.GroupLayout ForgotPanelLayout = new javax.swing.GroupLayout(ForgotPanel);
-        ForgotPanel.setLayout(ForgotPanelLayout);
-        ForgotPanelLayout.setHorizontalGroup(
-            ForgotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ForgotPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(LoginPanelInputField1, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(LoginPanelSideLogo1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        ForgotPanelLayout.setVerticalGroup(
-            ForgotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ForgotPanelLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addGroup(ForgotPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(LoginPanelSideLogo1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LoginPanelInputField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
+        ForgotPanel.add(LoginPanelInputField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 0, 470, 500));
 
         Login_Forgot.addTab("tab2", ForgotPanel);
 
-        contentPanel.add(Login_Forgot, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -30, 908, 530));
+        contentPanel.add(Login_Forgot, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -30, 910, 530));
 
         getContentPane().add(contentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 908, 500));
 
@@ -500,10 +465,6 @@ public class login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_password1ActionPerformed
 
-    private void alertClose1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alertClose1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_alertClose1ActionPerformed
-
     private void loginBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtn2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_loginBtn2ActionPerformed
@@ -531,13 +492,9 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JPanel LoginPanelSideLogo1;
     private javax.swing.JTabbedPane Login_Forgot;
     private javax.swing.JLabel alert;
-    private javax.swing.JLabel alert1;
     private javax.swing.JButton alertClose;
-    private javax.swing.JButton alertClose1;
     private javax.swing.JLabel alertLogo;
-    private javax.swing.JLabel alertLogo1;
     private javax.swing.JLabel alertText;
-    private javax.swing.JLabel alertText1;
     private javax.swing.JPanel contentPanel;
     private javax.swing.JLabel gorgotPasswordBtn;
     private javax.swing.JLabel gorgotPasswordBtn1;
@@ -553,6 +510,7 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;

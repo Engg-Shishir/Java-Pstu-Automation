@@ -22,7 +22,7 @@ public class conn {
     public conn(){  
         try{  
             Class.forName("com.mysql.cj.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/java","root",""); 
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3307/java","root","Bismillah"); 
             s = c.createStatement();
             
         }catch(Exception e){ 

@@ -20,6 +20,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.swing.BorderFactory;
 
 /**
  *
@@ -292,6 +293,7 @@ public class Login extends javax.swing.JFrame {
         loginBtn = new javax.swing.JButton();
         backtoVerify = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
         ForgotPanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -381,11 +383,16 @@ public class Login extends javax.swing.JFrame {
 
         LoginPanel.setBackground(new java.awt.Color(74, 31, 61));
         LoginPanel.setPreferredSize(new java.awt.Dimension(900, 530));
+        LoginPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                LoginPanelComponentShown(evt);
+            }
+        });
         LoginPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstall420_420.png"))); // NOI18N
         jLabel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        LoginPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 380, 370));
+        LoginPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 380, 370));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/login.png"))); // NOI18N
         LoginPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 110, -1, 70));
@@ -404,7 +411,6 @@ public class Login extends javax.swing.JFrame {
         LoginUsername.setBackground(new java.awt.Color(74, 31, 61));
         LoginUsername.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         LoginUsername.setForeground(new java.awt.Color(255, 255, 255));
-        LoginUsername.setText("Email  or Username");
         LoginUsername.setBorder(null);
         LoginUsername.addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentRemoved(java.awt.event.ContainerEvent evt) {
@@ -416,7 +422,7 @@ public class Login extends javax.swing.JFrame {
                 LoginUsernameFocusGained(evt);
             }
         });
-        LoginPanel.add(LoginUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, 340, 40));
+        LoginPanel.add(LoginUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 270, 260, 40));
 
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/user.png"))); // NOI18N
         jLabel13.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -427,9 +433,9 @@ public class Login extends javax.swing.JFrame {
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setText("Password  ");
+        jLabel12.setText("Username :");
         jLabel12.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        LoginPanel.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 330, 80, 40));
+        LoginPanel.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, 80, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/key.png"))); // NOI18N
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -481,6 +487,12 @@ public class Login extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Forgot Password ?");
         LoginPanel.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 410, -1, 30));
+
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel17.setText("Password :");
+        jLabel17.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        LoginPanel.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 330, 80, 40));
 
         Login_Forgot.addTab("Login Frame", LoginPanel);
 
@@ -727,11 +739,11 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_LoginUsernameComponentRemoved
 
     private void LoginUsernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LoginUsernameFocusGained
-        LoginUsername.setText("");
+      
     }//GEN-LAST:event_LoginUsernameFocusGained
 
     private void LoginPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LoginPasswordFocusGained
-        LoginPassword.setText("");
+       
     }//GEN-LAST:event_LoginPasswordFocusGained
 
     private void LoginPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginPasswordActionPerformed
@@ -759,7 +771,9 @@ public class Login extends javax.swing.JFrame {
                     logeduser = userName;
                     logedUserIdentity=user;
                     this.setVisible(false);
-
+                    
+                     LoginUsername.setText("");
+                     LoginPassword.setText("");
                     AdminDashboards home = new AdminDashboards(logeduser,logedUserIdentity);
                     home.setVisible(true);
                 } else{
@@ -777,6 +791,8 @@ public class Login extends javax.swing.JFrame {
                     logedUserIdentity=user;
                     this.setVisible(false);
 
+                     LoginUsername.setText("");
+                     LoginPassword.setText("");
                     AdminDashboards home = new AdminDashboards(logeduser,logedUserIdentity);
                     home.setVisible(true);
                 } else{
@@ -812,7 +828,12 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_backtoVerifyMouseClicked
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        // TODO add your handling code here:
+        // TODO add your handling code here:       
+        
+        
+        LoginUsername.setBorder(BorderFactory.createCompoundBorder(LoginUsername.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));     
+        LoginPassword.setBorder(BorderFactory.createCompoundBorder(LoginPassword.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+             
         hideComponent();
     }//GEN-LAST:event_formComponentShown
 
@@ -838,6 +859,10 @@ public class Login extends javax.swing.JFrame {
     private void forgotPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotPasswordActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_forgotPasswordActionPerformed
+
+    private void LoginPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_LoginPanelComponentShown
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LoginPanelComponentShown
 
     /**
      * @param args the command line arguments
@@ -901,6 +926,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

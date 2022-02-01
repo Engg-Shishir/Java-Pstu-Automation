@@ -311,6 +311,7 @@ public class Login extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jSeparator8 = new javax.swing.JSeparator();
+        jLabel18 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 153, 153));
@@ -448,7 +449,7 @@ public class Login extends javax.swing.JFrame {
                 LoginPasswordActionPerformed(evt);
             }
         });
-        LoginPanel.add(LoginPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 330, 260, 40));
+        LoginPanel.add(LoginPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 330, 250, 40));
 
         jSeparator4.setForeground(new java.awt.Color(255, 255, 255));
         LoginPanel.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 370, 390, 10));
@@ -506,7 +507,6 @@ public class Login extends javax.swing.JFrame {
         forgotUsername.setBackground(new java.awt.Color(74, 31, 61));
         forgotUsername.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         forgotUsername.setForeground(new java.awt.Color(255, 255, 255));
-        forgotUsername.setText("Enter your email  address");
         forgotUsername.setBorder(null);
         forgotUsername.addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentRemoved(java.awt.event.ContainerEvent evt) {
@@ -518,7 +518,7 @@ public class Login extends javax.swing.JFrame {
                 forgotUsernameFocusGained(evt);
             }
         });
-        ForgotPanel.add(forgotUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 220, 330, 40));
+        ForgotPanel.add(forgotUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 220, 270, 40));
 
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/user.png"))); // NOI18N
         jLabel14.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -529,9 +529,9 @@ public class Login extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("Code");
+        jLabel15.setText("Email :");
         jLabel15.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        ForgotPanel.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 270, 50, 40));
+        ForgotPanel.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 220, 50, 40));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/key.png"))); // NOI18N
         jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -577,7 +577,7 @@ public class Login extends javax.swing.JFrame {
                 forgotVerificationCodeActionPerformed(evt);
             }
         });
-        ForgotPanel.add(forgotVerificationCode, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 270, 290, 40));
+        ForgotPanel.add(forgotVerificationCode, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 270, 270, 40));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -612,11 +612,11 @@ public class Login extends javax.swing.JFrame {
                 forgotPasswordActionPerformed(evt);
             }
         });
-        ForgotPanel.add(forgotPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 320, 290, 40));
+        ForgotPanel.add(forgotPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 320, 270, 40));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel16.setText("Pass");
+        jLabel16.setText("Pass :");
         jLabel16.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         ForgotPanel.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 320, 50, 40));
 
@@ -626,6 +626,12 @@ public class Login extends javax.swing.JFrame {
 
         jSeparator8.setForeground(new java.awt.Color(255, 255, 255));
         ForgotPanel.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 360, 380, 10));
+
+        jLabel18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel18.setText("Code :");
+        jLabel18.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        ForgotPanel.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 270, 50, 40));
 
         Login_Forgot.addTab("Forgot Frame", ForgotPanel);
 
@@ -943,6 +949,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

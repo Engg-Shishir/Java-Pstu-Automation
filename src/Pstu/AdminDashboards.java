@@ -4361,6 +4361,9 @@ public class AdminDashboards extends javax.swing.JFrame {
 
     private void studentSidebarLogoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentSidebarLogoutBtnActionPerformed
         // TODO add your handling code here:
+        dispose();
+                Login log = new Login();
+                log.setVisible(true);
     }//GEN-LAST:event_studentSidebarLogoutBtnActionPerformed
 
     private void studentDashboardBtn_18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentDashboardBtn_18ActionPerformed

@@ -20,7 +20,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.swing.BorderFactory;
 
 /**
  *
@@ -31,158 +30,231 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Logins
      */
-    
-    private String logeduser="";
-    private String logedUserIdentity="";
-        
-    
+    private String logeduser = "";
+    private String logedUserIdentity = "";
+
     Connection con = null;
-    PreparedStatement ps=null;
+    PreparedStatement ps = null;
     ResultSet rs;
     private int random;
     Boolean mailSendSuccessStatus = false;
-    
-    
+
     public Login() {
         initComponents();
     }
+
+    public void loadin() {
+        int i = 0;
+        for (i = 0; i <= 100; i++) {
+            loadingbar.setValue(i);
+        }
+    }
+
     //    Alert Show and hide
-    public  void alert(String type,String permission, String message){ 
-        if("error".equals(type)){ 
-            if("false".equals(permission)){
-                  alertPanel.setVisible(false);
-                  error.setVisible(false);
-                  errorLogo.setVisible(false);
-                  errorText.setText(message);
-                  errorClose.setVisible(false);
-            }else{
-                  alertPanel.setVisible(true);
-                  error.setVisible(true);
-                  errorLogo.setVisible(true);
-                  errorText.setText(message);
-                  errorClose.setVisible(true);
+    public void alert(String type, String permission, String message) {
+        if ("error".equals(type)) {
+            if ("false".equals(permission)) {
+                alertPanel.setVisible(false);
+                error.setVisible(false);
+                errorLogo.setVisible(false);
+                errorText.setText(message);
+                errorClose.setVisible(false);
+            } else {
+                alertPanel.setVisible(true);
+                error.setVisible(true);
+                errorLogo.setVisible(true);
+                errorText.setText(message);
+                errorClose.setVisible(true);
             }
-        }else{ 
-            if("false".equals(permission)){
-                  alertPanel.setVisible(false);
-                  success.setVisible(false);
-                  successLogo.setVisible(false);
-                  successText.setText(message);
-                  successClose.setVisible(false);
-            }else{
-                  alertPanel.setVisible(true);
-                  success.setVisible(true);
-                  successLogo.setVisible(true);
-                  successText.setText(message);
-                  successClose.setVisible(true);
+        } else {
+            if ("false".equals(permission)) {
+                alertPanel.setVisible(false);
+                success.setVisible(false);
+                successLogo.setVisible(false);
+                successText.setText(message);
+                successClose.setVisible(false);
+            } else {
+                alertPanel.setVisible(true);
+                success.setVisible(true);
+                successLogo.setVisible(true);
+                successText.setText(message);
+                successClose.setVisible(true);
             }
         }
     }
-    
+
     // Hide meathod
-    public void hideComponent(){
+    public void hideComponent() {
         alertPanel.setVisible(false);
-        alert("error","false","");
-        alert("success","false","");
+        alert("error", "false", "");
+        alert("success", "false", "");
     }
-    
-    public void sendmail(String idnty,String toSend) throws SQLException{
-            
-            String query;
-            conn cc = new conn();
-            String requestId;
-              
-            if("student".equals(idnty)){
-                query = "SELECT * FROM student where(email='"+toSend+"') ";
-            }else{ 
-               query = "SELECT * FROM users where(email='"+toSend+"') ";
-            }
-        
-            ResultSet rs = cc.s.executeQuery(query);
-            if(rs.next()){
-                if("student".equals(idnty)){ 
-                 requestId = rs.getString("roll");
-                }else{
-                 requestId = rs.getString("uid");
-                }
-                int randoms = new Random().nextInt(900000) + 100000;
-                
-                sendMail mail = new sendMail(toSend,randoms,"Verification for reset Passwoprd ");
-                if(mail.send()){
-                    UpdateToken object = new UpdateToken(idnty,"token",randoms,requestId);
-                    if(object.UpadetData()){
-                        alert("success","true","Please verify your mail");
-                        Login_Forgot.setSelectedIndex(1);
-                    }else{
-                        alert("error","true","Something going wrong with database,Try again!");
-                    }
-                }
-                cc.c.close();
-            }else{
-                 alert("error","true","This email is not registered yet");  
-            }
-        
-        
-            
-            
-    }
-    
-    public void updateTokenForverification(String identy,String toSend,int rand) {
+
+    public void sendmail(String idnty, String toSend) throws SQLException {
+
         String query;
-        try{
-            if("student".equals(identy)){
-              query = "UPDATE student SET token=? Where email=?";
-            }else{ 
-             query = "UPDATE users SET token=? Where email=?";
+
+        if ("student".equals(idnty)) {
+            query = "SELECT * FROM student where(email='" + toSend + "') ";
+        } else {
+            query = "SELECT * FROM users where(email='" + toSend + "') ";
+        }
+
+        conn cc = new conn();
+        ResultSet rs = cc.s.executeQuery(query);
+        if (rs.next()) {
+
+            int randoms = new Random().nextInt(900000) + 100000;
+
+            String to = toSend; // to address. It can be any like gmail, yahoo etc.
+            String from = "somethingisw@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
+            String password = "bismillahw@gmail.com180204308453"; // password for from gmail address that you have used in above line. 
+
+            Properties prop = new Properties();
+            prop.put("mail.smtp.host", "smtp.gmail.com");
+            prop.put("mail.smtp.port", "465");
+            prop.put("mail.smtp.auth", "true");
+            prop.put("mail.smtp.socketFactory.port", "465");
+            prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+
+            Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(from, password);
+                }
+            });
+
+            try {
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress(from));
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+                message.setSubject("PSTU Password reset verification code");
+
+                message.setContent("<div style=\" max-width:450px;margin:0px auto; background-color:white;box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;  \"><table style=\"font-family:'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;border:solid lightgray 1px;background-color:transparent;max-width:450px;margin:0px auto\" cellpadding=\"0\" cellspacing=\"0\">\n"
+                        + "    <tbody>"
+                        + "        <tr>"
+                        + "            <td style=\"text-align:center\">"
+                        + "                <p style=\"color:#000;display:block;background-color:#91034a;margin:0px auto;font-size:1.5rem;text-align:center;padding:10px 0px;width:100%;\">Java, PSTU Mail System</p>\n"
+                        + "                <img src=\"https://i.postimg.cc/qqjdGYYD/pstulogo.png\" style=\"width:300px;margin-bottom:10px\">\n"
+                        + "            </td>\n"
+                        + "        </tr>\n"
+                        + "\n"
+                        + "        <tr>\n"
+                        + "\n"
+                        + "            <td style=\"padding:10px;text-align:justify\">\n"
+                        + "                <p><strong>Dear User,</strong><br><br>\n"
+                        + "\n"
+                        + "                    PSTU send this verification mail.So that your account alive with secure. If you think this proces is going to with your permission, please give us your verification code. Otherwise change your password quickly & inform PSTU. \n"
+                        + " \n"
+                        + "                </p>\n"
+                        + "\n"
+                        + "\n"
+                        + "                <p style=\"display:block;text-decoration:none!important;color:#fff;cursor:pointer;background-color:#91034a;margin:0px auto;margin-top:30px;font-size:1.5rem;text-align:center;padding:10px 0px;width:90%;\">" + toSend + "</p>"
+                        + "                <p style=\"color:#000;display:block;background-color:#299314;margin:0px auto;font-size:1.5rem;text-align:center;padding:5px 0px;width:90%;\">Verification key : " + randoms + "</p>\n"
+                        + "\n"
+                        + "                <p>\n"
+                        + "                    I am Shishir and interested in doing positive things about every aspect of life. I love projects with challenges. I like works to make an impact in the real world. I always try to work for my world with my community. I learn to extended . Also I am a specialized in Front-End and Back-End web Development.Besides within the web designing and development area every sector I want to deliver my best. I always try to maintain performance with achievements. Actually I am not a successful programmer but I want to be also successful. Because the program is my way & programming is my passion. If you think? I will help you with your project! yes, I am ready to assist you InsyaAllah.Send your query  \n"
+                        + "                    <p></strong><strong>shishir16@cse.pstu.ac.bd</strong></p>\n"
+                        + "                </p>\n"
+                        + "                <p>\n"
+                        + "                    If you are having any issue, kindly reach out to us by replying to this email. \n"
+                        + "                    <a href=\"https://pstu.ac.bd/contact-us/\" target=\"_blank\"\">Patuakhali Science & Technology University</a>\n"
+                        + "                </p>\n"
+                        + "\n"
+                        + "                <p>Thanking you<br>PSTU Atumation Team</p>\n"
+                        + "            </td>\n"
+                        + "\n"
+                        + "        </tr>\n"
+                        + "        <tr>\n"
+                        + "\n"
+                        + "            <td>\n"
+                        + "                <img src=\"https://i.postimg.cc/qvz0d0ph/152-405-copy-removebg-preview.png\" style=\"color:#000;display:block;margin:0px auto;margin-botom:-10px;width:250px; height:300px;\""
+                        + "            </td>"
+                        + "        </tr>"
+                        + "        <tr>"
+                        + "            <td>"
+                        + "                   <p style=\"color:#000;display:block;background-color:#91034a;margin:2px auto;font-size:20px;text-align:center;padding:10px 0px;width:100%;\">&copy; All right reseve by PSTU</p>\n"
+                        + "\n"
+                        + "            </td>\n"
+                        + "\n"
+                        + "        </tr>\n"
+                        + "    </tbody>\n"
+                        + "</table></div>'", "text/html");
+
+                try {
+                    Transport.send(message);
+                    mailSendSuccessStatus = true;
+                } catch (MessagingException ee) {
+                    alert("error", "true", "Please check your network connection");
+                }
+
+                if (mailSendSuccessStatus) {
+                    updateTokenForverification(idnty, toSend, randoms);
+                }
+
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+        } else {
+            alert("error", "true", "This email is not registered yet");
+        }
+
+    }
+
+    public void updateTokenForverification(String identy, String toSend, int rand) {
+        String query;
+        try {
+            if ("student".equals(identy)) {
+                query = "UPDATE student SET token=? Where email=?";
+            } else {
+                query = "UPDATE users SET token=? Where email=?";
             }
             conn cc = new conn();
-            ps= cc.c.prepareStatement(query);
+            ps = cc.c.prepareStatement(query);
             ps.setString(1, String.valueOf(rand));
             ps.setString(2, toSend);
             int count = ps.executeUpdate();
             System.out.println(count);
-              
-            if(count>0){
-                    Login_Forgot.setSelectedIndex(1);
-                   alert("success","true","Please verify your mail");
+
+            if (count > 0) {
+                Login_Forgot.setSelectedIndex(1);
+                alert("success", "true", "Please verify your mail");
             }
 
-        }catch(Exception ex){
+        } catch (Exception ex) {
 //          alert("error","true","Something going wrong !20");
-            alert("error","true","This");
+            alert("error", "true", "This");
         }
     }
-        public void updatePasswordFormverification(String identy,String email, String passwords) {
+
+    public void updatePasswordFormverification(String identy, String email, String passwords) {
         String query;
-            System.out.println(identy);
-            System.out.println(email);
-            System.out.println(passwords);
-        try{
-            if("student".equals(identy)){
-              query = "UPDATE student SET password=?,token=? Where email=?";
-            }else{ 
-             query = "UPDATE users SET password=?,token=? Where email=?";
+        System.out.println(identy);
+        System.out.println(email);
+        System.out.println(passwords);
+        try {
+            if ("student".equals(identy)) {
+                query = "UPDATE student SET password=?,token=? Where email=?";
+            } else {
+                query = "UPDATE users SET password=?,token=? Where email=?";
             }
             conn cc = new conn();
-            ps= cc.c.prepareStatement(query);
+            ps = cc.c.prepareStatement(query);
             ps.setString(1, passwords);
             ps.setString(2, "");
             ps.setString(3, email);
             int count = ps.executeUpdate();
             System.out.println(count);
-              
-            if(count>0){
+
+            if (count > 0) {
                 Login_Forgot.setSelectedIndex(0);
-                alert("success","true","Your password is updated");
+                alert("success", "true", "Your password is updated");
             }
 
-        }catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex);
-            alert("error","true","Alert form catch section");
+            alert("error", "true", "Alert form catch section");
         }
     }
-        
-        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -218,6 +290,7 @@ public class Login extends javax.swing.JFrame {
         loginBtn = new javax.swing.JButton();
         backtoVerify = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        loadingbar = new javax.swing.JProgressBar();
         jLabel17 = new javax.swing.JLabel();
         ForgotPanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -308,16 +381,11 @@ public class Login extends javax.swing.JFrame {
 
         LoginPanel.setBackground(new java.awt.Color(74, 31, 61));
         LoginPanel.setPreferredSize(new java.awt.Dimension(900, 530));
-        LoginPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                LoginPanelComponentShown(evt);
-            }
-        });
         LoginPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstall420_420.png"))); // NOI18N
         jLabel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        LoginPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 380, 370));
+        LoginPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 380, 370));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/login.png"))); // NOI18N
         LoginPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 110, -1, 70));
@@ -347,7 +415,7 @@ public class Login extends javax.swing.JFrame {
                 LoginUsernameFocusGained(evt);
             }
         });
-        LoginPanel.add(LoginUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 270, 260, 40));
+        LoginPanel.add(LoginUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 270, 250, 40));
 
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/user.png"))); // NOI18N
         jLabel13.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -413,9 +481,13 @@ public class Login extends javax.swing.JFrame {
         jLabel9.setText("Forgot Password ?");
         LoginPanel.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 410, -1, 30));
 
+        loadingbar.setBackground(new java.awt.Color(74, 31, 61));
+        loadingbar.setForeground(new java.awt.Color(74, 31, 61));
+        LoginPanel.add(loadingbar, new org.netbeans.lib.awtextra.AbsoluteConstraints(-15, 473, 940, 20));
+
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel17.setText("Password :");
+        jLabel17.setText("Password  :");
         jLabel17.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         LoginPanel.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 330, 80, 40));
 
@@ -585,49 +657,49 @@ public class Login extends javax.swing.JFrame {
 
     private void forgotbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotbtnActionPerformed
         // TODO add your handling code here:
-            
-            conn cc = new conn();
-        
-            String identity = (String)forgotUserIdentity.getSelectedItem();
-            identity = identity.toLowerCase();
-            String userName = forgotUsername.getText();
-            String vkey =    forgotVerificationCode.getText();
-            String pass= forgotPassword.getText();
-            
-            if("select yuor identity".equals(identity)){ 
-                alert("error","true","Selct your identity first");
-            }else{ 
-               if("".equals(userName)){
-                    alert("error","true","Email address is required");
-               }else{ 
-                if("".equals(vkey)){
-                     alert("error","true","Write your verification code");
-                }else{  
-                    if("".equals(pass)){
-                         alert("error","true","Write your secure Password");
-                    }else{ 
-                        if("student".equals(identity)){
-                            String query = "SELECT * FROM student where(email='"+userName+"' and token='"+vkey+"')";
+
+        conn cc = new conn();
+
+        String identity = (String) forgotUserIdentity.getSelectedItem();
+        identity = identity.toLowerCase();
+        String userName = forgotUsername.getText();
+        String vkey = forgotVerificationCode.getText();
+        String pass = forgotPassword.getText();
+
+        if ("select yuor identity".equals(identity)) {
+            alert("error", "true", "Selct your identity first");
+        } else {
+            if ("".equals(userName)) {
+                alert("error", "true", "Email address is required");
+            } else {
+                if ("".equals(vkey)) {
+                    alert("error", "true", "Write your verification code");
+                } else {
+                    if ("".equals(pass)) {
+                        alert("error", "true", "Write your secure Password");
+                    } else {
+                        if ("student".equals(identity)) {
+                            String query = "SELECT * FROM student where(email='" + userName + "' and token='" + vkey + "')";
 
                             try {
                                 ResultSet rs = cc.s.executeQuery(query);
-                                if(rs.next()){
-                                    updatePasswordFormverification(identity,userName,pass);
-                                }else{ 
-                                    alert("error","true","Your creadential is not match");
+                                if (rs.next()) {
+                                    updatePasswordFormverification(identity, userName, pass);
+                                } else {
+                                    alert("error", "true", "Your creadential is not match");
                                 }
                             } catch (SQLException ex) {
                                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                        }else{
-                            String query = "SELECT * FROM users where(email='"+userName+"' and token='"+vkey+"')";
+                        } else {
+                            String query = "SELECT * FROM users where(email='" + userName + "' and token='" + vkey + "')";
 
                             try {
                                 ResultSet rs = cc.s.executeQuery(query);
-                                if(rs.next()){
-                                    updatePasswordFormverification(identity,userName,pass);
-                                }else{ 
-                                    alert("error","true","Your creadential is not match");
+                                if (rs.next()) {
+                                    updatePasswordFormverification(identity, userName, pass);
+                                } else {
+                                    alert("error", "true", "Your creadential is not match");
                                 }
                             } catch (SQLException ex) {
                                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
@@ -635,8 +707,8 @@ public class Login extends javax.swing.JFrame {
                         }
                     }
                 }
-               }
             }
+        }
     }//GEN-LAST:event_forgotbtnActionPerformed
 
     private void backtoLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backtoLoginMouseClicked
@@ -664,11 +736,11 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_LoginUsernameComponentRemoved
 
     private void LoginUsernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LoginUsernameFocusGained
-      
+
     }//GEN-LAST:event_LoginUsernameFocusGained
 
     private void LoginPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LoginPasswordFocusGained
-       
+
     }//GEN-LAST:event_LoginPasswordFocusGained
 
     private void LoginPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginPasswordActionPerformed
@@ -677,56 +749,54 @@ public class Login extends javax.swing.JFrame {
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
         // TODO add your handling code here:
-        try{
+        try {
             conn cc = new conn();
 
-            String user = (String)userIdentity.getSelectedItem();
+            String user = (String) userIdentity.getSelectedItem();
             user = user.toLowerCase();
             String userName = LoginUsername.getText();
-            String pss =    LoginPassword.getText();
+            String pss = LoginPassword.getText();
 
-            if("student".equals(user)){
-                String query = "SELECT * FROM student where(email='"+userName+"' and password='"+pss+"')"
-                + "or(roll='"+userName+"' and password='"+pss+"')"
-                + "or(username='"+userName+"' and password='"+pss+"')";
+            if ("student".equals(user)) {
+                String query = "SELECT * FROM student where(email='" + userName + "' and password='" + pss + "')"
+                        + "or(roll='" + userName + "' and password='" + pss + "')"
+                        + "or(username='" + userName + "' and password='" + pss + "')";
 
                 ResultSet rs = cc.s.executeQuery(query);
 
-                if(rs.next()){
+                if (rs.next()) {
                     logeduser = userName;
-                    logedUserIdentity=user;
+                    logedUserIdentity = user;
                     this.setVisible(false);
-                    
-                     LoginUsername.setText("");
-                     LoginPassword.setText("");
-                    AdminDashboards home = new AdminDashboards(logeduser,logedUserIdentity);
+
+                    AdminDashboards home = new AdminDashboards(logeduser, logedUserIdentity);
                     home.setVisible(true);
-                } else{
-                    alert("error","true","Something going wrong !");
+                    LoginUsername.setText("");
+                    LoginPassword.setText("");
+                } else {
+                    alert("error", "true", "Something going wrong !");
                 }
-            }else{
-                String query = "SELECT * FROM users where(email='"+userName+"' and role='"+user+"' and password='"+pss+"')"
-                + "or(uid='"+userName+"' and role='"+user+"' and password='"+pss+"')"
-                + "or(username='"+userName+"' and role='"+user+"' and password='"+pss+"')";
+            } else {
+                String query = "SELECT * FROM users where(email='" + userName + "' and role='" + user + "' and password='" + pss + "')"
+                        + "or(uid='" + userName + "' and role='" + user + "' and password='" + pss + "')"
+                        + "or(username='" + userName + "' and role='" + user + "' and password='" + pss + "')";
 
                 ResultSet rs = cc.s.executeQuery(query);
 
-                if(rs.next()){
+                if (rs.next()) {
                     logeduser = userName;
-                    logedUserIdentity=user;
+                    logedUserIdentity = user;
                     this.setVisible(false);
 
-                     LoginUsername.setText("");
-                     LoginPassword.setText("");
-                    AdminDashboards home = new AdminDashboards(logeduser,logedUserIdentity);
+                    AdminDashboards home = new AdminDashboards(logeduser, logedUserIdentity);
                     home.setVisible(true);
-                } else{
-                    alert("error","true","Something going wrong !");
+                } else {
+                    alert("error", "true", "Something going wrong !");
                 }
 
             }
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
         }
     }//GEN-LAST:event_loginBtnActionPerformed
 
@@ -734,43 +804,38 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         String email = LoginUsername.getText();
         email = email.toLowerCase();
-        String identity = (String)userIdentity.getSelectedItem();
+        String identity = (String) userIdentity.getSelectedItem();
         identity = identity.toLowerCase();
-        
-        if("select yuor identity".equals(identity)){ 
-            alert("error","true","At first select your identity");
-        }else{
-            if("".equals(email)) { 
-                alert("error","true","Insert your registared Email");
-            }else{
+
+        if ("select yuor identity".equals(identity)) {
+            alert("error", "true", "At first select your identity");
+        } else {
+            if ("".equals(email)) {
+                alert("error", "true", "Insert your registared Email");
+            } else {
                 try {
-                    sendmail(identity,email);
+                    sendmail(identity, email);
                 } catch (SQLException ex) {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } 
+            }
         }
     }//GEN-LAST:event_backtoVerifyMouseClicked
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        // TODO add your handling code here:       
-        
-        
-        LoginUsername.setBorder(BorderFactory.createCompoundBorder(LoginUsername.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));     
-        LoginPassword.setBorder(BorderFactory.createCompoundBorder(LoginPassword.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
-             
+        // TODO add your handling code here:
         hideComponent();
     }//GEN-LAST:event_formComponentShown
 
     private void errorCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_errorCloseActionPerformed
         // TODO add your handling code here:
-        
-                    alert("error","false","");
+
+        alert("error", "false", "");
     }//GEN-LAST:event_errorCloseActionPerformed
 
     private void successCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_successCloseActionPerformed
         // TODO add your handling code here:
-                    alert("success","false","");
+        alert("success", "false", "");
     }//GEN-LAST:event_successCloseActionPerformed
 
     private void forgotUserIdentityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotUserIdentityActionPerformed
@@ -785,15 +850,65 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_forgotPasswordActionPerformed
 
-    private void LoginPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_LoginPanelComponentShown
-        // TODO add your handling code here:
-    }//GEN-LAST:event_LoginPanelComponentShown
-
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */       
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);
@@ -806,7 +921,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel LoginPanel;
     private javax.swing.JPasswordField LoginPassword;
     private javax.swing.JTextField LoginUsername;
-    public javax.swing.JTabbedPane Login_Forgot;
+    private javax.swing.JTabbedPane Login_Forgot;
     private javax.swing.JPanel alertPanel;
     private javax.swing.JLabel backtoLogin;
     private javax.swing.JLabel backtoVerify;
@@ -841,6 +956,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JProgressBar loadingbar;
     private javax.swing.JButton loginBtn;
     private javax.swing.JLabel success;
     private javax.swing.JButton successClose;

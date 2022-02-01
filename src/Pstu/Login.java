@@ -89,6 +89,8 @@ public class Login extends javax.swing.JFrame {
     public void sendmail(String idnty,String toSend) throws SQLException{
             
             String query;
+            conn cc = new conn();
+            String requestId;
               
             if("student".equals(idnty)){
                 query = "SELECT * FROM student where(email='"+toSend+"') ";
@@ -96,107 +98,29 @@ public class Login extends javax.swing.JFrame {
                query = "SELECT * FROM users where(email='"+toSend+"') ";
             }
         
-            conn cc = new conn();
             ResultSet rs = cc.s.executeQuery(query);
             if(rs.next()){
+                if("student".equals(idnty)){ 
+                 requestId = rs.getString("roll");
+                }else{
+                 requestId = rs.getString("uid");
+                }
+                int randoms = new Random().nextInt(900000) + 100000;
                 
-            int randoms = new Random().nextInt(900000) + 100000;
-            
-            String to = toSend; // to address. It can be any like gmail, yahoo etc.
-            String from = "somethingisw@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
-            String password = "bismillahw@gmail.com180204308453"; // password for from gmail address that you have used in above line. 
-
-            Properties prop = new Properties();
-            prop.put("mail.smtp.host", "smtp.gmail.com");
-            prop.put("mail.smtp.port", "465");
-            prop.put("mail.smtp.auth", "true");
-            prop.put("mail.smtp.socketFactory.port", "465");
-            prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-
-            Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
-             protected PasswordAuthentication getPasswordAuthentication() {
-              return new PasswordAuthentication(from, password);
-             }
-            });
-            
-            
-            try {
-                Message message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(from));
-                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-                message.setSubject("PSTU Password reset verification code");
-
-                message.setContent("<div style=\" max-width:450px;margin:0px auto; background-color:white;box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;  \"><table style=\"font-family:'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif;border:solid lightgray 1px;background-color:transparent;max-width:450px;margin:0px auto\" cellpadding=\"0\" cellspacing=\"0\">\n" +
-"    <tbody>" +
-"        <tr>" +
-"            <td style=\"text-align:center\">" +
-"                <p style=\"color:#000;display:block;background-color:#91034a;margin:0px auto;font-size:1.5rem;text-align:center;padding:10px 0px;width:100%;\">Java, PSTU Mail System</p>\n" +
-
-"                <img src=\"https://i.postimg.cc/qqjdGYYD/pstulogo.png\" style=\"width:300px;margin-bottom:10px\">\n" +
-"            </td>\n" +
-"        </tr>\n" +
-"\n" +
-"        <tr>\n" +
-"\n" +
-"            <td style=\"padding:10px;text-align:justify\">\n" +
-"                <p><strong>Dear User,</strong><br><br>\n" +
-"\n" +
-"                    PSTU send this verification mail.So that your account alive with secure. If you think this proces is going to with your permission, please give us your verification code. Otherwise change your password quickly & inform PSTU. \n" +
-" \n" +
-"                </p>\n" +
-"\n" +
-"\n" +
-"                <p style=\"display:block;text-decoration:none!important;color:#fff;cursor:pointer;background-color:#91034a;margin:0px auto;margin-top:30px;font-size:1.5rem;text-align:center;padding:10px 0px;width:90%;\">"+toSend+"</p>" +
-"                <p style=\"color:#000;display:block;background-color:#299314;margin:0px auto;font-size:1.5rem;text-align:center;padding:5px 0px;width:90%;\">Verification key : "+randoms+"</p>\n" +
-"\n" +
-"                <p>\n" +
-"                    I am Shishir and interested in doing positive things about every aspect of life. I love projects with challenges. I like works to make an impact in the real world. I always try to work for my world with my community. I learn to extended . Also I am a specialized in Front-End and Back-End web Development.Besides within the web designing and development area every sector I want to deliver my best. I always try to maintain performance with achievements. Actually I am not a successful programmer but I want to be also successful. Because the program is my way & programming is my passion. If you think? I will help you with your project! yes, I am ready to assist you InsyaAllah.Send your query  \n" +
-"                    <p></strong><strong>shishir16@cse.pstu.ac.bd</strong></p>\n" +
-"                </p>\n" +
-"                <p>\n" +
-"                    If you are having any issue, kindly reach out to us by replying to this email. \n" +
-"                    <a href=\"https://pstu.ac.bd/contact-us/\" target=\"_blank\"\">Patuakhali Science & Technology University</a>\n" +
-"                </p>\n" +
-"\n" +
-"                <p>Thanking you<br>PSTU Atumation Team</p>\n" +
-"            </td>\n" +
-"\n" +
-"        </tr>\n" +
-"        <tr>\n" +
-"\n" +
-"            <td>\n" +
-"                <img src=\"https://i.postimg.cc/qvz0d0ph/152-405-copy-removebg-preview.png\" style=\"color:#000;display:block;margin:0px auto;margin-botom:-10px;width:250px; height:300px;\"" +
-
-"            </td>" +
-"        </tr>" +
-"        <tr>" +
-"            <td>" +
-"                   <p style=\"color:#000;display:block;background-color:#91034a;margin:2px auto;font-size:20px;text-align:center;padding:10px 0px;width:100%;\">&copy; All right reseve by PSTU</p>\n"+
-"\n"+
-"            </td>\n" +
-"\n" +
-"        </tr>\n" +
-"    </tbody>\n" +
-"</table></div>'", "text/html");
-              
-                try{
-                  Transport.send(message);
-                  mailSendSuccessStatus = true;
+                sendMail mail = new sendMail(toSend,randoms,"Verification for reset Passwoprd ");
+                if(mail.send()){
+                    UpdateToken object = new UpdateToken(idnty,"token",randoms,requestId);
+                    if(object.UpadetData()){
+                        alert("success","true","Please verify your mail");
+                        Login_Forgot.setSelectedIndex(1);
+                    }else{
+                        alert("error","true","Something going wrong with database,Try again!");
+                    }
                 }
-                catch(MessagingException ee){
-                  alert("error","true","Please check your network connection");
-                }
-            
-             if(mailSendSuccessStatus) {
-               updateTokenForverification(idnty,toSend,randoms);
-             }
-            
-            }catch (MessagingException e) {
-                e.printStackTrace();
+                cc.c.close();
+            }else{
+                 alert("error","true","This email is not registered yet");  
             }
-         }else{
-              alert("error","true","This email is not registered yet");  
-         }
         
         
             
@@ -220,7 +144,7 @@ public class Login extends javax.swing.JFrame {
               
             if(count>0){
                     Login_Forgot.setSelectedIndex(1);
-            alert("success","true","Please verify your mail");
+                   alert("success","true","Please verify your mail");
             }
 
         }catch(Exception ex){
@@ -257,7 +181,8 @@ public class Login extends javax.swing.JFrame {
             alert("error","true","Alert form catch section");
         }
     }
-
+        
+        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -868,31 +793,7 @@ public class Login extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
+        /* Set the Nimbus look and feel */       
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);
@@ -905,7 +806,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel LoginPanel;
     private javax.swing.JPasswordField LoginPassword;
     private javax.swing.JTextField LoginUsername;
-    private javax.swing.JTabbedPane Login_Forgot;
+    public javax.swing.JTabbedPane Login_Forgot;
     private javax.swing.JPanel alertPanel;
     private javax.swing.JLabel backtoLogin;
     private javax.swing.JLabel backtoVerify;

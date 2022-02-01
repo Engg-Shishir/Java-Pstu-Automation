@@ -20,16 +20,24 @@ import javax.mail.internet.MimeMessage;
  * @author Md Shishir Bhuiyan
  */
 public class sendMail {
-    private String to;
-    private String random;
-    private String subject;
-    private boolean back = false;
+    private final String touser;
+    private final int random;
+    private final String subject;
+    Boolean mailSendSuccessStatus = false;
+    
+        
+    sendMail(String toMail, int random,String sub){
+       this.touser = toMail;
+       this.random = random;
+       this.subject = sub;
+       
+    }
     
     
     public boolean send(){ 
        
             
-            String to = this.to; // to address. It can be any like gmail, yahoo etc.
+            String to = this.touser; // to address. It can be any like gmail, yahoo etc.
             String from = "somethingisw@gmail.com"; // from address. As this is using Gmail SMTP your from address should be gmail
             String password = "bismillahw@gmail.com180204308453"; // password for from gmail address that you have used in above line. 
 
@@ -41,6 +49,7 @@ public class sendMail {
             prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 
             Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
+             @Override
              protected PasswordAuthentication getPasswordAuthentication() {
               return new PasswordAuthentication(from, password);
              }
@@ -72,7 +81,7 @@ public class sendMail {
 "                </p>\n" +
 "\n" +
 "\n" +
-"                <p style=\"display:block;text-decoration:none!important;color:#fff;cursor:pointer;background-color:#91034a;margin:0px auto;margin-top:30px;font-size:1.5rem;text-align:center;padding:10px 0px;width:90%;\">"+this.to+"</p>" +
+"                <p style=\"display:block;text-decoration:none!important;color:#fff;cursor:pointer;background-color:#91034a;margin:0px auto;margin-top:30px;font-size:1.5rem;text-align:center;padding:10px 0px;width:90%;\">"+this.touser+"</p>" +
 "                <p style=\"color:#000;display:block;background-color:#299314;margin:0px auto;font-size:1.5rem;text-align:center;padding:5px 0px;width:90%;\">Verification key : "+this.random+"</p>\n" +
 "\n" +
 "                <p>\n" +
@@ -104,19 +113,24 @@ public class sendMail {
 "        </tr>\n" +
 "    </tbody>\n" +
 "</table></div>'", "text/html");
+                
+                try{
+                  Transport.send(message);
+                  mailSendSuccessStatus = true;
+                }
+                catch(MessagingException ee){
+                  mailSendSuccessStatus = false;
+                }
             } catch (MessagingException e) {
                 e.printStackTrace();
             }
-        
-        return false;
+        if(mailSendSuccessStatus){
+          return true;
+        }else{ 
+          return false;
+        }
     }
     
     
-    
-    sendMail(String toMail, String random,String sub){
-       this.to = to;
-       this.random = random;
-       this.subject = sub;
-       
-    }
+
 }

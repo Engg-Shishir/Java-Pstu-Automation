@@ -110,7 +110,7 @@ public class AdminDashboards extends javax.swing.JFrame {
               ProjectTab.setSelectedIndex(0);
             }else if("teacher".equals(identity)){
                teacherSideBarPanel.setVisible(true);
-               ProjectTab.setSelectedIndex(23); 
+               ProjectTab.setSelectedIndex(24); 
             }else{
             
             }
@@ -1003,6 +1003,8 @@ public class AdminDashboards extends javax.swing.JFrame {
         jLabel156 = new javax.swing.JLabel();
         teacherPassword = new javax.swing.JPasswordField();
         studentPassEye1 = new javax.swing.JButton();
+        teacherDashboard_25 = new javax.swing.JPanel();
+        jLabel157 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -3693,6 +3695,17 @@ public class AdminDashboards extends javax.swing.JFrame {
 
         ProjectTab.addTab("tab2", teacherProfileView_24);
 
+        teacherDashboard_25.setBackground(new java.awt.Color(0, 5, 42));
+        teacherDashboard_25.setPreferredSize(new java.awt.Dimension(1200, 855));
+        teacherDashboard_25.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel157.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        jLabel157.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel157.setText("Teacher   Dashboard");
+        teacherDashboard_25.add(jLabel157, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 250, 560, 87));
+
+        ProjectTab.addTab("tab1", teacherDashboard_25);
+
         contentPanel.add(ProjectTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 5, 1115, 890));
 
         getContentPane().add(contentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, -35, 1115, 890));
@@ -4123,13 +4136,13 @@ public class AdminDashboards extends javax.swing.JFrame {
 
     private void accountverifyForUpdateProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountverifyForUpdateProfileActionPerformed
         // TODO add your handling code here:
-         String verifyUserEmail = verifyUsername.getText();
-         String verifyUserVkey = vkey.getText();
          String identitys = (String)userVerifyIdentity.getSelectedItem();
          identitys = identitys.toLowerCase();
+         String verifyUserEmail = verifyUsername.getText();
+         String verifyUserVkey = vkey.getText();
+         
+         
          conn cc = new conn();
-         
-         
          
          if("student".equals(identitys)){
             if(!"".equals(verifyUserEmail)){
@@ -4178,31 +4191,46 @@ public class AdminDashboards extends javax.swing.JFrame {
             }
          }else{ 
             if(!"".equals(verifyUserEmail)){
-                if(verifyUserEmail.equals(adminEmail.getText())){
+                if(verifyUserEmail.equals(adminEmail.getText()) || verifyUserEmail.equals(teacherEmail.getText())){
                   if(!"".equals(verifyUserVkey)){
                         try {
                             String query = "SELECT * FROM users where uid='"+logeduserid+"' AND role='"+identitys+"' AND token='"+verifyUserVkey+"' ";
                             ResultSet rs = cc.s.executeQuery(query);
                             if(rs.next()){  
                                 ps= cc.c.prepareStatement("UPDATE users SET username=?, password=?, email=?, phone=?, token=? Where uid=?");
-                                ps.setString(1, adminUsername.getText());
-                                ps.setString(2, adminPassword.getText());
-                                ps.setString(3, adminEmail.getText());
-                                ps.setString(4, adminPhone.getText());
+                                if("admin".equals(identitys)){ 
+                                    ps.setString(1, adminUsername.getText());
+                                    ps.setString(2, adminPassword.getText());
+                                    ps.setString(3, adminEmail.getText());
+                                    ps.setString(4, adminPhone.getText());
+                                    ps.setString(5, "");
+                                    ps.setString(6,logeduserid);
 
-                                ps.setString(5, "");
-                                ps.setString(6,logeduserid);
-                                
-                                ps.execute();
-                                int count = ps.executeUpdate();
-                                
-                                
-                                if(count > 0){ 
-                                   alert("success","true","Your profile is upto date");
-                                   verifyUsername.setText("Your Email Address");
-                                   ProjectTab.setSelectedIndex(1);
-                                }else{ 
-                                   alert("error","true","Somethis is wrong with your data");
+                                    ps.execute();
+                                    int count = ps.executeUpdate();
+                                    if(count > 0){ 
+                                       alert("success","true","Your profile is upto date");
+                                       verifyUsername.setText("Your Email Address");
+                                       ProjectTab.setSelectedIndex(1);
+                                    }else{ 
+                                       alert("error","true","Somethis is wrong with your data");
+                                    }
+                                }else if("teacher".equals(identitys)){ 
+                                    ps.setString(1, teacherUsername.getText());
+                                    ps.setString(2, teacherPassword.getText());
+                                    ps.setString(3, teacherEmail.getText());
+                                    ps.setString(4, teacherPhone.getText());
+                                    ps.setString(5, "");
+                                    ps.setString(6,logeduserid);
+                                    ps.execute();
+                                    int count = ps.executeUpdate();
+                                    if(count > 0){ 
+                                       alert("success","true","Your profile is upto date");
+                                       verifyUsername.setText("Your Email Address");
+                                       ProjectTab.setSelectedIndex(23);
+                                    }else{ 
+                                       alert("error","true","Somethis is wrong with your data");
+                                    }
                                 }
                                 
                                 
@@ -4922,6 +4950,7 @@ public class AdminDashboards extends javax.swing.JFrame {
 
     private void teacherProfileViewBtn_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teacherProfileViewBtn_ActionPerformed
         // TODO add your handling code here:
+        ProjectTab.setSelectedIndex(23);
     }//GEN-LAST:event_teacherProfileViewBtn_ActionPerformed
 
     private void teacherDashboardBtn_MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_teacherDashboardBtn_MouseClicked
@@ -4930,6 +4959,7 @@ public class AdminDashboards extends javax.swing.JFrame {
 
     private void teacherDashboardBtn_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teacherDashboardBtn_ActionPerformed
         // TODO add your handling code here:
+        ProjectTab.setSelectedIndex(24);
     }//GEN-LAST:event_teacherDashboardBtn_ActionPerformed
 
     private void teacherFacultyBtn_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teacherFacultyBtn_ActionPerformed
@@ -4978,6 +5008,22 @@ public class AdminDashboards extends javax.swing.JFrame {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
+            conn cc = new conn();
+            random = new Random().nextInt(900000) + 100000;
+            String toSend = teacherEmail.getText(); // to address. It can be any like gmail, yahoo etc.
+            
+                sendMail mail = new sendMail(toSend,random,"Verification for Update Profile ");
+                if(mail.send()){
+                    UpdateToken object = new UpdateToken(identity,"token",random,logeduserid);
+                    if(object.UpadetData()){
+                        alert("success","true","Please verify your mail");
+                        ProjectTab.setSelectedIndex(13);
+                    }else{
+                        alert("error","true","Something going wrong with database,Try again!");
+                    }
+                }else{
+                    alert("error","true","Check your connection or try after sometime");
+                }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void studentPassEye1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentPassEye1ActionPerformed
@@ -5208,6 +5254,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel154;
     private javax.swing.JLabel jLabel155;
     private javax.swing.JLabel jLabel156;
+    private javax.swing.JLabel jLabel157;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -5385,6 +5432,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JTextField ta_reg;
     private javax.swing.JLabel teacherBlood;
     private javax.swing.JButton teacherDashboardBtn_;
+    private javax.swing.JPanel teacherDashboard_25;
     private javax.swing.JLabel teacherDob;
     private javax.swing.JTextField teacherEmail;
     private javax.swing.JButton teacherFacultyBtn_;

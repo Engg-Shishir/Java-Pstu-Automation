@@ -17,7 +17,7 @@ import java.sql.SQLException;
 public class UpdateToken {
     private final String identity;
     private final String updateColumn;
-    private final int UpdateData;
+    private final String UpdateData;
     private final String userName;
     Boolean updateStatus = false;
     
@@ -27,10 +27,10 @@ public class UpdateToken {
 	PreparedStatement ps=null;
     
     
-    UpdateToken(String identity,String updateColumn,int UpdateData,String userName){
+    UpdateToken(String identity,String updateColumn,String data,String userName){
       this.identity = identity;
       this.updateColumn = updateColumn;
-      this.UpdateData = UpdateData;
+      this.UpdateData = data;
       this.userName = userName;
     }
     
@@ -42,34 +42,31 @@ public class UpdateToken {
 
             
             if("token".equals(updateColumn)){
-                if("student".equals(identity)){ 
-                  query = "UPDATE student SET token=? Where roll=?";
-                }else{ 
-                    query = "UPDATE users SET token=? Where uid=?";
-                }
+                query = "UPDATE users SET token=? Where uid=?";
             }else{
-                if("student".equals(identity)){ 
-                  query = "UPDATE student SET status=? Where roll=?";
-                }else{ 
-                    query = "UPDATE users SET status=? Where uid=?";
-                }
+                query = "UPDATE users SET status=? Where uid=?";
             }
             
             
 
             
             ps= cc.c.prepareStatement(query);
-            ps.setString(1, String.valueOf(UpdateData));
+            ps.setString(1, UpdateData);
             ps.setString(2, userName);
             int count = ps.executeUpdate();
             
             if(count > 0){ 
-                return true;
+               updateStatus = true;
             }
         }catch(SQLException ex){
             return false;
         }
-        return false;
+        
+        if(updateStatus){
+            return true;
+        }else{
+            return false;
+        }
     }
     
 }

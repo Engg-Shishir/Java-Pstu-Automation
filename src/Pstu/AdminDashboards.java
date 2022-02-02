@@ -51,7 +51,6 @@ public class AdminDashboards extends javax.swing.JFrame {
     /**
      * Creates new form AdminDashboards
      */
-    public String getadminusername = "";
     public String identity = "";
     public String logeduserid = "";
     public String dateFromDatePicker = "";
@@ -60,10 +59,10 @@ public class AdminDashboards extends javax.swing.JFrame {
     public String selectedFaculty = "";
     boolean dataFoundOrNot = false;
     boolean click = false;
-    ResultSet rs;
     String imagePath;
+    int upDateOrnot;
     
-    
+        ResultSet rs;
     	Connection con = null;
 	FileInputStream fs=null;
 	PreparedStatement ps=null;
@@ -75,7 +74,7 @@ public class AdminDashboards extends javax.swing.JFrame {
        
        
     public AdminDashboards(String username, String identitys) {
-        getadminusername = username;
+        logeduserid = username;
         identity = identitys;
         initComponents();
     }
@@ -200,15 +199,17 @@ public class AdminDashboards extends javax.swing.JFrame {
         try{
             conn cc = new conn();
                 int random = new Random().nextInt(900000) + 100000;
-                String query = "INSERT INTO `student`(`name`,`password`, `fname`, `mname`, `addr`, `nid`,`dob`, `roll`, `reg`, `session`, `blood`, `fac`, `hall`) "
-                        + "VALUES ('"+data[0]+"','"+random+"','"+data[1]+"','"+data[2]+"','"+data[3]+"','"+data[4]+"','"+data[5]+"','"+data[6]+"','"+data[7]+"','"+data[8]+"','"+data[9]+"','"+data[10]+"','"+data[11]+"')";
-                int i = cc.s.executeUpdate(query);
-                if(i==1){
+  
+                Statement stmt = cc.c.createStatement();
+                 stmt.executeUpdate("insert into users (username,uid,password,status,role)values('','"+data[6]+"','"+String.valueOf(random)+"','active','student') ");
+                 stmt.executeUpdate("insert into student (`name`, `fname`, `mname`, `addr`, `nid`,`dob`, `uid`, `reg`, `session`, `blood`, `fac`, `hall`)"
+                         + "values('"+data[0]+"','"+data[1]+"','"+data[2]+"','"+data[3]+"','"+data[4]+"','"+data[5]+"','"+data[6]+"','"+data[7]+"','"+data[8]+"','"+data[9]+"','"+data[10]+"','"+data[11]+"')");
+                 
+                     
                    alert("error","false","");
                    alert("success","true","Student Successfully Added");
-                   // Reset column Arraylist,sot hat we again use this perfectly
-                   column.clear();
-                }           
+                   column.clear(); 
+          
         }catch(SQLException ee){
             System.out.println("The error is:"+ee);
         }
@@ -235,32 +236,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     }
     
     
-    public class func{
-        public ResultSet find(String usernames, String identy) throws SQLException{
-            
-            conn cc = new conn();
-            String query = "";
-            
-            
-            if("student".equals(identy)){ 
-                query = "SELECT * FROM student where(email='"+usernames+"')"
-                + "or(roll='"+usernames+"')"
-                + "or(username='"+usernames+"')"
-                + "or(phone='"+usernames+"')";
-            }else{ 
-                query = "SELECT * FROM users where(email='"+usernames+"' and role='"+identy+"') "
-                + "or(uid='"+usernames+"' and role='"+identy+"')"
-                + "or(username='"+usernames+"' and role='"+identy+"')";
-            }
-           
-            
-            PreparedStatement ps=cc.c.prepareStatement(query);
-            rs  = ps.executeQuery(query); 
-            
-            return rs;
-
-        }
-    }   
+  
     public ImageIcon ResizeImage(String imafePaths){
         ImageIcon MyImage = new ImageIcon(imafePaths);
         Image img = MyImage.getImage();
@@ -274,12 +250,13 @@ public class AdminDashboards extends javax.swing.JFrame {
                      conn cc = new conn();
                     
                     
-                    
                     File f=new File(imagePath);
                     fs=new FileInputStream(f);
                     
                     if("student".equals(identy)){
-                      query = "UPDATE student SET photo=? Where roll=?";
+                      query = "UPDATE student SET photo=? Where uid=?";
+                    }else if("admin".equals(identy)){
+                      query = "UPDATE administrator SET photo=? Where uid=?";
                     }else{ 
                       query = "UPDATE users SET photo=? Where uid=?";
                     }
@@ -346,7 +323,7 @@ public class AdminDashboards extends javax.swing.JFrame {
             
             if("student".equals(user)){
                 if("Active".equals(mode)){ 
-                    int status = 1;
+                    String status = "active";
                     UpdateToken object = new UpdateToken(user,"status",status,sid.getText());
                     if(object.UpadetData()){
                         sstatusBtn.setText("Active");
@@ -357,7 +334,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                         alert("error","true","Something going wrong with database,Try again!");
                     }
                 }else{ 
-                    int status = 0;
+                    String status = "inactive";
                     UpdateToken object = new UpdateToken(user,"status",status,sid.getText());
                     if(object.UpadetData()){
                         sstatusBtn.setText("Disable");
@@ -509,65 +486,38 @@ public class AdminDashboards extends javax.swing.JFrame {
         }
         return false;
     } 
-    
+        public class func{
+        public ResultSet find(String usernames, String identy) throws SQLException{
+            
+            conn cc = new conn();
+            String query = "";
+            
+//            query = "SELECT * FROM student WHERE uid IN (SELECT * FROM users WHERE uid = '"+usernames+"')";
+            if("student".equals(identy)){ 
+                query = "SELECT * FROM student where(uid='"+usernames+"')";
+            }else if("admin".equals(identy)){ 
+//                query = "SELECT * FROM administrator where(uid='"+usernames+"')";
+                   query = "SELECT administrator.*, users.* FROM administrator, users WHERE administrator.uid = users.uid AND users.uid = '"+usernames+"';";
+            }
+           
+            
+            PreparedStatement ps=cc.c.prepareStatement(query);
+            rs  = ps.executeQuery(query); 
+            
+            return rs;
+
+        }
+    } 
     public void profileView(){
-        
         AdminDashboards.func object = new AdminDashboards.func();
         try { 
             //  recive func meathoad return query result                   
-            rs = object.find(getadminusername,identity);
-                System.out.println("Paici rs");
-                         
-             if(rs.next()){
-                if("student".equals(identity)){
-                    logeduserid = rs.getString("roll");
-                    byte[] img = rs.getBytes("photo");
-                    studentName.setText(rs.getString("name"));
-                    studentNid.setText(rs.getString("nid"));
-                    studentBlood.setText(rs.getString("blood"));
-                    studentDob.setText(rs.getString("dob"));
-                    studentUsername.setText(rs.getString("username"));
-                    studentPhone.setText(rs.getString("phone"));
-                    studentPassword.setText(rs.getString("password"));
-                    studentPassword.setEchoChar('*');
-                    studentEmail.setText(rs.getString("email"));
-                    
-                    
-                    if(img != null){ 
-                        ImageIcon MyImage1 = new ImageIcon(img);
-                        Image img1 = MyImage1.getImage();
-                        Image newImage1 = img1.getScaledInstance(adminProfilepic.getWidth(), adminProfilepic.getHeight(), Image.SCALE_SMOOTH);
-                        ImageIcon image1 = new ImageIcon(newImage1);
-                        studentSidebarProfilepic.setIcon(image1);
-                        studentUpdateProfilePic.setIcon(image1);
-                    } 
-                }else if("teacher".equals(identity)){
-                        logeduserid = rs.getString("uid");
-                        byte[] img = rs.getBytes("photo");
-
-                        if(img != null){ 
-                            ImageIcon MyImage1 = new ImageIcon(img);
-                            Image img1 = MyImage1.getImage();
-                            Image newImage1 = img1.getScaledInstance(teacherSidebarProfilepic.getWidth(), teacherSidebarProfilepic.getHeight(), Image.SCALE_SMOOTH);
-                            ImageIcon image1 = new ImageIcon(newImage1);
-                            teacherSidebarProfilepic.setIcon(image1);
-                            teacherUpdateProfilepic.setIcon(image1);
-                        }
-                        
-                        
-                        
-                        teacherName.setText(rs.getString("name"));
-                        teacherNid.setText(rs.getString("nid"));
-                        teacherBlood.setText(rs.getString("blood"));
-                        teacherDob.setText(rs.getString("dob"));
-                        teacherUsername.setText(rs.getString("username"));
-                        teacherPhone.setText(rs.getString("phone"));
-                        teacherPassword.setText(rs.getString("password"));
-                        teacherPassword.setEchoChar('*');
-                        teacherEmail.setText(rs.getString(7));
-                }
-                else{
-                    logeduserid = rs.getString("uid");
+            rs = object.find(logeduserid,identity);
+            
+            if(rs.next()){
+               if("student".equals(identity)){ 
+                  
+               }else if("admin".equals(identity)){ 
                     byte[] img = rs.getBytes("photo");
                     
                     if(img != null){ 
@@ -584,14 +534,89 @@ public class AdminDashboards extends javax.swing.JFrame {
                         adminNid.setText(rs.getString("nid"));
                         adminBlood.setText(rs.getString("blood"));
                         adminDob.setText(rs.getString("dob"));
+                        adminId.setText(rs.getString("uid"));
                         adminUsername.setText(rs.getString("username"));
                         adminPhone.setText(rs.getString("phone"));
                         adminPassword.setText(rs.getString("password"));
                         adminPassword.setEchoChar('*');
-                        adminEmail.setText(rs.getString(7));
-                
-                }
-             }
+                        adminEmail.setText(rs.getString("email"));
+               }
+            }
+                         
+//             if(rs.next()){
+//                if("student".equals(identity)){
+//                    logeduserid = rs.getString("roll");
+//                    byte[] img = rs.getBytes("photo");
+//                    studentName.setText(rs.getString("name"));
+//                    studentNid.setText(rs.getString("nid"));
+//                    studentBlood.setText(rs.getString("blood"));
+//                    studentDob.setText(rs.getString("dob"));
+//                    studentUsername.setText(rs.getString("username"));
+//                    studentPhone.setText(rs.getString("phone"));
+//                    studentPassword.setText(rs.getString("password"));
+//                    studentPassword.setEchoChar('*');
+//                    studentEmail.setText(rs.getString("email"));
+//                    
+//                    
+//                    if(img != null){ 
+//                        ImageIcon MyImage1 = new ImageIcon(img);
+//                        Image img1 = MyImage1.getImage();
+//                        Image newImage1 = img1.getScaledInstance(adminProfilepic.getWidth(), adminProfilepic.getHeight(), Image.SCALE_SMOOTH);
+//                        ImageIcon image1 = new ImageIcon(newImage1);
+//                        studentSidebarProfilepic.setIcon(image1);
+//                        studentUpdateProfilePic.setIcon(image1);
+//                    } 
+//                }else if("teacher".equals(identity)){
+//                        logeduserid = rs.getString("uid");
+//                        byte[] img = rs.getBytes("photo");
+//
+//                        if(img != null){ 
+//                            ImageIcon MyImage1 = new ImageIcon(img);
+//                            Image img1 = MyImage1.getImage();
+//                            Image newImage1 = img1.getScaledInstance(teacherSidebarProfilepic.getWidth(), teacherSidebarProfilepic.getHeight(), Image.SCALE_SMOOTH);
+//                            ImageIcon image1 = new ImageIcon(newImage1);
+//                            teacherSidebarProfilepic.setIcon(image1);
+//                            teacherUpdateProfilepic.setIcon(image1);
+//                        }
+//                        
+//                        
+//                        
+//                        teacherName.setText(rs.getString("name"));
+//                        teacherNid.setText(rs.getString("nid"));
+//                        teacherBlood.setText(rs.getString("blood"));
+//                        teacherDob.setText(rs.getString("dob"));
+//                        teacherUsername.setText(rs.getString("username"));
+//                        teacherPhone.setText(rs.getString("phone"));
+//                        teacherPassword.setText(rs.getString("password"));
+//                        teacherPassword.setEchoChar('*');
+//                        teacherEmail.setText(rs.getString(7));
+//                }
+//                else{
+//                    logeduserid = rs.getString("uid");
+//                    byte[] img = rs.getBytes("photo");
+//                    
+//                    if(img != null){ 
+//                        ImageIcon MyImage1 = new ImageIcon(img);
+//                        Image img1 = MyImage1.getImage();
+//                        Image newImage1 = img1.getScaledInstance(adminProfilepic.getWidth(), adminProfilepic.getHeight(), Image.SCALE_SMOOTH);
+//                        ImageIcon image1 = new ImageIcon(newImage1);
+//                        adminProfilepic.setIcon(image1);
+//                        adminUpdateProfilePic.setIcon(image1);
+//                    }
+//                    
+//                    
+//                        adminName.setText(rs.getString("name"));
+//                        adminNid.setText(rs.getString("nid"));
+//                        adminBlood.setText(rs.getString("blood"));
+//                        adminDob.setText(rs.getString("dob"));
+//                        adminUsername.setText(rs.getString("username"));
+//                        adminPhone.setText(rs.getString("phone"));
+//                        adminPassword.setText(rs.getString("password"));
+//                        adminPassword.setEchoChar('*');
+//                        adminEmail.setText(rs.getString(7));
+//                
+//                }
+//             }
         } catch (SQLException ex) {
         }
     
@@ -626,6 +651,22 @@ public class AdminDashboards extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        AdminSideBarPanel = new javax.swing.JPanel();
+        adminProfilepic = new javax.swing.JLabel();
+        logout = new javax.swing.JButton();
+        adminDashboardBtn_01 = new javax.swing.JButton();
+        adminProfileBtn_02 = new javax.swing.JButton();
+        adminStudentBtn_03 = new javax.swing.JButton();
+        adminTeacherBtn_04 = new javax.swing.JButton();
+        adminFacultyBtn_05 = new javax.swing.JButton();
+        adminHallBtn_06 = new javax.swing.JButton();
+        adminLibraryBtn_07 = new javax.swing.JButton();
+        adminTransectionBtn_08 = new javax.swing.JButton();
+        adminHealthCareBtn_09 = new javax.swing.JButton();
+        adminAdministrationBtn_10 = new javax.swing.JButton();
+        adminOrganaizationBtn_11 = new javax.swing.JButton();
+        adminTranspoartBtn_12 = new javax.swing.JButton();
+        bg = new javax.swing.JLabel();
         teacherSideBarPanel = new javax.swing.JPanel();
         teacherSidebarProfilepic = new javax.swing.JLabel();
         teacherSidebarLogoutBtn = new javax.swing.JButton();
@@ -643,22 +684,6 @@ public class AdminDashboards extends javax.swing.JFrame {
         studentExamBtn_21 = new javax.swing.JButton();
         studentResultBtn_22 = new javax.swing.JButton();
         bg1 = new javax.swing.JLabel();
-        AdminSideBarPanel = new javax.swing.JPanel();
-        adminProfilepic = new javax.swing.JLabel();
-        logout = new javax.swing.JButton();
-        adminDashboardBtn_01 = new javax.swing.JButton();
-        adminProfileBtn_02 = new javax.swing.JButton();
-        adminStudentBtn_03 = new javax.swing.JButton();
-        adminTeacherBtn_04 = new javax.swing.JButton();
-        adminFacultyBtn_05 = new javax.swing.JButton();
-        adminHallBtn_06 = new javax.swing.JButton();
-        adminLibraryBtn_07 = new javax.swing.JButton();
-        adminTransectionBtn_08 = new javax.swing.JButton();
-        adminHealthCareBtn_09 = new javax.swing.JButton();
-        adminAdministrationBtn_10 = new javax.swing.JButton();
-        adminOrganaizationBtn_11 = new javax.swing.JButton();
-        adminTranspoartBtn_12 = new javax.swing.JButton();
-        bg = new javax.swing.JLabel();
         contentPanel = new javax.swing.JPanel();
         AlertPanel = new javax.swing.JPanel();
         errorClose = new javax.swing.JButton();
@@ -700,6 +725,8 @@ public class AdminDashboards extends javax.swing.JFrame {
         jLabel61 = new javax.swing.JLabel();
         adminPassword = new javax.swing.JPasswordField();
         adminPassEye = new javax.swing.JButton();
+        adminId = new javax.swing.JLabel();
+        jLabel158 = new javax.swing.JLabel();
         adminStudent_03 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         addStudentBtn_13 = new javax.swing.JButton();
@@ -1014,190 +1041,6 @@ public class AdminDashboards extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        teacherSideBarPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        teacherSideBarPanel.add(teacherSidebarProfilepic, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 200, 180));
-
-        teacherSidebarLogoutBtn.setBackground(new java.awt.Color(14, 0, 82));
-        teacherSidebarLogoutBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        teacherSidebarLogoutBtn.setForeground(new java.awt.Color(255, 255, 255));
-        teacherSidebarLogoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/logout.png"))); // NOI18N
-        teacherSidebarLogoutBtn.setText("Logout");
-        teacherSidebarLogoutBtn.setBorder(null);
-        teacherSidebarLogoutBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        teacherSidebarLogoutBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                teacherSidebarLogoutBtnActionPerformed(evt);
-            }
-        });
-        teacherSideBarPanel.add(teacherSidebarLogoutBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 120, 40));
-
-        teacherProfileViewBtn_.setBackground(new java.awt.Color(14, 0, 82));
-        teacherProfileViewBtn_.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        teacherProfileViewBtn_.setForeground(new java.awt.Color(255, 255, 255));
-        teacherProfileViewBtn_.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/bee.png"))); // NOI18N
-        teacherProfileViewBtn_.setText("View");
-        teacherProfileViewBtn_.setBorder(null);
-        teacherProfileViewBtn_.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        teacherProfileViewBtn_.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                teacherProfileViewBtn_ActionPerformed(evt);
-            }
-        });
-        teacherSideBarPanel.add(teacherProfileViewBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, 120, 40));
-
-        teacherDashboardBtn_.setBackground(new java.awt.Color(14, 0, 82));
-        teacherDashboardBtn_.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        teacherDashboardBtn_.setForeground(new java.awt.Color(255, 255, 255));
-        teacherDashboardBtn_.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/home.png"))); // NOI18N
-        teacherDashboardBtn_.setText("  Dashboard");
-        teacherDashboardBtn_.setBorder(null);
-        teacherDashboardBtn_.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        teacherDashboardBtn_.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                teacherDashboardBtn_MouseClicked(evt);
-            }
-        });
-        teacherDashboardBtn_.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                teacherDashboardBtn_ActionPerformed(evt);
-            }
-        });
-        teacherSideBarPanel.add(teacherDashboardBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 300, 40));
-
-        teacherFacultyBtn_.setBackground(new java.awt.Color(14, 0, 82));
-        teacherFacultyBtn_.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        teacherFacultyBtn_.setForeground(new java.awt.Color(255, 255, 255));
-        teacherFacultyBtn_.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/faculty.png"))); // NOI18N
-        teacherFacultyBtn_.setText("   Faculty");
-        teacherFacultyBtn_.setBorder(null);
-        teacherFacultyBtn_.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        teacherFacultyBtn_.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                teacherFacultyBtn_ActionPerformed(evt);
-            }
-        });
-        teacherSideBarPanel.add(teacherFacultyBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 300, 40));
-
-        bg2.setBackground(new java.awt.Color(0, 5, 42));
-        bg2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        bg2.setOpaque(true);
-        teacherSideBarPanel.add(bg2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 855));
-
-        getContentPane().add(teacherSideBarPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 860));
-
-        StudentSideBarPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        StudentSideBarPanel.add(studentSidebarProfilepic, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 200, 180));
-
-        studentSidebarLogoutBtn.setBackground(new java.awt.Color(14, 0, 82));
-        studentSidebarLogoutBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        studentSidebarLogoutBtn.setForeground(new java.awt.Color(255, 255, 255));
-        studentSidebarLogoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/logout.png"))); // NOI18N
-        studentSidebarLogoutBtn.setText("Logout");
-        studentSidebarLogoutBtn.setBorder(null);
-        studentSidebarLogoutBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        studentSidebarLogoutBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentSidebarLogoutBtnActionPerformed(evt);
-            }
-        });
-        StudentSideBarPanel.add(studentSidebarLogoutBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 120, 40));
-
-        studentProfileViewBtn_17.setBackground(new java.awt.Color(14, 0, 82));
-        studentProfileViewBtn_17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        studentProfileViewBtn_17.setForeground(new java.awt.Color(255, 255, 255));
-        studentProfileViewBtn_17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/bee.png"))); // NOI18N
-        studentProfileViewBtn_17.setText("View");
-        studentProfileViewBtn_17.setBorder(null);
-        studentProfileViewBtn_17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        studentProfileViewBtn_17.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentProfileViewBtn_17ActionPerformed(evt);
-            }
-        });
-        StudentSideBarPanel.add(studentProfileViewBtn_17, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, 120, 40));
-
-        studentDashboardBtn_18.setBackground(new java.awt.Color(14, 0, 82));
-        studentDashboardBtn_18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        studentDashboardBtn_18.setForeground(new java.awt.Color(255, 255, 255));
-        studentDashboardBtn_18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/home.png"))); // NOI18N
-        studentDashboardBtn_18.setText("Dashboard");
-        studentDashboardBtn_18.setBorder(null);
-        studentDashboardBtn_18.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        studentDashboardBtn_18.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                studentDashboardBtn_18MouseClicked(evt);
-            }
-        });
-        studentDashboardBtn_18.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentDashboardBtn_18ActionPerformed(evt);
-            }
-        });
-        StudentSideBarPanel.add(studentDashboardBtn_18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 300, 40));
-
-        studentPaymentBtn_19.setBackground(new java.awt.Color(14, 0, 82));
-        studentPaymentBtn_19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        studentPaymentBtn_19.setForeground(new java.awt.Color(255, 255, 255));
-        studentPaymentBtn_19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/money.png"))); // NOI18N
-        studentPaymentBtn_19.setText("Payment");
-        studentPaymentBtn_19.setBorder(null);
-        studentPaymentBtn_19.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        studentPaymentBtn_19.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentPaymentBtn_19ActionPerformed(evt);
-            }
-        });
-        StudentSideBarPanel.add(studentPaymentBtn_19, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 140, 40));
-
-        studentFacultyBtn_20.setBackground(new java.awt.Color(14, 0, 82));
-        studentFacultyBtn_20.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        studentFacultyBtn_20.setForeground(new java.awt.Color(255, 255, 255));
-        studentFacultyBtn_20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/faculty.png"))); // NOI18N
-        studentFacultyBtn_20.setText("Faculty");
-        studentFacultyBtn_20.setBorder(null);
-        studentFacultyBtn_20.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        studentFacultyBtn_20.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentFacultyBtn_20ActionPerformed(evt);
-            }
-        });
-        StudentSideBarPanel.add(studentFacultyBtn_20, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 360, 140, 40));
-
-        studentExamBtn_21.setBackground(new java.awt.Color(14, 0, 82));
-        studentExamBtn_21.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        studentExamBtn_21.setForeground(new java.awt.Color(255, 255, 255));
-        studentExamBtn_21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/exam.png"))); // NOI18N
-        studentExamBtn_21.setText("Exam");
-        studentExamBtn_21.setBorder(null);
-        studentExamBtn_21.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        studentExamBtn_21.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentExamBtn_21ActionPerformed(evt);
-            }
-        });
-        StudentSideBarPanel.add(studentExamBtn_21, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 140, 40));
-
-        studentResultBtn_22.setBackground(new java.awt.Color(14, 0, 82));
-        studentResultBtn_22.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        studentResultBtn_22.setForeground(new java.awt.Color(255, 255, 255));
-        studentResultBtn_22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/result.png"))); // NOI18N
-        studentResultBtn_22.setText("Result");
-        studentResultBtn_22.setBorder(null);
-        studentResultBtn_22.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        studentResultBtn_22.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentResultBtn_22ActionPerformed(evt);
-            }
-        });
-        StudentSideBarPanel.add(studentResultBtn_22, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 410, 140, 40));
-
-        bg1.setBackground(new java.awt.Color(0, 5, 42));
-        bg1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        bg1.setOpaque(true);
-        StudentSideBarPanel.add(bg1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 855));
-
-        getContentPane().add(StudentSideBarPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 860));
-
         AdminSideBarPanel.setPreferredSize(new java.awt.Dimension(350, 855));
         AdminSideBarPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         AdminSideBarPanel.add(adminProfilepic, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 200, 180));
@@ -1390,6 +1233,190 @@ public class AdminDashboards extends javax.swing.JFrame {
 
         getContentPane().add(AdminSideBarPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 860));
 
+        teacherSideBarPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        teacherSideBarPanel.add(teacherSidebarProfilepic, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 200, 180));
+
+        teacherSidebarLogoutBtn.setBackground(new java.awt.Color(14, 0, 82));
+        teacherSidebarLogoutBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        teacherSidebarLogoutBtn.setForeground(new java.awt.Color(255, 255, 255));
+        teacherSidebarLogoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/logout.png"))); // NOI18N
+        teacherSidebarLogoutBtn.setText("Logout");
+        teacherSidebarLogoutBtn.setBorder(null);
+        teacherSidebarLogoutBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        teacherSidebarLogoutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                teacherSidebarLogoutBtnActionPerformed(evt);
+            }
+        });
+        teacherSideBarPanel.add(teacherSidebarLogoutBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 120, 40));
+
+        teacherProfileViewBtn_.setBackground(new java.awt.Color(14, 0, 82));
+        teacherProfileViewBtn_.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        teacherProfileViewBtn_.setForeground(new java.awt.Color(255, 255, 255));
+        teacherProfileViewBtn_.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/bee.png"))); // NOI18N
+        teacherProfileViewBtn_.setText("View");
+        teacherProfileViewBtn_.setBorder(null);
+        teacherProfileViewBtn_.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        teacherProfileViewBtn_.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                teacherProfileViewBtn_ActionPerformed(evt);
+            }
+        });
+        teacherSideBarPanel.add(teacherProfileViewBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, 120, 40));
+
+        teacherDashboardBtn_.setBackground(new java.awt.Color(14, 0, 82));
+        teacherDashboardBtn_.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        teacherDashboardBtn_.setForeground(new java.awt.Color(255, 255, 255));
+        teacherDashboardBtn_.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/home.png"))); // NOI18N
+        teacherDashboardBtn_.setText("  Dashboard");
+        teacherDashboardBtn_.setBorder(null);
+        teacherDashboardBtn_.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        teacherDashboardBtn_.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                teacherDashboardBtn_MouseClicked(evt);
+            }
+        });
+        teacherDashboardBtn_.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                teacherDashboardBtn_ActionPerformed(evt);
+            }
+        });
+        teacherSideBarPanel.add(teacherDashboardBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 300, 40));
+
+        teacherFacultyBtn_.setBackground(new java.awt.Color(14, 0, 82));
+        teacherFacultyBtn_.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        teacherFacultyBtn_.setForeground(new java.awt.Color(255, 255, 255));
+        teacherFacultyBtn_.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/faculty.png"))); // NOI18N
+        teacherFacultyBtn_.setText("   Faculty");
+        teacherFacultyBtn_.setBorder(null);
+        teacherFacultyBtn_.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        teacherFacultyBtn_.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                teacherFacultyBtn_ActionPerformed(evt);
+            }
+        });
+        teacherSideBarPanel.add(teacherFacultyBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 300, 40));
+
+        bg2.setBackground(new java.awt.Color(0, 5, 42));
+        bg2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        bg2.setOpaque(true);
+        teacherSideBarPanel.add(bg2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 855));
+
+        getContentPane().add(teacherSideBarPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 860));
+
+        StudentSideBarPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        StudentSideBarPanel.add(studentSidebarProfilepic, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 200, 180));
+
+        studentSidebarLogoutBtn.setBackground(new java.awt.Color(14, 0, 82));
+        studentSidebarLogoutBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        studentSidebarLogoutBtn.setForeground(new java.awt.Color(255, 255, 255));
+        studentSidebarLogoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/logout.png"))); // NOI18N
+        studentSidebarLogoutBtn.setText("Logout");
+        studentSidebarLogoutBtn.setBorder(null);
+        studentSidebarLogoutBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        studentSidebarLogoutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentSidebarLogoutBtnActionPerformed(evt);
+            }
+        });
+        StudentSideBarPanel.add(studentSidebarLogoutBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 120, 40));
+
+        studentProfileViewBtn_17.setBackground(new java.awt.Color(14, 0, 82));
+        studentProfileViewBtn_17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        studentProfileViewBtn_17.setForeground(new java.awt.Color(255, 255, 255));
+        studentProfileViewBtn_17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/bee.png"))); // NOI18N
+        studentProfileViewBtn_17.setText("View");
+        studentProfileViewBtn_17.setBorder(null);
+        studentProfileViewBtn_17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        studentProfileViewBtn_17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentProfileViewBtn_17ActionPerformed(evt);
+            }
+        });
+        StudentSideBarPanel.add(studentProfileViewBtn_17, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, 120, 40));
+
+        studentDashboardBtn_18.setBackground(new java.awt.Color(14, 0, 82));
+        studentDashboardBtn_18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        studentDashboardBtn_18.setForeground(new java.awt.Color(255, 255, 255));
+        studentDashboardBtn_18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/home.png"))); // NOI18N
+        studentDashboardBtn_18.setText("Dashboard");
+        studentDashboardBtn_18.setBorder(null);
+        studentDashboardBtn_18.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        studentDashboardBtn_18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                studentDashboardBtn_18MouseClicked(evt);
+            }
+        });
+        studentDashboardBtn_18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentDashboardBtn_18ActionPerformed(evt);
+            }
+        });
+        StudentSideBarPanel.add(studentDashboardBtn_18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 300, 40));
+
+        studentPaymentBtn_19.setBackground(new java.awt.Color(14, 0, 82));
+        studentPaymentBtn_19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        studentPaymentBtn_19.setForeground(new java.awt.Color(255, 255, 255));
+        studentPaymentBtn_19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/money.png"))); // NOI18N
+        studentPaymentBtn_19.setText("Payment");
+        studentPaymentBtn_19.setBorder(null);
+        studentPaymentBtn_19.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        studentPaymentBtn_19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentPaymentBtn_19ActionPerformed(evt);
+            }
+        });
+        StudentSideBarPanel.add(studentPaymentBtn_19, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 140, 40));
+
+        studentFacultyBtn_20.setBackground(new java.awt.Color(14, 0, 82));
+        studentFacultyBtn_20.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        studentFacultyBtn_20.setForeground(new java.awt.Color(255, 255, 255));
+        studentFacultyBtn_20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/faculty.png"))); // NOI18N
+        studentFacultyBtn_20.setText("Faculty");
+        studentFacultyBtn_20.setBorder(null);
+        studentFacultyBtn_20.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        studentFacultyBtn_20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentFacultyBtn_20ActionPerformed(evt);
+            }
+        });
+        StudentSideBarPanel.add(studentFacultyBtn_20, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 360, 140, 40));
+
+        studentExamBtn_21.setBackground(new java.awt.Color(14, 0, 82));
+        studentExamBtn_21.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        studentExamBtn_21.setForeground(new java.awt.Color(255, 255, 255));
+        studentExamBtn_21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/exam.png"))); // NOI18N
+        studentExamBtn_21.setText("Exam");
+        studentExamBtn_21.setBorder(null);
+        studentExamBtn_21.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        studentExamBtn_21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentExamBtn_21ActionPerformed(evt);
+            }
+        });
+        StudentSideBarPanel.add(studentExamBtn_21, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 140, 40));
+
+        studentResultBtn_22.setBackground(new java.awt.Color(14, 0, 82));
+        studentResultBtn_22.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        studentResultBtn_22.setForeground(new java.awt.Color(255, 255, 255));
+        studentResultBtn_22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/result.png"))); // NOI18N
+        studentResultBtn_22.setText("Result");
+        studentResultBtn_22.setBorder(null);
+        studentResultBtn_22.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        studentResultBtn_22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentResultBtn_22ActionPerformed(evt);
+            }
+        });
+        StudentSideBarPanel.add(studentResultBtn_22, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 410, 140, 40));
+
+        bg1.setBackground(new java.awt.Color(0, 5, 42));
+        bg1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        bg1.setOpaque(true);
+        StudentSideBarPanel.add(bg1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 855));
+
+        getContentPane().add(StudentSideBarPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 860));
+
         contentPanel.setBackground(new java.awt.Color(159, 0, 87));
         contentPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -1507,12 +1534,12 @@ public class AdminDashboards extends javax.swing.JFrame {
                 jLabel66MouseClicked(evt);
             }
         });
-        adminProfile_02.add(jLabel66, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 260, 30, 30));
+        adminProfile_02.add(jLabel66, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 30, 30));
 
         jLabel67.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/dob.png"))); // NOI18N
         jLabel67.setText("jLabel56");
         jLabel67.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        adminProfile_02.add(jLabel67, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 360, 30, 30));
+        adminProfile_02.add(jLabel67, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 310, 30, 30));
 
         jLabel68.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/uname.png"))); // NOI18N
         jLabel68.setText("jLabel56");
@@ -1540,7 +1567,7 @@ public class AdminDashboards extends javax.swing.JFrame {
         adminBlood.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         adminBlood.setForeground(new java.awt.Color(255, 204, 0));
         adminBlood.setText("Name");
-        adminProfile_02.add(adminBlood, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 310, 300, -1));
+        adminProfile_02.add(adminBlood, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, 300, -1));
         adminProfile_02.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 600, 300, 10));
         adminProfile_02.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 550, 300, 10));
 
@@ -1580,12 +1607,12 @@ public class AdminDashboards extends javax.swing.JFrame {
         adminDob.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         adminDob.setForeground(new java.awt.Color(255, 204, 0));
         adminDob.setText("Name");
-        adminProfile_02.add(adminDob, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 360, 310, -1));
+        adminProfile_02.add(adminDob, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 310, 310, -1));
 
         adminNid.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         adminNid.setForeground(new java.awt.Color(255, 204, 0));
         adminNid.setText("Nid");
-        adminProfile_02.add(adminNid, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, 260, 30));
+        adminProfile_02.add(adminNid, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 210, 260, 30));
 
         bottomrightborder5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/border right bottom.png"))); // NOI18N
         adminProfile_02.add(bottomrightborder5, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 460, 330, 340));
@@ -1594,7 +1621,7 @@ public class AdminDashboards extends javax.swing.JFrame {
         jLabel61.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/blood.png"))); // NOI18N
         jLabel61.setText("jLabel56");
         jLabel61.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        adminProfile_02.add(jLabel61, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 310, 30, 30));
+        adminProfile_02.add(jLabel61, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 260, 30, 30));
 
         adminPassword.setBackground(new java.awt.Color(0, 5, 42));
         adminPassword.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -1611,6 +1638,16 @@ public class AdminDashboards extends javax.swing.JFrame {
             }
         });
         adminProfile_02.add(adminPassEye, new org.netbeans.lib.awtextra.AbsoluteConstraints(405, 510, 40, 30));
+
+        adminId.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        adminId.setForeground(new java.awt.Color(255, 204, 0));
+        adminId.setText("Name");
+        adminProfile_02.add(adminId, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 360, 310, -1));
+
+        jLabel158.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/uid.png"))); // NOI18N
+        jLabel158.setText("jLabel56");
+        jLabel158.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        adminProfile_02.add(jLabel158, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 360, 30, 30));
 
         ProjectTab.addTab("tab2", adminProfile_02);
 
@@ -4020,32 +4057,32 @@ public class AdminDashboards extends javax.swing.JFrame {
         
         
         if(name.matches(regexAlphabet)){ // Check name,fname,mname only have Alpahabet or not
-            column.add(name);
+            column.add(name);//01
             if(fname.matches(regexAlphabet)){ 
-                column.add(fname);
+                column.add(fname);//02
                 if(mname.matches(regexAlphabet)){ 
-                    column.add(mname);
+                    column.add(mname);//03
                     if(!"".equals(addr)){
-                        column.add(addr);
+                        column.add(addr);//04
                         if(nid.matches(regexNumber)){ // Check nid only have digits or not
                             if(count(nid,10,"Nid no sholuld be 10 digit") == true){ // Call count() meathoad with three arguements
-                                column.add(nid);
+                                column.add(nid);//05
                                 if(!"".equals(dob)){
-                                    column.add(dob);
+                                    column.add(dob);//06
                                     if(id.matches(regexNumber)){
                                         if(count(id,7,"Id no sholuld be 7 digit") == true){
-                                            column.add(id);
+                                            column.add(id);//07
                                             if(reg.matches(regexNumber)){
                                                 if(count(reg,5,"Reg no sholuld be 5 digit") == true){
-                                                    column.add(reg);
+                                                    column.add(reg);//08
                                                     if(!"Select one".equals(session)){
-                                                        column.add(session);
+                                                        column.add(session);//09
                                                         if(!"Select one".equals(blood)){
-                                                            column.add(blood);
+                                                            column.add(blood);//10
                                                             if(!"Select one".equals(fac)){
-                                                                column.add(fac);
+                                                                column.add(fac);//11
                                                                 if(!"Select one".equals(hall)){
-                                                                column.add(hall);
+                                                                column.add(hall);//12
                                                                  //  If Everything is ok lets begain insert data into database
                                                                   insertStudent(column);
                                                                   resetField();
@@ -4087,7 +4124,8 @@ public class AdminDashboards extends javax.swing.JFrame {
                 imagePath = photoPath;
                 
                 AdminDashboards.test f = new AdminDashboards.test();
-                rs = f.finds(getadminusername,identity); 
+                rs = f.finds(logeduserid,identity); 
+                
             } catch (SQLException ex) {
                 Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
@@ -4108,11 +4146,12 @@ public class AdminDashboards extends javax.swing.JFrame {
         
             conn cc = new conn();
             random = new Random().nextInt(900000) + 100000;
+            String data = String.valueOf(random);
             String toSend = adminEmail.getText(); // to address. It can be any like gmail, yahoo etc.
             
                 sendMail mail = new sendMail(toSend,random,"Verification for Update Profile ");
                 if(mail.send()){
-                    UpdateToken object = new UpdateToken(identity,"token",random,logeduserid);
+                    UpdateToken object = new UpdateToken(identity,"token",data,logeduserid);
                     if(object.UpadetData()){
                         alert("success","true","Please verify your mail");
                         ProjectTab.setSelectedIndex(13);
@@ -4135,121 +4174,223 @@ public class AdminDashboards extends javax.swing.JFrame {
     }//GEN-LAST:event_userVerifyIdentityActionPerformed
 
     private void accountverifyForUpdateProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountverifyForUpdateProfileActionPerformed
-        // TODO add your handling code here:
-         String identitys = (String)userVerifyIdentity.getSelectedItem();
-         identitys = identitys.toLowerCase();
-         String verifyUserEmail = verifyUsername.getText();
-         String verifyUserVkey = vkey.getText();
-         
-         
-         conn cc = new conn();
-         
-         if("student".equals(identitys)){
-            if(!"".equals(verifyUserEmail)){
-                if(verifyUserEmail.equals(studentEmail.getText())){
-                  if(!"".equals(verifyUserVkey)){
+//        try {
+            // TODO add your handling code here:
+            String identitys = (String)userVerifyIdentity.getSelectedItem();
+            identitys = identitys.toLowerCase();
+            String verifyUserEmail = verifyUsername.getText();
+            String verifyUserVkey = vkey.getText();
+            
+            if(checkWordIsFoundOrnOT(identitys,"select")){
+               if(!"".equals(verifyUserEmail)){ 
+                    if(!"".equals(verifyUserVkey)){ 
                         try {
-                            String query = "SELECT * FROM student where roll='"+logeduserid+"' AND token='"+verifyUserVkey+"' ";
+                            conn cc = new conn();
+                            String query = "SELECT * FROM users where uid='"+logeduserid+"'and token='"+verifyUserVkey+"'  and role='"+identitys+"' ";
                             ResultSet rs = cc.s.executeQuery(query);
-                            if(rs.next()){  
-                                ps= cc.c.prepareStatement("UPDATE student SET username=?, password=?, email=?, phone=?, token=? Where roll=?");
-                                ps.setString(1, studentUsername.getText());
-                                ps.setString(2, studentPassword.getText());
-                                ps.setString(3, studentEmail.getText());
-                                ps.setString(4, studentPhone.getText());
-
-                                ps.setString(5, "");
-                                ps.setString(6,logeduserid);
-                                
-                                ps.execute();
-                                int count = ps.executeUpdate();
-                                
-                                
-                                if(count > 0){ 
-                                   alert("success","true","Your profile is upto date");
-                                   verifyUsername.setText("Your Email Address");
-                                   ProjectTab.setSelectedIndex(16);
-                                }else{ 
-                                   alert("error","true","Somethis is wrong with your data");
+                                if(rs.next()){
+                                   if("admin".equals(identitys)){ 
+                                       String querys = "UPDATE administrator, users SET users.username = ?,users.password = ?,administrator.phone = ?,administrator.email = ? WHERE users.uid = ?";
+                                        ps= cc.c.prepareStatement(querys);
+                                        
+                                        ps.setString(1, adminUsername.getText());
+                                        ps.setString(2, adminPassword.getText());
+                                        ps.setString(3, adminPhone.getText());
+                                        ps.setString(4, adminEmail.getText());
+                                        ps.setString(5,logeduserid);
+                                        ps.execute();
+                                        upDateOrnot = ps.executeUpdate();
+                                   }
+                                   
+                                   
+                                   
+                                   
+                                        if(upDateOrnot > 0){ 
+                                           alert("success","true","Your profile is upto date");
+                                           verifyUsername.setText("Your Email Address");
+                                           ProjectTab.setSelectedIndex(1);
+                                        }else{ 
+                                           alert("error","true","Somethis is wrong with your data");
+                                        }
                                 }
-                                
-                                
-                            }else{ 
-                                alert("error","true","Wrong verification key inserted");
-                            }
                         } catch (SQLException ex) {
                             Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                  }else{ 
-                    alert("error","true","Insert verification key from email");
-                  }
-                }else{ 
-                    alert("error","true","Write your email correctly");
-                }
+                    }else{ 
+                      alert("error","true","Insert verification code");
+                    }
+               }else{ 
+                 alert("error","true","Insert your registered Email");
+               }
             }else{ 
-              alert("error","true","Insert your selected mail");
+                 alert("error","true","Select your identity");
             }
-         }else{ 
-            if(!"".equals(verifyUserEmail)){
-                if(verifyUserEmail.equals(adminEmail.getText()) || verifyUserEmail.equals(teacherEmail.getText())){
-                  if(!"".equals(verifyUserVkey)){
-                        try {
-                            String query = "SELECT * FROM users where uid='"+logeduserid+"' AND role='"+identitys+"' AND token='"+verifyUserVkey+"' ";
-                            ResultSet rs = cc.s.executeQuery(query);
-                            if(rs.next()){  
-                                ps= cc.c.prepareStatement("UPDATE users SET username=?, password=?, email=?, phone=?, token=? Where uid=?");
-                                if("admin".equals(identitys)){ 
-                                    ps.setString(1, adminUsername.getText());
-                                    ps.setString(2, adminPassword.getText());
-                                    ps.setString(3, adminEmail.getText());
-                                    ps.setString(4, adminPhone.getText());
-                                    ps.setString(5, "");
-                                    ps.setString(6,logeduserid);
+//            conn cc = new conn();
+//            String query = "SELECT * FROM users where uid='"+getadminusername+"'and token='"+verifyUserVkey+"'  and role='"+identitys+"' ";
+//            ResultSet rs = cc.s.executeQuery(query);
+//            if(rs.next()){
+//               if(!"".equals(verifyUserEmail)){
+//               
+//               }else{ 
+//                 alert("error","true","Insert your registered Email");
+//                }
+//            }
+//        }catch (SQLException ex) {
+//            Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
-                                    ps.execute();
-                                    int count = ps.executeUpdate();
-                                    if(count > 0){ 
-                                       alert("success","true","Your profile is upto date");
-                                       verifyUsername.setText("Your Email Address");
-                                       ProjectTab.setSelectedIndex(1);
-                                    }else{ 
-                                       alert("error","true","Somethis is wrong with your data");
-                                    }
-                                }else if("teacher".equals(identitys)){ 
-                                    ps.setString(1, teacherUsername.getText());
-                                    ps.setString(2, teacherPassword.getText());
-                                    ps.setString(3, teacherEmail.getText());
-                                    ps.setString(4, teacherPhone.getText());
-                                    ps.setString(5, "");
-                                    ps.setString(6,logeduserid);
-                                    ps.execute();
-                                    int count = ps.executeUpdate();
-                                    if(count > 0){ 
-                                       alert("success","true","Your profile is upto date");
-                                       verifyUsername.setText("Your Email Address");
-                                       ProjectTab.setSelectedIndex(23);
-                                    }else{ 
-                                       alert("error","true","Somethis is wrong with your data");
-                                    }
-                                }
-                                
-                                
-                            }else{ 
-                                alert("error","true","Wrong verification key inserted");
-                            }
-                        } catch (SQLException ex) {
-                            Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                  }else{ 
-                    alert("error","true","Insert verification key from email");
-                  }
-                }else{ 
-                    alert("error","true","Write your email correctly");
-                }
-            }else{ 
-              alert("error","true","Insert your selected mail");
-            }
-         }
+
+
+//        if("student".equals(identitys)){ 
+//               if(!"".equals(verifyUserEmail)){
+//                    if(!"".equals(verifyUserVkey)){
+//                        if("admin".equals(rs)){
+//                            try {
+//                                conn cc = new conn();
+//                                String query = "SELECT * FROM users where uid='"+getadminusername+"'and token='"+verifyUserVkey+"'  and role='"+identitys+"' ";
+//                                ResultSet rs = cc.s.executeQuery(query);
+//                                if(rs.next()){
+//                                   if("admin".equals(identitys)){ 
+//                                        ps= cc.c.prepareStatement("UPDATE administrator SET username=?, password=?, email=?, phone=? Where uid=?");
+//                                        ps.setString(1, adminUsername.getText());
+//                                        ps.setString(2, adminPassword.getText());
+//                                        ps.setString(3, adminEmail.getText());
+//                                        ps.setString(4, adminPhone.getText());
+//                                        ps.setString(5,getadminusername);
+//                                        ps.execute();
+//                                        int count = ps.executeUpdate();
+//
+//
+//                                        if(count > 0){ 
+//                                           alert("success","true","Your profile is upto date");
+//                                           verifyUsername.setText("Your Email Address");
+//                                           ProjectTab.setSelectedIndex(1);
+//                                        }else{ 
+//                                           alert("error","true","Somethis is wrong with your data");
+//                                        }
+//                                   }
+//                                }
+//                            } catch (SQLException ex) {
+//                                Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
+//                            }
+//                    }else{ 
+//                      alert("error","true","Insert verification code");
+//                     }
+//               }else{ 
+//                 alert("error","true","Insert your registered Email");
+//                }
+//        }else{ 
+//              alert("error","true","Select your identity");
+//        }
+//
+
+
+//         if("student".equals(identitys)){
+//            if(!"".equals(verifyUserEmail)){
+//                if(verifyUserEmail.equals(studentEmail.getText())){
+//                  if(!"".equals(verifyUserVkey)){
+//                        try {
+//                            String query = "SELECT * FROM student where roll='"+logeduserid+"' AND token='"+verifyUserVkey+"' ";
+//                            ResultSet rs = cc.s.executeQuery(query);
+//                            if(rs.next()){  
+//                                ps= cc.c.prepareStatement("UPDATE student SET username=?, password=?, email=?, phone=?, token=? Where roll=?");
+//                                ps.setString(1, studentUsername.getText());
+//                                ps.setString(2, studentPassword.getText());
+//                                ps.setString(3, studentEmail.getText());
+//                                ps.setString(4, studentPhone.getText());
+//
+//                                ps.setString(5, "");
+//                                ps.setString(6,logeduserid);
+//                                
+//                                ps.execute();
+//                                int count = ps.executeUpdate();
+//
+//
+//                                if(count > 0){ 
+//                                   alert("success","true","Your profile is upto date");
+//                                   verifyUsername.setText("Your Email Address");
+//                                   ProjectTab.setSelectedIndex(16);
+//                                }else{ 
+//                                   alert("error","true","Somethis is wrong with your data");
+//                                }
+//                            }else{ 
+//                                alert("error","true","Wrong verification key inserted");
+//                            }
+//                        } catch (SQLException ex) {
+//                            Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                  }else{ 
+//                    alert("error","true","Insert verification key from email");
+//                  }
+//                }else{ 
+//                    alert("error","true","Write your email correctly");
+//                }
+//            }else{ 
+//              alert("error","true","Insert your selected mail");
+//            }
+//         }else{ 
+//            if(!"".equals(verifyUserEmail)){
+//                if(verifyUserEmail.equals(adminEmail.getText()) || verifyUserEmail.equals(teacherEmail.getText())){
+//                  if(!"".equals(verifyUserVkey)){
+//                        try {
+//                            String query = "SELECT * FROM users where uid='"+logeduserid+"' AND role='"+identitys+"' AND token='"+verifyUserVkey+"' ";
+//                            ResultSet rs = cc.s.executeQuery(query);
+//                            if(rs.next()){  
+//                                ps= cc.c.prepareStatement("UPDATE users SET username=?, password=?, email=?, phone=?, token=? Where uid=?");
+//                                if("admin".equals(identitys)){ 
+//                                    ps.setString(1, adminUsername.getText());
+//                                    ps.setString(2, adminPassword.getText());
+//                                    ps.setString(3, adminEmail.getText());
+//                                    ps.setString(4, adminPhone.getText());
+//                                    ps.setString(5, "");
+//                                    ps.setString(6,logeduserid);
+//
+//                                    ps.execute();
+//                                    int count = ps.executeUpdate();
+//                                    if(count > 0){ 
+//                                       alert("success","true","Your profile is upto date");
+//                                       verifyUsername.setText("Your Email Address");
+//                                       ProjectTab.setSelectedIndex(1);
+//                                    }else{ 
+//                                       alert("error","true","Somethis is wrong with your data");
+//                                    }
+//                                }else if("teacher".equals(identitys)){ 
+//                                    ps.setString(1, teacherUsername.getText());
+//                                    ps.setString(2, teacherPassword.getText());
+//                                    ps.setString(3, teacherEmail.getText());
+//                                    ps.setString(4, teacherPhone.getText());
+//                                    ps.setString(5, "");
+//                                    ps.setString(6,logeduserid);
+//                                    ps.execute();
+//                                    int count = ps.executeUpdate();
+//                                    if(count > 0){ 
+//                                       alert("success","true","Your profile is upto date");
+//                                       verifyUsername.setText("Your Email Address");
+//                                       ProjectTab.setSelectedIndex(23);
+//                                    }else{ 
+//                                       alert("error","true","Somethis is wrong with your data");
+//                                    }
+//                                }
+//
+//
+//                            }else{ 
+//                                alert("error","true","Wrong verification key inserted");
+//                            }
+//                        } catch (SQLException ex) {
+//                            Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                  }else{ 
+//                    alert("error","true","Insert verification key from email");
+//                  }
+//                }else{ 
+//                    alert("error","true","Write your email correctly");
+//                }
+//            }else{ 
+//              alert("error","true","Insert your selected mail");
+//            }
+//         }
+
          
 
          
@@ -4741,7 +4882,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 imagePath = photoPath;
                 
                 AdminDashboards.test f = new AdminDashboards.test();
-                rs = f.finds(getadminusername,identity); 
+                rs = f.finds(logeduserid,identity); 
             } catch (SQLException ex) {
                 Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
@@ -4765,11 +4906,12 @@ public class AdminDashboards extends javax.swing.JFrame {
         // TODO add your handling code here:
             conn cc = new conn();
             random = new Random().nextInt(900000) + 100000;
+            String data = String.valueOf(random);
             String toSend = studentEmail.getText(); 
             
             sendMail mail = new sendMail(toSend,random,"Verification for Update Profile ");
             if(mail.send()){
-                UpdateToken object = new UpdateToken(identity,"token",random,logeduserid);
+                UpdateToken object = new UpdateToken(identity,"token",data,logeduserid);
                 if(object.UpadetData()){
                     alert("success","true","Please verify your mail");
                     ProjectTab.setSelectedIndex(13);
@@ -4986,7 +5128,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 imagePath = photoPath;
                 
                 AdminDashboards.test f = new AdminDashboards.test();
-                rs = f.finds(getadminusername,identity); 
+                rs = f.finds(logeduserid,identity); 
             } catch (SQLException ex) {
                 Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
@@ -5010,11 +5152,12 @@ public class AdminDashboards extends javax.swing.JFrame {
         // TODO add your handling code here:
             conn cc = new conn();
             random = new Random().nextInt(900000) + 100000;
+            String data = String.valueOf(random);
             String toSend = teacherEmail.getText(); // to address. It can be any like gmail, yahoo etc.
             
                 sendMail mail = new sendMail(toSend,random,"Verification for Update Profile ");
                 if(mail.send()){
-                    UpdateToken object = new UpdateToken(identity,"token",random,logeduserid);
+                    UpdateToken object = new UpdateToken(identity,"token",data,logeduserid);
                     if(object.UpadetData()){
                         alert("success","true","Please verify your mail");
                         ProjectTab.setSelectedIndex(13);
@@ -5111,6 +5254,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JPanel adminHall_06;
     private javax.swing.JButton adminHealthCareBtn_09;
     private javax.swing.JPanel adminHealthCare_09;
+    private javax.swing.JLabel adminId;
     private javax.swing.JButton adminLibraryBtn_07;
     private javax.swing.JPanel adminLibrary_07;
     private javax.swing.JLabel adminName;
@@ -5255,6 +5399,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel155;
     private javax.swing.JLabel jLabel156;
     private javax.swing.JLabel jLabel157;
+    private javax.swing.JLabel jLabel158;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;

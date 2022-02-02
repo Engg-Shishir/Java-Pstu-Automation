@@ -30,7 +30,7 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Logins
      */
-    private String logeduser = "";
+    private String logeduserId = "";
     private String logedUserIdentity = "";
 
     Connection con = null;
@@ -43,7 +43,25 @@ public class Login extends javax.swing.JFrame {
         initComponents();
     }
 
+    public boolean checkWordIsFoundOrnOT(String sentence,String words){
+        // To break the sentence in words
+        String []eachWords = sentence.split(" ");
 
+        // To temporarily store each individual word
+        for ( String temp : eachWords)
+        {
+            // Comparing the current word
+            // with the word to be searched
+            if (temp.compareTo(words) == 0)
+            {
+                //If match
+                return false;
+            }
+        }
+        
+        // If not match
+        return true;
+    }
 
     //    Alert Show and hide
     public void alert(String type, String permission, String message) {
@@ -230,7 +248,7 @@ public class Login extends javax.swing.JFrame {
             if ("student".equals(identy)) {
                 query = "UPDATE student SET password=?,token=? Where email=?";
             } else {
-                query = "UPDATE users SET password=?,token=? Where email=?";
+                query = "UPDATE users SET password=?,token=? Where uid=?";
             }
             conn cc = new conn();
             ps = cc.c.prepareStatement(query);
@@ -478,6 +496,9 @@ public class Login extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 backtoVerifyMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                backtoVerifyMouseEntered(evt);
+            }
         });
         LoginPanel.add(backtoVerify, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 400, 40, 30));
 
@@ -672,7 +693,7 @@ public class Login extends javax.swing.JFrame {
         String vkey = forgotVerificationCode.getText();
         String pass = forgotPassword.getText();
 
-        if ("select yuor identity".equals(identity)) {
+        if (!checkWordIsFoundOrnOT(identity,"select")) {
             alert("error", "true", "Selct your identity first");
         } else {
             if ("".equals(userName)) {
@@ -697,13 +718,25 @@ public class Login extends javax.swing.JFrame {
                             } catch (SQLException ex) {
                                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                        } else {
-                            String query = "SELECT * FROM users where(email='" + userName + "' and token='" + vkey + "')";
+                        } else if("admin".equals(identity)){
+//                            String query = "SELECT * FROM users where(email='" + userName + "' and token='" + vkey + "')";
+                            String query = "SELECT * FROM administrator where(email='" + userName + "')";
 
                             try {
-                                ResultSet rs = cc.s.executeQuery(query);
+                                rs = cc.s.executeQuery(query);
                                 if (rs.next()) {
-                                    updatePasswordFormverification(identity, userName, pass);
+                                    
+                                     String q = "SELECT * FROM users where(uid='" + rs.getString("uid") + "' and token='" + vkey + "')";
+                                     rs = cc.s.executeQuery(q);
+                                      if (rs.next()){
+//                                          UpdateToken token = new UpdateToken(identity,"token","",rs.getString("uid"));
+//                                          if(token.UpadetData()){ 
+//                                            Login_Forgot.setSelectedIndex(0);
+//                                            alert("success", "true", "Your password is updated");
+//                                          }
+
+                                        updatePasswordFormverification(identity, rs.getString("uid"), pass);
+                                      }
                                 } else {
                                     alert("error", "true", "Your creadential is not match");
                                 }
@@ -762,45 +795,65 @@ public class Login extends javax.swing.JFrame {
             user = user.toLowerCase();
             String userName = LoginUsername.getText();
             String pss = LoginPassword.getText();
-
-            if ("student".equals(user)) {
-                String query = "SELECT * FROM student where(email='" + userName + "' and password='" + pss + "')"
-                        + "or(roll='" + userName + "' and password='" + pss + "')"
-                        + "or(username='" + userName + "' and password='" + pss + "')";
-
+            
+            
+                String query = "SELECT * FROM users where(uid='" + userName + "' and role='" + user + "' and password='" + pss + "')"
+                        + "or(username='"+userName+"'and role='" + user + "' and password='" + pss + "')";
                 ResultSet rs = cc.s.executeQuery(query);
 
-                if (rs.next()) {
-                    logeduser = userName;
-                    logedUserIdentity = user;
-                    this.setVisible(false);
-
-                    AdminDashboards home = new AdminDashboards(logeduser, logedUserIdentity);
-                    home.setVisible(true);
-                    LoginUsername.setText("");
-                    LoginPassword.setText("");
-                } else {
-                    alert("error", "true", "Something going wrong !");
+                if (rs.next()){
+                    if("active".equals(rs.getString("status"))){
+                        logeduserId = rs.getString("uid");
+                        logedUserIdentity = user;
+                        this.dispose();
+                        AdminDashboards home = new AdminDashboards(logeduserId, logedUserIdentity);
+                        home.setVisible(true);
+                    }else{
+                      alert("error", "true", "Acount is diabled as a "+user.toUpperCase());
+                    }
+                }else{
+                    alert("error", "true", "Account credential is not match");
                 }
-            } else {
-                String query = "SELECT * FROM users where(email='" + userName + "' and role='" + user + "' and password='" + pss + "')"
-                        + "or(uid='" + userName + "' and role='" + user + "' and password='" + pss + "')"
-                        + "or(username='" + userName + "' and role='" + user + "' and password='" + pss + "')";
-
-                ResultSet rs = cc.s.executeQuery(query);
-
-                if (rs.next()) {
-                    logeduser = userName;
-                    logedUserIdentity = user;
-                    this.setVisible(false);
-
-                    AdminDashboards home = new AdminDashboards(logeduser, logedUserIdentity);
-                    home.setVisible(true);
-                } else {
-                    alert("error", "true", "Something going wrong !");
-                }
-
-            }
+//            if ("student".equals(user)) {
+//                String query = "SELECT * FROM student where(email='" + userName + "' and password='" + pss + "')"
+//                        + "or(roll='" + userName + "' and password='" + pss + "')"
+//                        + "or(username='" + userName + "' and password='" + pss + "')";
+//
+//                ResultSet rs = cc.s.executeQuery(query);
+//
+//                if (rs.next()) {
+//                    logeduser = userName;
+//                    logedUserIdentity = user;
+//                    this.setVisible(false);
+//
+//                    AdminDashboards home = new AdminDashboards(logeduser, logedUserIdentity);
+//                    home.setVisible(true);
+//                    LoginUsername.setText("");
+//                    LoginPassword.setText("");
+//                } else {
+//                    alert("error", "true", "Something going wrong !");
+//                }
+//            } else {
+//                String query = "SELECT * FROM users where(uid='" + userName + "' and role='" + user + "' and password='" + pss + "')"
+//                        + "or(username='"+userName+"'and role='" + user + "' and password='" + pss + "')";
+//
+//                ResultSet rs = cc.s.executeQuery(query);
+//
+//                if (rs.next()) {
+//                    if("active".equals(rs.getString("status"))){
+//                        logeduser = rs.getString("uid");
+//                        logedUserIdentity = user;
+//                        this.dispose();
+//                        AdminDashboards home = new AdminDashboards(logeduser, logedUserIdentity);
+//                        home.setVisible(true);
+//                    }else{
+//                      alert("error", "true", "Acount is diabled as a "+user.toUpperCase());
+//                    }
+//                } else {
+//                    alert("error", "true", "Account credential is not match");
+//                }
+//
+//            }
 
         } catch (SQLException e) {
         }
@@ -812,15 +865,44 @@ public class Login extends javax.swing.JFrame {
         email = email.toLowerCase();
         String identity = (String) userIdentity.getSelectedItem();
         identity = identity.toLowerCase();
+        
+        
+         // Just methoad ke call korar janno emty perameter pass korci
+         
+        
 
-        if ("select yuor identity".equals(identity)) {
+        
+        
+        if (!checkWordIsFoundOrnOT(identity,"select")){
             alert("error", "true", "At first select your identity");
         } else {
             if ("".equals(email)) {
                 alert("error", "true", "Insert your registared Email");
             } else {
+                    String query = null;
                 try {
-                    sendmail(identity, email);
+                    if ("student".equals(identity)) {
+                        query = "SELECT * FROM student where(email='" + email + "') ";
+                    } else if("admin".equals(identity)){
+                        query = "SELECT * FROM administrator where(email='" + email + "') ";
+                    }
+                    
+                    conn cc = new conn();
+                    ResultSet rs = cc.s.executeQuery(query);
+                    if (rs.next()) {
+                        int randoms = new Random().nextInt(900000) + 100000;
+                        String data = String.valueOf(randoms);
+                        sendMail mail = new sendMail(email,randoms,"Reset Password Verification Code");
+                        if(mail.send()){
+                            UpdateToken token = new UpdateToken(identity,"token",data,rs.getString("uid"));
+                            if(token.UpadetData()){ 
+                                Login_Forgot.setSelectedIndex(1);
+                                alert("success", "true", "Please verify your mail");
+                            }
+                        }
+                    }else{
+                     alert("error", "true", "Email is not registered yet");
+                    }
                 } catch (SQLException ex) {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -860,6 +942,10 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void backtoVerifyMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backtoVerifyMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_backtoVerifyMouseEntered
 
     /**
      * @param args the command line arguments

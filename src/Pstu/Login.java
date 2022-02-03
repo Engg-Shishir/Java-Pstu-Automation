@@ -245,11 +245,9 @@ public class Login extends javax.swing.JFrame {
         System.out.println(email);
         System.out.println(passwords);
         try {
-            if ("student".equals(identy)) {
-                query = "UPDATE student SET password=?,token=? Where email=?";
-            } else {
-                query = "UPDATE users SET password=?,token=? Where uid=?";
-            }
+                
+            query = "UPDATE users SET password=?,token=? Where uid=?";
+            
             conn cc = new conn();
             ps = cc.c.prepareStatement(query);
             ps.setString(1, passwords);
@@ -706,12 +704,17 @@ public class Login extends javax.swing.JFrame {
                         alert("error", "true", "Write your secure Password");
                     } else {
                         if ("student".equals(identity)) {
-                            String query = "SELECT * FROM student where(email='" + userName + "' and token='" + vkey + "')";
+                            String query = "SELECT * FROM student where(email='" + userName + "')";
 
                             try {
-                                ResultSet rs = cc.s.executeQuery(query);
+                                rs= cc.s.executeQuery(query);
                                 if (rs.next()) {
-                                    updatePasswordFormverification(identity, userName, pass);
+                                    
+                                     String q = "SELECT * FROM users where(uid='" + rs.getString("uid") + "' and token='" + vkey + "')";
+                                     rs = cc.s.executeQuery(q);
+                                      if (rs.next()){
+                                        updatePasswordFormverification(identity, rs.getString("uid"), pass);
+                                      }
                                 } else {
                                     alert("error", "true", "Your creadential is not match");
                                 }
@@ -719,7 +722,6 @@ public class Login extends javax.swing.JFrame {
                                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         } else if("admin".equals(identity)){
-//                            String query = "SELECT * FROM users where(email='" + userName + "' and token='" + vkey + "')";
                             String query = "SELECT * FROM administrator where(email='" + userName + "')";
 
                             try {
@@ -729,12 +731,24 @@ public class Login extends javax.swing.JFrame {
                                      String q = "SELECT * FROM users where(uid='" + rs.getString("uid") + "' and token='" + vkey + "')";
                                      rs = cc.s.executeQuery(q);
                                       if (rs.next()){
-//                                          UpdateToken token = new UpdateToken(identity,"token","",rs.getString("uid"));
-//                                          if(token.UpadetData()){ 
-//                                            Login_Forgot.setSelectedIndex(0);
-//                                            alert("success", "true", "Your password is updated");
-//                                          }
+                                        updatePasswordFormverification(identity, rs.getString("uid"), pass);
+                                      }
+                                } else {
+                                    alert("error", "true", "Your creadential is not match");
+                                }
+                            } catch (SQLException ex) {
+                                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else if("teacher".equals(identity)){
+                            String query = "SELECT * FROM teacher where(email='" + userName + "')";
 
+                            try {
+                                rs = cc.s.executeQuery(query);
+                                if (rs.next()) {
+                                    
+                                     String q = "SELECT * FROM users where(uid='" + rs.getString("uid") + "' and token='" + vkey + "')";
+                                     rs = cc.s.executeQuery(q);
+                                      if (rs.next()){
                                         updatePasswordFormverification(identity, rs.getString("uid"), pass);
                                       }
                                 } else {
@@ -885,6 +899,8 @@ public class Login extends javax.swing.JFrame {
                         query = "SELECT * FROM student where(email='" + email + "') ";
                     } else if("admin".equals(identity)){
                         query = "SELECT * FROM administrator where(email='" + email + "') ";
+                    }else if("teacher".equals(identity)){
+                        query = "SELECT * FROM teacher where(email='" + email + "') ";
                     }
                     
                     conn cc = new conn();

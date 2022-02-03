@@ -56,6 +56,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     public String logeduserid = "";
     public String dateFromDatePicker = "";
     public String studentsDetailsId = "";
+    public int tableRowNo;
     private int random;
     public String selectedFaculty = "";
     boolean dataFoundOrNot = false;
@@ -293,11 +294,12 @@ public class AdminDashboards extends javax.swing.JFrame {
         public ResultSet find(String id) throws SQLException{
 
             conn con = new conn();
-
-            PreparedStatement ps=con.c.prepareStatement("Select * from  student where roll = ? ");
+            String query = "SELECT student.*, users.* FROM student,users  WHERE student.uid = users.uid AND users.uid =?";
+            
+            
+            PreparedStatement ps=con.c.prepareStatement(query);
             ps.setString(1,id);
             rs  = ps.executeQuery();
-
             return rs;
 
         }
@@ -306,7 +308,8 @@ public class AdminDashboards extends javax.swing.JFrame {
 
             conn conn = new conn();
                try{		
-                    String sql = "DELETE FROM student WHERE roll ='"+id+"'";	
+//                    String sql = "DELETE FROM student WHERE roll ='"+id+"'";
+                    String sql = "DELETE student, users FROM student INNER JOIN users ON student.uid = users.uid WHERE users.uid='"+id+"'";
                     conn.s.executeUpdate(sql);
                     PreparedStatement pst =  conn.c.prepareStatement(sql);
                     int numRowsChanged = pst.executeUpdate(sql);
@@ -460,11 +463,12 @@ public class AdminDashboards extends javax.swing.JFrame {
                 }
 
                 if(rs.next()){
+                    System.out.println("found"+rs.getString("email"));
                     dataFoundOrNot=true;
                     
                     do{
                         String name = rs.getString("name");
-                        String id = rs.getString("roll");
+                        String id = rs.getString("uid");
                         String reg = rs.getString("reg");
                         String email = rs.getString("email");
                         String phone = rs.getString("phone");
@@ -4485,7 +4489,6 @@ public class AdminDashboards extends javax.swing.JFrame {
         // TODO add your handling code here:
         selectedFaculty = "cse";
         String sessions = (String)cseSession_16.getSelectedItem();
-        
         if(checkWordIsFoundOrnOT(sessions,"Session")){ 
           showFacultyStudent(selectedFaculty,sessions);
         }
@@ -4584,8 +4587,9 @@ public class AdminDashboards extends javax.swing.JFrame {
         // TODO add your handling code here:
         
              DefaultTableModel table = (DefaultTableModel)allStudentsByFaculty.getModel();
-             int id = allStudentsByFaculty.getSelectedRow();
-             if(id>=0){ 
+             
+             tableRowNo = allStudentsByFaculty.getSelectedRow();
+             if(tableRowNo>=0){ 
               ProjectTab.setSelectedIndex(15);
              }else{ 
                alert("error","true","No field selected");
@@ -4686,14 +4690,14 @@ public class AdminDashboards extends javax.swing.JFrame {
                                     sDetailsProfilePic.setIcon(null);
                                }
                                
-                               if(rs.getInt("status")== 0){
-                                    sstatusBtn.setText("Disable");
-                                    sstatusBtn.setBackground(Color.RED);
-                                    sstatusBtn.setForeground(Color.WHITE);
-                               }else{ 
+                               if("active".equals(rs.getString("status"))){
                                     sstatusBtn.setText("Active");
                                     sstatusBtn.setBackground(Color.GREEN);
                                     sstatusBtn.setForeground(Color.BLACK);
+                               }else{ 
+                                    sstatusBtn.setText("Disable");
+                                    sstatusBtn.setBackground(Color.RED);
+                                    sstatusBtn.setForeground(Color.WHITE);
                                }
                                 
                                
@@ -4705,7 +4709,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                                 sblood.setText(rs.getString("blood"));
                                 sphone.setText(rs.getString("phone"));
                                 snid.setText(rs.getString("nid"));
-                                sid.setText(rs.getString("roll"));
+                                sid.setText(rs.getString("uid"));
                                 sreg.setText(rs.getString("reg"));
                                 semail.setText(rs.getString("email"));
                                 ssession.setText(rs.getString("session"));
@@ -4778,8 +4782,17 @@ public class AdminDashboards extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        deleteStudent(sid.getText());
+        
+        
+             DefaultTableModel table = (DefaultTableModel)allStudentsByFaculty.getModel();
+             deleteStudent(sid.getText());
+             table.removeRow(tableRowNo);
         ProjectTab.setSelectedIndex(14);
+//             if(tableRowNo>=0){ 
+//              ProjectTab.setSelectedIndex(15);
+//             }else{ 
+//               alert("error","true","No field selected");
+//             }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void facValItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_facValItemStateChanged

@@ -44,16 +44,13 @@ public class print extends javax.swing.JFrame {
     
     
         public class func{
-            public ResultSet find(String s) throws SQLException{
+            public ResultSet find(String id) throws SQLException{
 
-                try{      
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/java","root","");
-                    PreparedStatement ps=con.prepareStatement("Select * from  student where roll = ?");
-                    ps.setString(1,s);
-                    rs  = ps.executeQuery(); 
-                }catch(ClassNotFoundException ev){
-                }
+                conn con = new conn();
+                String query = "SELECT student.*,users.status FROM student,users WHERE student.uid = users.uid AND users.uid =?";
+                PreparedStatement ps=con.c.prepareStatement(query);
+                ps.setString(1,id);
+                rs  = ps.executeQuery();
                 return rs;
 
             }
@@ -103,6 +100,12 @@ public class print extends javax.swing.JFrame {
                                 Jsem.setText("Second");
                                 Jhall.setText(rs.getString(15));
                                 getImageName = rs.getString(16);
+                                
+                                if("active".equals(rs.getString("status"))){
+                                   statusValue.setText("Regular");
+                                }else{
+                                   statusValue.setText("E-regular");
+                                }
                                 
                         }
                     } catch (SQLException ex) {
@@ -194,12 +197,14 @@ public class print extends javax.swing.JFrame {
         name13 = new javax.swing.JLabel();
         dot3 = new javax.swing.JLabel();
         profilePic = new javax.swing.JLabel();
+        name14 = new javax.swing.JLabel();
+        dot6 = new javax.swing.JLabel();
+        statusValue = new javax.swing.JLabel();
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(440, 10));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1300, 1700));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -386,7 +391,18 @@ public class print extends javax.swing.JFrame {
         print.add(dot3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 410, 20, 40));
 
         profilePic.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        print.add(profilePic, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 240, 230, 220));
+        print.add(profilePic, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 220, 230, 220));
+
+        name14.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        name14.setText("Status");
+        print.add(name14, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 440, 60, 40));
+
+        dot6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        dot6.setText(":");
+        print.add(dot6, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 440, -1, 40));
+
+        statusValue.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        print.add(statusValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 440, 170, 40));
 
         background.setBackground(new java.awt.Color(255, 255, 255));
         background.setOpaque(true);
@@ -489,6 +505,7 @@ public class print extends javax.swing.JFrame {
     private javax.swing.JLabel dot3;
     private javax.swing.JLabel dot4;
     private javax.swing.JLabel dot5;
+    private javax.swing.JLabel dot6;
     private javax.swing.JLabel dot7;
     private javax.swing.JLabel forDeanfac;
     private javax.swing.JLabel jLabel1;
@@ -504,6 +521,7 @@ public class print extends javax.swing.JFrame {
     private javax.swing.JLabel name11;
     private javax.swing.JLabel name12;
     private javax.swing.JLabel name13;
+    private javax.swing.JLabel name14;
     private javax.swing.JLabel name2;
     private javax.swing.JLabel name4;
     private javax.swing.JLabel name6;
@@ -512,6 +530,7 @@ public class print extends javax.swing.JFrame {
     private javax.swing.JPanel print;
     private javax.swing.JLabel profilePic;
     private javax.swing.JTable result;
+    private javax.swing.JLabel statusValue;
     private javax.swing.JLabel underText;
     // End of variables declaration//GEN-END:variables
 }

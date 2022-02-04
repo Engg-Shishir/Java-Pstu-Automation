@@ -277,16 +277,6 @@ public class Login extends javax.swing.JFrame {
     private void initComponents() {
 
         bg = new javax.swing.JPanel();
-        alertPanel = new javax.swing.JPanel();
-        errorClose = new javax.swing.JButton();
-        errorLogo = new javax.swing.JLabel();
-        errorText = new javax.swing.JLabel();
-        error = new javax.swing.JLabel();
-        successLogo = new javax.swing.JLabel();
-        successText = new javax.swing.JLabel();
-        successClose = new javax.swing.JButton();
-        success = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         Login_Forgot = new javax.swing.JTabbedPane();
         LoginPanel = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -303,6 +293,16 @@ public class Login extends javax.swing.JFrame {
         backtoVerify = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
+        alertPanel = new javax.swing.JPanel();
+        errorClose = new javax.swing.JButton();
+        errorLogo = new javax.swing.JLabel();
+        errorText = new javax.swing.JLabel();
+        error = new javax.swing.JLabel();
+        successLogo = new javax.swing.JLabel();
+        successText = new javax.swing.JLabel();
+        successClose = new javax.swing.JButton();
+        success = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         ForgotPanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -335,65 +335,6 @@ public class Login extends javax.swing.JFrame {
 
         bg.setBackground(new java.awt.Color(0, 51, 51));
         bg.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        alertPanel.setBackground(new java.awt.Color(74, 0, 52));
-        alertPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        errorClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/close.png"))); // NOI18N
-        errorClose.setBorder(null);
-        errorClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        errorClose.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                errorCloseActionPerformed(evt);
-            }
-        });
-        alertPanel.add(errorClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 15, 40, 40));
-
-        errorLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/warning.png"))); // NOI18N
-        errorLogo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        alertPanel.add(errorLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, 45, 40));
-
-        errorText.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        errorText.setForeground(new java.awt.Color(255, 255, 255));
-        alertPanel.add(errorText, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 340, 50));
-
-        error.setBackground(new java.awt.Color(127, 13, 92));
-        error.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        error.setOpaque(true);
-        alertPanel.add(error, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 450, 60));
-
-        successLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/successlogos.png"))); // NOI18N
-        successLogo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        alertPanel.add(successLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 7, 50, 50));
-
-        successText.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        successText.setForeground(new java.awt.Color(255, 255, 255));
-        alertPanel.add(successText, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 5, 340, 50));
-
-        successClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/close.png"))); // NOI18N
-        successClose.setBorder(null);
-        successClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        successClose.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                successCloseActionPerformed(evt);
-            }
-        });
-        alertPanel.add(successClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, 40, 40));
-
-        success.setBackground(new java.awt.Color(0, 102, 51));
-        success.setOpaque(true);
-        alertPanel.add(success, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 450, 60));
-
-        bg.add(alertPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 0, -1, 70));
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/close.png"))); // NOI18N
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        bg.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 0, -1, -1));
 
         Login_Forgot.setBackground(new java.awt.Color(0, 51, 51));
         Login_Forgot.setAlignmentX(0.0F);
@@ -510,6 +451,65 @@ public class Login extends javax.swing.JFrame {
         jLabel17.setText("Password  :");
         jLabel17.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         LoginPanel.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 320, 80, 40));
+
+        alertPanel.setBackground(new java.awt.Color(74, 0, 52));
+        alertPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        errorClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/close.png"))); // NOI18N
+        errorClose.setBorder(null);
+        errorClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        errorClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                errorCloseActionPerformed(evt);
+            }
+        });
+        alertPanel.add(errorClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 15, 40, 40));
+
+        errorLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/warning.png"))); // NOI18N
+        errorLogo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        alertPanel.add(errorLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, 45, 40));
+
+        errorText.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        errorText.setForeground(new java.awt.Color(255, 255, 255));
+        alertPanel.add(errorText, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 340, 50));
+
+        error.setBackground(new java.awt.Color(127, 13, 92));
+        error.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        error.setOpaque(true);
+        alertPanel.add(error, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 450, 60));
+
+        successLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/successlogos.png"))); // NOI18N
+        successLogo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        alertPanel.add(successLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 7, 50, 50));
+
+        successText.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        successText.setForeground(new java.awt.Color(255, 255, 255));
+        alertPanel.add(successText, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 5, 340, 50));
+
+        successClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/close.png"))); // NOI18N
+        successClose.setBorder(null);
+        successClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        successClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                successCloseActionPerformed(evt);
+            }
+        });
+        alertPanel.add(successClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, 40, 40));
+
+        success.setBackground(new java.awt.Color(0, 102, 51));
+        success.setOpaque(true);
+        alertPanel.add(success, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 450, 60));
+
+        LoginPanel.add(alertPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 0, -1, 70));
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/close.png"))); // NOI18N
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        LoginPanel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 10, 40, 40));
 
         Login_Forgot.addTab("Login Frame", LoginPanel);
 

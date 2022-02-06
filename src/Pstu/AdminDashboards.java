@@ -67,9 +67,9 @@ public class AdminDashboards extends javax.swing.JFrame {
     String selectedFacultyName;
     
         ResultSet rs;
+	PreparedStatement ps=null;
     	Connection con = null;
 	FileInputStream fs=null;
-	PreparedStatement ps=null;
     
     
     
@@ -305,6 +305,18 @@ public class AdminDashboards extends javax.swing.JFrame {
             return rs;
 
         }
+        public ResultSet findTeacher(String id) throws SQLException{
+
+            conn con = new conn();
+            String query = "SELECT teacher.*, users.* FROM teacher,users  WHERE teacher.uid = users.uid AND users.uid =?";
+            
+            
+            PreparedStatement ps=con.c.prepareStatement(query);
+            ps.setString(1,id);
+            rs  = ps.executeQuery();
+            return rs;
+
+        }
     }
     public void  deleteStudent(String id){
 
@@ -352,10 +364,31 @@ public class AdminDashboards extends javax.swing.JFrame {
                     }else{
                         alert("error","true","Something going wrong with database,Try again!");
                     }
-
-               }
-            }else { 
-              // user code here
+                }
+            }else if("teacher".equals(user)){
+                if("Active".equals(mode)){ 
+                    String status = "active";
+                    UpdateToken object = new UpdateToken(user,"status",status,sid1.getText());
+                    if(object.UpadetData()){
+                        sstatusBtn1.setText("Active");
+                        sstatusBtn1.setBackground(Color.GREEN);
+                        sstatusBtn1.setForeground(Color.BLACK);
+                        alert("success","true","Status updated");
+                    }else{
+                        alert("error","true","Something going wrong with database,Try again!");
+                    }
+                }else{ 
+                    String status = "inactive";
+                    UpdateToken object = new UpdateToken(user,"status",status,sid1.getText());
+                    if(object.UpadetData()){
+                        sstatusBtn1.setText("Disable");
+                        sstatusBtn1.setBackground(Color.RED);
+                        sstatusBtn1.setForeground(Color.WHITE);
+                        alert("success","true","Status updated");
+                    }else{
+                        alert("error","true","Something going wrong with database,Try again!");
+                    }
+                }
             }
         
     }
@@ -502,60 +535,35 @@ public class AdminDashboards extends javax.swing.JFrame {
     public boolean showFacultyTeacher(String fac,String dept){
         String depert;
         selectedFacultyName = fac;
-        try{
-            conn cc = new conn();
-            try{
-//                    facultyAllTeacherSession.removeAllItems();
-                if(dept==null || "All".equals(dept)){
-                  rs = cc.s.executeQuery("select * from teacher where  fac='"+fac+"' ");
-                }else{ 
-                  rs = cc.s.executeQuery("select * from teacher where fac='"+fac+"' and dept='"+dept+"' ");
-                }
-                
-                DefaultTableModel table = (DefaultTableModel)allTeachersByFaculty.getModel();
-                for( int i = table.getRowCount() - 1; i >= 0; i-- ){
-                    table.removeRow(i);
-                }
-
-                if(rs.next()){
-                    System.out.println("found"+rs.getString("email"));
-                    dataFoundOrNot=true;
-                     if(dept==null){
-                            do{
-                               String name = rs.getString("name");
-                               String id = rs.getString("uid");
-                               depert = rs.getString("dept");
-                               String email = rs.getString("email");  
-                               String nid = rs.getString("nid");
-                               String st[] = {name,id,depert,email,nid};
-                               table.addRow(st);
-                                facultyAllTeacherSession.addItem(depert);
-                           }while(rs.next());
-                     }else{
-                        do{
-                           String name = rs.getString("name");
-                           String id = rs.getString("uid");
-                           depert = rs.getString("dept");
-                           String email = rs.getString("email");  
-                           String nid = rs.getString("nid");
-                           String st[] = {name,id,depert,email,nid};
-                           table.addRow(st);
-                        }while(rs.next());
-                     }
-                    
-                    
-                    if(dataFoundOrNot){
-                        ProjectTab.setSelectedIndex(25);
-                    }
-                }else{ 
-                   alert("error","true","No data found");
-                }
-            }catch(SQLException e){
-            }
-               cc.s.close();
-               
-        }catch(SQLException e){
-        }
+        
+//        conn cc = new conn();
+//        try{
+//            if(dept==null || "All".equals(dept)){
+//                rs = cc.s.executeQuery("select * from teacher where  fac='"+fac+"' ");
+//            }else{
+//                rs = cc.s.executeQuery("select * from teacher where fac='"+fac+"' and dept='"+dept+"' ");
+//            }
+//
+//            DefaultTableModel table = (DefaultTableModel)allTeachersByFaculty.getModel();
+//            for( int i = table.getRowCount() - 1; i >= 0; i-- ){
+//                table.removeRow(i);
+//            }
+//
+//            if(rs.next()){
+//                do{
+//                    String name = rs.getString("name");
+//                    String id = rs.getString("uid");
+//                    depert = rs.getString("dept");
+//                    String email = rs.getString("email");
+//                    String nid = rs.getString("nid");
+//                    String st[] = {name,id,depert,email,nid};
+//                    table.addRow(st);
+//                }while(rs.next());
+//            }else{
+//                alert("error","true","No data found");
+//            }
+//        }catch(SQLException e){
+//        }
         return false;
     } 
     
@@ -715,7 +723,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                                     
                         int count=0;
                         do{
-                            facultyAllTeacherSession.addItem(rs.getString("dept"));
+                            facultyAllTeacher.addItem(rs.getString("dept"));
                             count++;
                             String name = rs.getString("name");
                             String id = rs.getString("uid");
@@ -746,6 +754,22 @@ public class AdminDashboards extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        AdminSideBarPanel = new javax.swing.JPanel();
+        adminProfilepic = new javax.swing.JLabel();
+        logout = new javax.swing.JButton();
+        adminDashboardBtn_01 = new javax.swing.JButton();
+        adminProfileBtn_02 = new javax.swing.JButton();
+        adminStudentBtn_03 = new javax.swing.JButton();
+        adminTeacherBtn_04 = new javax.swing.JButton();
+        adminFacultyBtn_05 = new javax.swing.JButton();
+        adminHallBtn_06 = new javax.swing.JButton();
+        adminLibraryBtn_07 = new javax.swing.JButton();
+        adminTransectionBtn_08 = new javax.swing.JButton();
+        adminHealthCareBtn_09 = new javax.swing.JButton();
+        adminAdministrationBtn_10 = new javax.swing.JButton();
+        adminOrganaizationBtn_11 = new javax.swing.JButton();
+        adminTranspoartBtn_12 = new javax.swing.JButton();
+        bg = new javax.swing.JLabel();
         teacherSideBarPanel = new javax.swing.JPanel();
         teacherSidebarProfilepic = new javax.swing.JLabel();
         teacherSidebarLogoutBtn = new javax.swing.JButton();
@@ -763,22 +787,6 @@ public class AdminDashboards extends javax.swing.JFrame {
         studentExamBtn_21 = new javax.swing.JButton();
         studentResultBtn_22 = new javax.swing.JButton();
         bg1 = new javax.swing.JLabel();
-        AdminSideBarPanel = new javax.swing.JPanel();
-        adminProfilepic = new javax.swing.JLabel();
-        logout = new javax.swing.JButton();
-        adminDashboardBtn_01 = new javax.swing.JButton();
-        adminProfileBtn_02 = new javax.swing.JButton();
-        adminStudentBtn_03 = new javax.swing.JButton();
-        adminTeacherBtn_04 = new javax.swing.JButton();
-        adminFacultyBtn_05 = new javax.swing.JButton();
-        adminHallBtn_06 = new javax.swing.JButton();
-        adminLibraryBtn_07 = new javax.swing.JButton();
-        adminTransectionBtn_08 = new javax.swing.JButton();
-        adminHealthCareBtn_09 = new javax.swing.JButton();
-        adminAdministrationBtn_10 = new javax.swing.JButton();
-        adminOrganaizationBtn_11 = new javax.swing.JButton();
-        adminTranspoartBtn_12 = new javax.swing.JButton();
-        bg = new javax.swing.JLabel();
         contentPanel = new javax.swing.JPanel();
         AlertPanel = new javax.swing.JPanel();
         errorClose = new javax.swing.JButton();
@@ -1131,9 +1139,64 @@ public class AdminDashboards extends javax.swing.JFrame {
         back_4 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         allTeachersByFaculty = new javax.swing.JTable();
-        facultyAllTeacherSession = new javax.swing.JComboBox<>();
+        facultyAllTeacher = new javax.swing.JComboBox<>();
         viewStudentfaculty_16 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
+        facultyAllTeacherSession1 = new javax.swing.JComboBox<>();
+        adminTeacherDetails_27 = new javax.swing.JPanel();
+        jLabel195 = new javax.swing.JLabel();
+        sDetailsProfilePic1 = new javax.swing.JLabel();
+        jLabel197 = new javax.swing.JLabel();
+        jLabel198 = new javax.swing.JLabel();
+        jLabel200 = new javax.swing.JLabel();
+        jLabel201 = new javax.swing.JLabel();
+        jLabel202 = new javax.swing.JLabel();
+        adminDob25 = new javax.swing.JLabel();
+        adminDob27 = new javax.swing.JLabel();
+        adminDob28 = new javax.swing.JLabel();
+        adminDob29 = new javax.swing.JLabel();
+        jLabel203 = new javax.swing.JLabel();
+        adminDob30 = new javax.swing.JLabel();
+        jLabel204 = new javax.swing.JLabel();
+        jLabel205 = new javax.swing.JLabel();
+        jLabel208 = new javax.swing.JLabel();
+        jLabel209 = new javax.swing.JLabel();
+        jLabel210 = new javax.swing.JLabel();
+        jLabel211 = new javax.swing.JLabel();
+        adminNid6 = new javax.swing.JLabel();
+        adminNid7 = new javax.swing.JLabel();
+        jLabel212 = new javax.swing.JLabel();
+        jLabel213 = new javax.swing.JLabel();
+        adminBlood6 = new javax.swing.JLabel();
+        jLabel214 = new javax.swing.JLabel();
+        adminDob31 = new javax.swing.JLabel();
+        jLabel216 = new javax.swing.JLabel();
+        adminDob33 = new javax.swing.JLabel();
+        jLabel217 = new javax.swing.JLabel();
+        adminDob34 = new javax.swing.JLabel();
+        jLabel219 = new javax.swing.JLabel();
+        jLabel220 = new javax.swing.JLabel();
+        jLabel221 = new javax.swing.JLabel();
+        jLabel223 = new javax.swing.JLabel();
+        jLabel224 = new javax.swing.JLabel();
+        printbtn2 = new javax.swing.JButton();
+        view5 = new javax.swing.JButton();
+        jLabel226 = new javax.swing.JLabel();
+        adminDob36 = new javax.swing.JLabel();
+        jLabel227 = new javax.swing.JLabel();
+        sstatusBtn1 = new javax.swing.JButton();
+        jButton21 = new javax.swing.JButton();
+        saddr1 = new javax.swing.JTextField();
+        sdob1 = new javax.swing.JTextField();
+        sblood1 = new javax.swing.JTextField();
+        sphone1 = new javax.swing.JTextField();
+        snid1 = new javax.swing.JTextField();
+        sname1 = new javax.swing.JTextField();
+        sid1 = new javax.swing.JTextField();
+        sreg1 = new javax.swing.JTextField();
+        semail1 = new javax.swing.JTextField();
+        sfac1 = new javax.swing.JTextField();
+        sdept1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -1142,190 +1205,6 @@ public class AdminDashboards extends javax.swing.JFrame {
             }
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        teacherSideBarPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        teacherSideBarPanel.add(teacherSidebarProfilepic, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 200, 180));
-
-        teacherSidebarLogoutBtn.setBackground(new java.awt.Color(14, 0, 82));
-        teacherSidebarLogoutBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        teacherSidebarLogoutBtn.setForeground(new java.awt.Color(255, 255, 255));
-        teacherSidebarLogoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/logout.png"))); // NOI18N
-        teacherSidebarLogoutBtn.setText("Logout");
-        teacherSidebarLogoutBtn.setBorder(null);
-        teacherSidebarLogoutBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        teacherSidebarLogoutBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                teacherSidebarLogoutBtnActionPerformed(evt);
-            }
-        });
-        teacherSideBarPanel.add(teacherSidebarLogoutBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 120, 40));
-
-        teacherProfileViewBtn_.setBackground(new java.awt.Color(14, 0, 82));
-        teacherProfileViewBtn_.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        teacherProfileViewBtn_.setForeground(new java.awt.Color(255, 255, 255));
-        teacherProfileViewBtn_.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/bee.png"))); // NOI18N
-        teacherProfileViewBtn_.setText("View");
-        teacherProfileViewBtn_.setBorder(null);
-        teacherProfileViewBtn_.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        teacherProfileViewBtn_.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                teacherProfileViewBtn_ActionPerformed(evt);
-            }
-        });
-        teacherSideBarPanel.add(teacherProfileViewBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, 120, 40));
-
-        teacherDashboardBtn_.setBackground(new java.awt.Color(14, 0, 82));
-        teacherDashboardBtn_.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        teacherDashboardBtn_.setForeground(new java.awt.Color(255, 255, 255));
-        teacherDashboardBtn_.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/home.png"))); // NOI18N
-        teacherDashboardBtn_.setText("  Dashboard");
-        teacherDashboardBtn_.setBorder(null);
-        teacherDashboardBtn_.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        teacherDashboardBtn_.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                teacherDashboardBtn_MouseClicked(evt);
-            }
-        });
-        teacherDashboardBtn_.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                teacherDashboardBtn_ActionPerformed(evt);
-            }
-        });
-        teacherSideBarPanel.add(teacherDashboardBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 300, 40));
-
-        teacherFacultyBtn_.setBackground(new java.awt.Color(14, 0, 82));
-        teacherFacultyBtn_.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        teacherFacultyBtn_.setForeground(new java.awt.Color(255, 255, 255));
-        teacherFacultyBtn_.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/faculty.png"))); // NOI18N
-        teacherFacultyBtn_.setText("   Faculty");
-        teacherFacultyBtn_.setBorder(null);
-        teacherFacultyBtn_.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        teacherFacultyBtn_.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                teacherFacultyBtn_ActionPerformed(evt);
-            }
-        });
-        teacherSideBarPanel.add(teacherFacultyBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 300, 40));
-
-        bg2.setBackground(new java.awt.Color(0, 5, 42));
-        bg2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        bg2.setOpaque(true);
-        teacherSideBarPanel.add(bg2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 855));
-
-        getContentPane().add(teacherSideBarPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 860));
-
-        StudentSideBarPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        StudentSideBarPanel.add(studentSidebarProfilepic, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 200, 180));
-
-        studentSidebarLogoutBtn.setBackground(new java.awt.Color(14, 0, 82));
-        studentSidebarLogoutBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        studentSidebarLogoutBtn.setForeground(new java.awt.Color(255, 255, 255));
-        studentSidebarLogoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/logout.png"))); // NOI18N
-        studentSidebarLogoutBtn.setText("Logout");
-        studentSidebarLogoutBtn.setBorder(null);
-        studentSidebarLogoutBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        studentSidebarLogoutBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentSidebarLogoutBtnActionPerformed(evt);
-            }
-        });
-        StudentSideBarPanel.add(studentSidebarLogoutBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 120, 40));
-
-        studentProfileViewBtn_17.setBackground(new java.awt.Color(14, 0, 82));
-        studentProfileViewBtn_17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        studentProfileViewBtn_17.setForeground(new java.awt.Color(255, 255, 255));
-        studentProfileViewBtn_17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/bee.png"))); // NOI18N
-        studentProfileViewBtn_17.setText("View");
-        studentProfileViewBtn_17.setBorder(null);
-        studentProfileViewBtn_17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        studentProfileViewBtn_17.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentProfileViewBtn_17ActionPerformed(evt);
-            }
-        });
-        StudentSideBarPanel.add(studentProfileViewBtn_17, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, 120, 40));
-
-        studentDashboardBtn_18.setBackground(new java.awt.Color(14, 0, 82));
-        studentDashboardBtn_18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        studentDashboardBtn_18.setForeground(new java.awt.Color(255, 255, 255));
-        studentDashboardBtn_18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/home.png"))); // NOI18N
-        studentDashboardBtn_18.setText("Dashboard");
-        studentDashboardBtn_18.setBorder(null);
-        studentDashboardBtn_18.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        studentDashboardBtn_18.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                studentDashboardBtn_18MouseClicked(evt);
-            }
-        });
-        studentDashboardBtn_18.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentDashboardBtn_18ActionPerformed(evt);
-            }
-        });
-        StudentSideBarPanel.add(studentDashboardBtn_18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 300, 40));
-
-        studentPaymentBtn_19.setBackground(new java.awt.Color(14, 0, 82));
-        studentPaymentBtn_19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        studentPaymentBtn_19.setForeground(new java.awt.Color(255, 255, 255));
-        studentPaymentBtn_19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/money.png"))); // NOI18N
-        studentPaymentBtn_19.setText("Payment");
-        studentPaymentBtn_19.setBorder(null);
-        studentPaymentBtn_19.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        studentPaymentBtn_19.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentPaymentBtn_19ActionPerformed(evt);
-            }
-        });
-        StudentSideBarPanel.add(studentPaymentBtn_19, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 140, 40));
-
-        studentFacultyBtn_20.setBackground(new java.awt.Color(14, 0, 82));
-        studentFacultyBtn_20.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        studentFacultyBtn_20.setForeground(new java.awt.Color(255, 255, 255));
-        studentFacultyBtn_20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/faculty.png"))); // NOI18N
-        studentFacultyBtn_20.setText("Faculty");
-        studentFacultyBtn_20.setBorder(null);
-        studentFacultyBtn_20.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        studentFacultyBtn_20.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentFacultyBtn_20ActionPerformed(evt);
-            }
-        });
-        StudentSideBarPanel.add(studentFacultyBtn_20, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 360, 140, 40));
-
-        studentExamBtn_21.setBackground(new java.awt.Color(14, 0, 82));
-        studentExamBtn_21.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        studentExamBtn_21.setForeground(new java.awt.Color(255, 255, 255));
-        studentExamBtn_21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/exam.png"))); // NOI18N
-        studentExamBtn_21.setText("Exam");
-        studentExamBtn_21.setBorder(null);
-        studentExamBtn_21.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        studentExamBtn_21.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentExamBtn_21ActionPerformed(evt);
-            }
-        });
-        StudentSideBarPanel.add(studentExamBtn_21, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 140, 40));
-
-        studentResultBtn_22.setBackground(new java.awt.Color(14, 0, 82));
-        studentResultBtn_22.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        studentResultBtn_22.setForeground(new java.awt.Color(255, 255, 255));
-        studentResultBtn_22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/result.png"))); // NOI18N
-        studentResultBtn_22.setText("Result");
-        studentResultBtn_22.setBorder(null);
-        studentResultBtn_22.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        studentResultBtn_22.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                studentResultBtn_22ActionPerformed(evt);
-            }
-        });
-        StudentSideBarPanel.add(studentResultBtn_22, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 410, 140, 40));
-
-        bg1.setBackground(new java.awt.Color(0, 5, 42));
-        bg1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        bg1.setOpaque(true);
-        StudentSideBarPanel.add(bg1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 855));
-
-        getContentPane().add(StudentSideBarPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 860));
 
         AdminSideBarPanel.setPreferredSize(new java.awt.Dimension(350, 855));
         AdminSideBarPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1518,6 +1397,189 @@ public class AdminDashboards extends javax.swing.JFrame {
         AdminSideBarPanel.add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 855));
 
         getContentPane().add(AdminSideBarPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 860));
+
+        teacherSideBarPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        teacherSideBarPanel.add(teacherSidebarProfilepic, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 200, 180));
+
+        teacherSidebarLogoutBtn.setBackground(new java.awt.Color(14, 0, 82));
+        teacherSidebarLogoutBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        teacherSidebarLogoutBtn.setForeground(new java.awt.Color(255, 255, 255));
+        teacherSidebarLogoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/logout.png"))); // NOI18N
+        teacherSidebarLogoutBtn.setText("Logout");
+        teacherSidebarLogoutBtn.setBorder(null);
+        teacherSidebarLogoutBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        teacherSidebarLogoutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                teacherSidebarLogoutBtnActionPerformed(evt);
+            }
+        });
+        teacherSideBarPanel.add(teacherSidebarLogoutBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 120, 40));
+
+        teacherProfileViewBtn_.setBackground(new java.awt.Color(14, 0, 82));
+        teacherProfileViewBtn_.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        teacherProfileViewBtn_.setForeground(new java.awt.Color(255, 255, 255));
+        teacherProfileViewBtn_.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/bee.png"))); // NOI18N
+        teacherProfileViewBtn_.setText("View");
+        teacherProfileViewBtn_.setBorder(null);
+        teacherProfileViewBtn_.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        teacherProfileViewBtn_.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                teacherProfileViewBtn_ActionPerformed(evt);
+            }
+        });
+        teacherSideBarPanel.add(teacherProfileViewBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, 120, 40));
+
+        teacherDashboardBtn_.setBackground(new java.awt.Color(14, 0, 82));
+        teacherDashboardBtn_.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        teacherDashboardBtn_.setForeground(new java.awt.Color(255, 255, 255));
+        teacherDashboardBtn_.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/home.png"))); // NOI18N
+        teacherDashboardBtn_.setText("  Dashboard");
+        teacherDashboardBtn_.setBorder(null);
+        teacherDashboardBtn_.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        teacherDashboardBtn_.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                teacherDashboardBtn_MouseClicked(evt);
+            }
+        });
+        teacherDashboardBtn_.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                teacherDashboardBtn_ActionPerformed(evt);
+            }
+        });
+        teacherSideBarPanel.add(teacherDashboardBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 300, 40));
+
+        teacherFacultyBtn_.setBackground(new java.awt.Color(14, 0, 82));
+        teacherFacultyBtn_.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        teacherFacultyBtn_.setForeground(new java.awt.Color(255, 255, 255));
+        teacherFacultyBtn_.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/faculty.png"))); // NOI18N
+        teacherFacultyBtn_.setText("   Faculty");
+        teacherFacultyBtn_.setBorder(null);
+        teacherFacultyBtn_.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        teacherFacultyBtn_.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                teacherFacultyBtn_ActionPerformed(evt);
+            }
+        });
+        teacherSideBarPanel.add(teacherFacultyBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 300, 40));
+
+        bg2.setBackground(new java.awt.Color(0, 5, 42));
+        bg2.setOpaque(true);
+        teacherSideBarPanel.add(bg2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 855));
+
+        getContentPane().add(teacherSideBarPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 860));
+
+        StudentSideBarPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        StudentSideBarPanel.add(studentSidebarProfilepic, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 200, 180));
+
+        studentSidebarLogoutBtn.setBackground(new java.awt.Color(14, 0, 82));
+        studentSidebarLogoutBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        studentSidebarLogoutBtn.setForeground(new java.awt.Color(255, 255, 255));
+        studentSidebarLogoutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/logout.png"))); // NOI18N
+        studentSidebarLogoutBtn.setText("Logout");
+        studentSidebarLogoutBtn.setBorder(null);
+        studentSidebarLogoutBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        studentSidebarLogoutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentSidebarLogoutBtnActionPerformed(evt);
+            }
+        });
+        StudentSideBarPanel.add(studentSidebarLogoutBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 120, 40));
+
+        studentProfileViewBtn_17.setBackground(new java.awt.Color(14, 0, 82));
+        studentProfileViewBtn_17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        studentProfileViewBtn_17.setForeground(new java.awt.Color(255, 255, 255));
+        studentProfileViewBtn_17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/bee.png"))); // NOI18N
+        studentProfileViewBtn_17.setText("View");
+        studentProfileViewBtn_17.setBorder(null);
+        studentProfileViewBtn_17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        studentProfileViewBtn_17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentProfileViewBtn_17ActionPerformed(evt);
+            }
+        });
+        StudentSideBarPanel.add(studentProfileViewBtn_17, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, 120, 40));
+
+        studentDashboardBtn_18.setBackground(new java.awt.Color(14, 0, 82));
+        studentDashboardBtn_18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        studentDashboardBtn_18.setForeground(new java.awt.Color(255, 255, 255));
+        studentDashboardBtn_18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/home.png"))); // NOI18N
+        studentDashboardBtn_18.setText("Dashboard");
+        studentDashboardBtn_18.setBorder(null);
+        studentDashboardBtn_18.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        studentDashboardBtn_18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                studentDashboardBtn_18MouseClicked(evt);
+            }
+        });
+        studentDashboardBtn_18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentDashboardBtn_18ActionPerformed(evt);
+            }
+        });
+        StudentSideBarPanel.add(studentDashboardBtn_18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 300, 40));
+
+        studentPaymentBtn_19.setBackground(new java.awt.Color(14, 0, 82));
+        studentPaymentBtn_19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        studentPaymentBtn_19.setForeground(new java.awt.Color(255, 255, 255));
+        studentPaymentBtn_19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/money.png"))); // NOI18N
+        studentPaymentBtn_19.setText("Payment");
+        studentPaymentBtn_19.setBorder(null);
+        studentPaymentBtn_19.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        studentPaymentBtn_19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentPaymentBtn_19ActionPerformed(evt);
+            }
+        });
+        StudentSideBarPanel.add(studentPaymentBtn_19, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 140, 40));
+
+        studentFacultyBtn_20.setBackground(new java.awt.Color(14, 0, 82));
+        studentFacultyBtn_20.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        studentFacultyBtn_20.setForeground(new java.awt.Color(255, 255, 255));
+        studentFacultyBtn_20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/faculty.png"))); // NOI18N
+        studentFacultyBtn_20.setText("Faculty");
+        studentFacultyBtn_20.setBorder(null);
+        studentFacultyBtn_20.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        studentFacultyBtn_20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentFacultyBtn_20ActionPerformed(evt);
+            }
+        });
+        StudentSideBarPanel.add(studentFacultyBtn_20, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 360, 140, 40));
+
+        studentExamBtn_21.setBackground(new java.awt.Color(14, 0, 82));
+        studentExamBtn_21.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        studentExamBtn_21.setForeground(new java.awt.Color(255, 255, 255));
+        studentExamBtn_21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/exam.png"))); // NOI18N
+        studentExamBtn_21.setText("Exam");
+        studentExamBtn_21.setBorder(null);
+        studentExamBtn_21.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        studentExamBtn_21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentExamBtn_21ActionPerformed(evt);
+            }
+        });
+        StudentSideBarPanel.add(studentExamBtn_21, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 140, 40));
+
+        studentResultBtn_22.setBackground(new java.awt.Color(14, 0, 82));
+        studentResultBtn_22.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        studentResultBtn_22.setForeground(new java.awt.Color(255, 255, 255));
+        studentResultBtn_22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/result.png"))); // NOI18N
+        studentResultBtn_22.setText("Result");
+        studentResultBtn_22.setBorder(null);
+        studentResultBtn_22.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        studentResultBtn_22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentResultBtn_22ActionPerformed(evt);
+            }
+        });
+        StudentSideBarPanel.add(studentResultBtn_22, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 410, 140, 40));
+
+        bg1.setBackground(new java.awt.Color(0, 5, 42));
+        bg1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        bg1.setOpaque(true);
+        StudentSideBarPanel.add(bg1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 855));
+
+        getContentPane().add(StudentSideBarPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 350, 860));
 
         contentPanel.setBackground(new java.awt.Color(159, 0, 87));
         contentPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -2032,7 +2094,7 @@ public class AdminDashboards extends javax.swing.JFrame {
         adminTeacher_04.add(addNewStudent3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 350, 50, 50));
 
         jLabel27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/adminTeacher.png"))); // NOI18N
-        adminTeacher_04.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, 350, 350));
+        adminTeacher_04.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 350, 350));
 
         jLabel28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/teaher.png"))); // NOI18N
         adminTeacher_04.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 240, -1, 80));
@@ -2049,7 +2111,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 addStudentBtn2ActionPerformed(evt);
             }
         });
-        adminTeacher_04.add(addStudentBtn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 360, 220, 50));
+        adminTeacher_04.add(addStudentBtn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 360, 220, 50));
 
         jLabel57.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstulogo200_200.png"))); // NOI18N
         jLabel57.setText("jLabel8");
@@ -2700,7 +2762,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 back_03ActionPerformed(evt);
             }
         });
-        adminFacultyStudent_15.add(back_03, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 120, 48));
+        adminFacultyStudent_15.add(back_03, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 120, 48));
 
         allStudentsByFaculty.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         allStudentsByFaculty.setModel(new javax.swing.table.DefaultTableModel(
@@ -2724,7 +2786,7 @@ public class AdminDashboards extends javax.swing.JFrame {
             allStudentsByFaculty.getColumnModel().getColumn(4).setHeaderValue("phone");
         }
 
-        adminFacultyStudent_15.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 1050, 520));
+        adminFacultyStudent_15.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 1050, 520));
 
         facultyAllStudentSession.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         facultyAllStudentSession.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2015-2016", "2016-2017", "2017-2018", "2018-2019", "2019-2020", "2020-2021", " " }));
@@ -2739,7 +2801,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 facultyAllStudentSessionActionPerformed(evt);
             }
         });
-        adminFacultyStudent_15.add(facultyAllStudentSession, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 110, 240, 48));
+        adminFacultyStudent_15.add(facultyAllStudentSession, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 190, 240, 48));
 
         viewStudentfaculty_15.setBackground(new java.awt.Color(14, 0, 82));
         viewStudentfaculty_15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -2753,7 +2815,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 viewStudentfaculty_15ActionPerformed(evt);
             }
         });
-        adminFacultyStudent_15.add(viewStudentfaculty_15, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 110, 120, 48));
+        adminFacultyStudent_15.add(viewStudentfaculty_15, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 190, 120, 48));
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/trash.png"))); // NOI18N
         jButton6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -2762,7 +2824,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 jButton6ActionPerformed(evt);
             }
         });
-        adminFacultyStudent_15.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 110, -1, 48));
+        adminFacultyStudent_15.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 190, -1, 48));
 
         ProjectTab.addTab("tab16", adminFacultyStudent_15);
 
@@ -3129,7 +3191,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 view3ActionPerformed(evt);
             }
         });
-        adminStudentDetails_16.add(view3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 120, 40));
+        adminStudentDetails_16.add(view3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 120, 40));
 
         jLabel102.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Flower/blue.png"))); // NOI18N
         jLabel102.setText("jLabel56");
@@ -3931,7 +3993,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 back_4ActionPerformed(evt);
             }
         });
-        adminFacultyTeacher_26.add(back_4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 120, 48));
+        adminFacultyTeacher_26.add(back_4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 120, 48));
 
         allTeachersByFaculty.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         allTeachersByFaculty.setModel(new javax.swing.table.DefaultTableModel(
@@ -3952,22 +4014,21 @@ public class AdminDashboards extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(allTeachersByFaculty);
 
-        adminFacultyTeacher_26.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 1050, 520));
+        adminFacultyTeacher_26.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 1050, 520));
 
-        facultyAllTeacherSession.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        facultyAllTeacherSession.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Serch By Department", "All" }));
-        facultyAllTeacherSession.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        facultyAllTeacherSession.addItemListener(new java.awt.event.ItemListener() {
+        facultyAllTeacher.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        facultyAllTeacher.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        facultyAllTeacher.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                facultyAllTeacherSessionItemStateChanged(evt);
+                facultyAllTeacherItemStateChanged(evt);
             }
         });
-        facultyAllTeacherSession.addActionListener(new java.awt.event.ActionListener() {
+        facultyAllTeacher.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                facultyAllTeacherSessionActionPerformed(evt);
+                facultyAllTeacherActionPerformed(evt);
             }
         });
-        adminFacultyTeacher_26.add(facultyAllTeacherSession, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 110, 240, 48));
+        adminFacultyTeacher_26.add(facultyAllTeacher, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 210, 240, 48));
 
         viewStudentfaculty_16.setBackground(new java.awt.Color(14, 0, 82));
         viewStudentfaculty_16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -3981,7 +4042,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 viewStudentfaculty_16ActionPerformed(evt);
             }
         });
-        adminFacultyTeacher_26.add(viewStudentfaculty_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 110, 120, 48));
+        adminFacultyTeacher_26.add(viewStudentfaculty_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 210, 120, 48));
 
         jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/trash.png"))); // NOI18N
         jButton10.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -3990,11 +4051,420 @@ public class AdminDashboards extends javax.swing.JFrame {
                 jButton10ActionPerformed(evt);
             }
         });
-        adminFacultyTeacher_26.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 110, -1, 48));
+        adminFacultyTeacher_26.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 210, -1, 48));
+
+        facultyAllTeacherSession1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        facultyAllTeacherSession1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        facultyAllTeacherSession1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                facultyAllTeacherSession1ItemStateChanged(evt);
+            }
+        });
+        adminFacultyTeacher_26.add(facultyAllTeacherSession1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 210, 240, 48));
 
         ProjectTab.addTab("tab16", adminFacultyTeacher_26);
 
-        contentPanel.add(ProjectTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 5, 1120, 900));
+        adminTeacherDetails_27.setBackground(new java.awt.Color(0, 5, 42));
+        adminTeacherDetails_27.setPreferredSize(new java.awt.Dimension(1110, 890));
+        adminTeacherDetails_27.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                adminTeacherDetails_27ComponentShown(evt);
+            }
+        });
+        adminTeacherDetails_27.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel195.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/teachers details.png"))); // NOI18N
+        jLabel195.setText("jLabel16");
+        adminTeacherDetails_27.add(jLabel195, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 180, 620, 70));
+
+        sDetailsProfilePic1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        adminTeacherDetails_27.add(sDetailsProfilePic1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 160, 200, 180));
+
+        jLabel197.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Flower/blue.png"))); // NOI18N
+        jLabel197.setText("jLabel56");
+        jLabel197.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        adminTeacherDetails_27.add(jLabel197, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 610, 30, 30));
+
+        jLabel198.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel198.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel198.setText(":");
+        jLabel198.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel198.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel198MouseClicked(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jLabel198, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 650, 20, 30));
+
+        jLabel200.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Flower/blue.png"))); // NOI18N
+        jLabel200.setText("jLabel56");
+        jLabel200.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        adminTeacherDetails_27.add(jLabel200, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 460, 30, 30));
+
+        jLabel201.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Flower/blue.png"))); // NOI18N
+        jLabel201.setText("jLabel56");
+        jLabel201.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        adminTeacherDetails_27.add(jLabel201, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 510, 30, 30));
+
+        jLabel202.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Flower/blue.png"))); // NOI18N
+        jLabel202.setText("jLabel56");
+        jLabel202.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        adminTeacherDetails_27.add(jLabel202, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 560, 30, 30));
+
+        adminDob25.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        adminDob25.setForeground(new java.awt.Color(255, 255, 255));
+        adminDob25.setText("Phone");
+        adminTeacherDetails_27.add(adminDob25, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 610, 70, -1));
+
+        adminDob27.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        adminDob27.setForeground(new java.awt.Color(255, 255, 255));
+        adminDob27.setText("Address");
+        adminTeacherDetails_27.add(adminDob27, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 460, 90, -1));
+
+        adminDob28.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        adminDob28.setForeground(new java.awt.Color(255, 255, 255));
+        adminDob28.setText("Birth Date");
+        adminTeacherDetails_27.add(adminDob28, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 510, 110, -1));
+
+        adminDob29.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        adminDob29.setForeground(new java.awt.Color(255, 255, 255));
+        adminDob29.setText("Blood Group ");
+        adminTeacherDetails_27.add(adminDob29, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 560, 120, -1));
+
+        jLabel203.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Flower/blue.png"))); // NOI18N
+        jLabel203.setText("jLabel56");
+        jLabel203.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        adminTeacherDetails_27.add(jLabel203, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 650, 30, 30));
+
+        adminDob30.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        adminDob30.setForeground(new java.awt.Color(255, 255, 255));
+        adminDob30.setText("Nid no");
+        adminTeacherDetails_27.add(adminDob30, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 650, 70, -1));
+
+        jLabel204.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Flower/blue.png"))); // NOI18N
+        jLabel204.setText("jLabel56");
+        jLabel204.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel204.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel204MouseClicked(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jLabel204, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 410, 30, 30));
+
+        jLabel205.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel205.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel205.setText(":");
+        jLabel205.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel205.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel205MouseClicked(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jLabel205, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 410, 20, 20));
+
+        jLabel208.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel208.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel208.setText(":");
+        jLabel208.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel208.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel208MouseClicked(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jLabel208, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 460, 20, 20));
+
+        jLabel209.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel209.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel209.setText(":");
+        jLabel209.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel209.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel209MouseClicked(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jLabel209, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 510, 20, 20));
+
+        jLabel210.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel210.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel210.setText(":");
+        jLabel210.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel210.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel210MouseClicked(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jLabel210, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 560, 20, 20));
+
+        jLabel211.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel211.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel211.setText(":");
+        jLabel211.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel211.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel211MouseClicked(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jLabel211, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 610, 20, -1));
+
+        adminNid6.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        adminNid6.setForeground(new java.awt.Color(255, 255, 255));
+        adminNid6.setText("Name");
+        adminTeacherDetails_27.add(adminNid6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 410, 90, 30));
+
+        adminNid7.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        adminNid7.setForeground(new java.awt.Color(255, 255, 255));
+        adminNid7.setText("Id");
+        adminTeacherDetails_27.add(adminNid7, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 405, 90, 30));
+
+        jLabel212.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Flower/blue.png"))); // NOI18N
+        jLabel212.setText("jLabel56");
+        jLabel212.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel212.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel212MouseClicked(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jLabel212, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 400, 30, 40));
+
+        jLabel213.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Flower/blue.png"))); // NOI18N
+        jLabel213.setText("jLabel56");
+        jLabel213.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        adminTeacherDetails_27.add(jLabel213, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 450, 30, 40));
+
+        adminBlood6.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        adminBlood6.setForeground(new java.awt.Color(255, 255, 255));
+        adminBlood6.setText("Reg");
+        adminTeacherDetails_27.add(adminBlood6, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 455, 130, 30));
+
+        jLabel214.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Flower/blue.png"))); // NOI18N
+        jLabel214.setText("jLabel56");
+        jLabel214.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        adminTeacherDetails_27.add(jLabel214, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 500, 30, 40));
+
+        adminDob31.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        adminDob31.setForeground(new java.awt.Color(255, 255, 255));
+        adminDob31.setText("Email");
+        adminTeacherDetails_27.add(adminDob31, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 505, 130, -1));
+
+        jLabel216.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Flower/blue.png"))); // NOI18N
+        jLabel216.setText("jLabel56");
+        jLabel216.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        adminTeacherDetails_27.add(jLabel216, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 550, 30, 40));
+
+        adminDob33.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        adminDob33.setForeground(new java.awt.Color(255, 255, 255));
+        adminDob33.setText("Faculty");
+        adminTeacherDetails_27.add(adminDob33, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 555, 110, -1));
+
+        jLabel217.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Flower/blue.png"))); // NOI18N
+        jLabel217.setText("jLabel56");
+        jLabel217.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        adminTeacherDetails_27.add(jLabel217, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 600, 30, 40));
+
+        adminDob34.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        adminDob34.setForeground(new java.awt.Color(255, 255, 255));
+        adminDob34.setText("depertment");
+        adminTeacherDetails_27.add(adminDob34, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 605, 120, -1));
+
+        jLabel219.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel219.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel219.setText(":");
+        jLabel219.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel219.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel219MouseClicked(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jLabel219, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 410, 20, 20));
+
+        jLabel220.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel220.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel220.setText(":");
+        jLabel220.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel220.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel220MouseClicked(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jLabel220, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 460, 20, 20));
+
+        jLabel221.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel221.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel221.setText(":");
+        jLabel221.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel221.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel221MouseClicked(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jLabel221, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 510, 20, 20));
+
+        jLabel223.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel223.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel223.setText(":");
+        jLabel223.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel223.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel223MouseClicked(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jLabel223, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 560, 20, 20));
+
+        jLabel224.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel224.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel224.setText(":");
+        jLabel224.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel224.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel224MouseClicked(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jLabel224, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 610, 20, 20));
+
+        printbtn2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        printbtn2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/print.png"))); // NOI18N
+        printbtn2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        printbtn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printbtn2ActionPerformed(evt);
+            }
+        });
+        adminTeacherDetails_27.add(printbtn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 270, 60, 40));
+
+        view5.setBackground(new java.awt.Color(14, 0, 82));
+        view5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        view5.setForeground(new java.awt.Color(255, 255, 255));
+        view5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/back.png"))); // NOI18N
+        view5.setText("Back");
+        view5.setBorder(null);
+        view5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        view5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                view5ActionPerformed(evt);
+            }
+        });
+        adminTeacherDetails_27.add(view5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 120, 40));
+
+        jLabel226.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Flower/blue.png"))); // NOI18N
+        jLabel226.setText("jLabel56");
+        jLabel226.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        adminTeacherDetails_27.add(jLabel226, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 270, 30, 30));
+
+        adminDob36.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        adminDob36.setForeground(new java.awt.Color(255, 255, 255));
+        adminDob36.setText("Status");
+        adminTeacherDetails_27.add(adminDob36, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 270, 70, 30));
+
+        jLabel227.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel227.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel227.setText(":");
+        jLabel227.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel227.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel227MouseClicked(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jLabel227, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 270, 20, 30));
+
+        sstatusBtn1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        sstatusBtn1.setBorder(null);
+        sstatusBtn1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        sstatusBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sstatusBtn1ActionPerformed(evt);
+            }
+        });
+        adminTeacherDetails_27.add(sstatusBtn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 270, 110, 35));
+
+        jButton21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/trash.png"))); // NOI18N
+        jButton21.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton21ActionPerformed(evt);
+            }
+        });
+        adminTeacherDetails_27.add(jButton21, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 270, 60, 40));
+
+        saddr1.setBackground(new java.awt.Color(0, 5, 42));
+        saddr1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        saddr1.setForeground(new java.awt.Color(255, 255, 255));
+        saddr1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        adminTeacherDetails_27.add(saddr1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 450, 240, 40));
+
+        sdob1.setBackground(new java.awt.Color(0, 5, 42));
+        sdob1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        sdob1.setForeground(new java.awt.Color(255, 255, 255));
+        sdob1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        adminTeacherDetails_27.add(sdob1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 500, 240, 40));
+
+        sblood1.setBackground(new java.awt.Color(0, 5, 42));
+        sblood1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        sblood1.setForeground(new java.awt.Color(255, 255, 255));
+        sblood1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        sblood1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sblood1ActionPerformed(evt);
+            }
+        });
+        adminTeacherDetails_27.add(sblood1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 550, 240, 40));
+
+        sphone1.setBackground(new java.awt.Color(0, 5, 42));
+        sphone1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        sphone1.setForeground(new java.awt.Color(255, 255, 255));
+        sphone1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        adminTeacherDetails_27.add(sphone1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 600, 240, 40));
+
+        snid1.setBackground(new java.awt.Color(0, 5, 42));
+        snid1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        snid1.setForeground(new java.awt.Color(255, 255, 255));
+        snid1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        adminTeacherDetails_27.add(snid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 650, 240, 40));
+
+        sname1.setBackground(new java.awt.Color(0, 5, 42));
+        sname1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        sname1.setForeground(new java.awt.Color(255, 255, 255));
+        sname1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        sname1.setMargin(new java.awt.Insets(2, 10, 2, 2));
+        adminTeacherDetails_27.add(sname1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 400, 240, 40));
+
+        sid1.setBackground(new java.awt.Color(0, 5, 42));
+        sid1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        sid1.setForeground(new java.awt.Color(255, 255, 255));
+        sid1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        adminTeacherDetails_27.add(sid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 400, 240, 40));
+
+        sreg1.setBackground(new java.awt.Color(0, 5, 42));
+        sreg1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        sreg1.setForeground(new java.awt.Color(255, 255, 255));
+        sreg1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        adminTeacherDetails_27.add(sreg1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 450, 240, 40));
+
+        semail1.setBackground(new java.awt.Color(0, 5, 42));
+        semail1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        semail1.setForeground(new java.awt.Color(255, 255, 255));
+        semail1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        adminTeacherDetails_27.add(semail1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 500, 240, 40));
+
+        sfac1.setBackground(new java.awt.Color(0, 5, 42));
+        sfac1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        sfac1.setForeground(new java.awt.Color(255, 255, 255));
+        sfac1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        adminTeacherDetails_27.add(sfac1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 550, 240, 40));
+
+        sdept1.setBackground(new java.awt.Color(0, 5, 42));
+        sdept1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        sdept1.setForeground(new java.awt.Color(255, 255, 255));
+        sdept1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        sdept1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sdept1ActionPerformed(evt);
+            }
+        });
+        adminTeacherDetails_27.add(sdept1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 600, 240, 40));
+
+        ProjectTab.addTab("tab28", adminTeacherDetails_27);
+
+        contentPanel.add(ProjectTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -35, 1120, 935));
 
         getContentPane().add(contentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, -35, 1115, 890));
 
@@ -4051,7 +4521,8 @@ public class AdminDashboards extends javax.swing.JFrame {
 
     private void adminTranspoartBtn_12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminTranspoartBtn_12ActionPerformed
         // TODO add your handling code here:
-        ProjectTab.setSelectedIndex(11);
+//        ProjectTab.setSelectedIndex(11);
+        ProjectTab.setSelectedIndex(26);
     }//GEN-LAST:event_adminTranspoartBtn_12ActionPerformed
 
     private void adminStudentBtn_03ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminStudentBtn_03ActionPerformed
@@ -5289,118 +5760,514 @@ public class AdminDashboards extends javax.swing.JFrame {
 
     private void back_4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_4ActionPerformed
         // TODO add your handling code here:
-        facultyAllTeacherSession.removeAllItems();
+        facultyAllTeacher.removeAllItems();
         ProjectTab.setSelectedIndex(3);
     }//GEN-LAST:event_back_4ActionPerformed
 
     private void allTeachersByFacultyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_allTeachersByFacultyMouseClicked
         // TODO add your handling code here:
+        
+             DefaultTableModel table = (DefaultTableModel)allTeachersByFaculty.getModel();
+             int id = allTeachersByFaculty.getSelectedRow();
+             studentsDetailsId = table.getValueAt(id,1).toString();
     }//GEN-LAST:event_allTeachersByFacultyMouseClicked
 
-    private void facultyAllTeacherSessionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_facultyAllTeacherSessionItemStateChanged
+    private void facultyAllTeacherItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_facultyAllTeacherItemStateChanged
         // TODO add your handling code here:
+        conn con = new conn();
+        String faculty = (String)facultyAllTeacher.getSelectedItem();
+        selectedFaculty = faculty;
+        String query = "SELECT dept FROM faculty where fac='"+faculty+"'";
+        try {
+            ps = con.c.prepareStatement(query);
+            rs  = ps.executeQuery(query);
+            
+                facultyAllTeacherSession1.removeAllItems();
+                facultyAllTeacherSession1.addItem("All");
+                while (rs.next()){ 
+                    facultyAllTeacherSession1.addItem(rs.getString("dept"));  
+                }
+                facultyAllTeacherSession1.getModel().setSelectedItem("All");
+                
+        }catch (SQLException ex){
+            Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        
+        
+//                conn cc = new conn();
+//                try {
+//                    String query = "SELECT dept FROM faculty where fac='"+depert+"'";
+//                    ps = cc.c.prepareStatement(query);
+//                    ResultSet  rs1  = ps.executeQuery(query);
+//                        while (rs1.next()){ 
+//                            facultyAllTeacherSession1.addItem(rs.getString("dept"));  
+//                        }
+//                }catch (SQLException ex){
+//                    Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                
+////            try{
+////                conn cc = new conn();
+////                
+////                try (ResultSet rs = cc.s.executeQuery("select dept from faculty where fac='"+depert+"'")) {
+////                    
+////                    if(rs.next()){ 
+////                        facultyAllTeacher.addItem("Select Depertment");  
+////                        if(rs.next()){
+////                               while (rs.next()){ 
+////                                   facultyAllTeacherSession1.addItem(rs.getString("dept"));  
+////                               }
+////                        }
+////                    
+////                    }
+////                    
+////                    
+////                    try {
+////                        String query = "SELECT dept FROM faculty where fac='"+depert+"'";
+////                        ps = cc.c.prepareStatement(query);
+////                       ResultSet  rs1  = ps.executeQuery(query);
+////                            while (rs1.next()){ 
+////                                facultyAllTeacherSession1.addItem(rs.getString("dept"));  
+////                            }
+////                    }catch (SQLException ex){
+////                        Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+////                    }
+////                    
+////                    
+//////                    DefaultTableModel table = (DefaultTableModel)allTeachersByFaculty.getModel();
+//////                    for( int i = table.getRowCount() - 1; i >= 0; i-- ){
+//////                        table.removeRow(i);
+//////                    }
+//////
+//////                    if(rs.next()){
+//////                        int count=0;
+//////                        do{
+//////                            count++;
+//////                            String name = rs.getString("name");
+//////                            String id = rs.getString("uid");
+//////                            String dept = rs.getString("dept");
+//////                            String email = rs.getString("email");
+//////                            String nid = rs.getString("nid");
+//////                            String st[] = {name,id,dept,email,nid};
+//////                            table.addRow(st);
+//////                        }while(rs.next());
+//////                         alert("success","true","Total "+count+" data found");
+//////                    }else{ 
+//////                         alert("error","true","No student found");
+//////                    }
+////                }
+////                   cc.s.close();
+////
+////            }catch(SQLException e){
+////            }
+    }//GEN-LAST:event_facultyAllTeacherItemStateChanged
 
-    }//GEN-LAST:event_facultyAllTeacherSessionItemStateChanged
-
-    private void facultyAllTeacherSessionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facultyAllTeacherSessionActionPerformed
-        String deprtment = (String)facultyAllTeacherSession.getSelectedItem();
+    private void facultyAllTeacherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facultyAllTeacherActionPerformed
+        String deprtment = (String)facultyAllTeacher.getSelectedItem();
         showFacultyTeacher(selectedFacultyName,deprtment);
-    }//GEN-LAST:event_facultyAllTeacherSessionActionPerformed
+    }//GEN-LAST:event_facultyAllTeacherActionPerformed
 
     private void viewStudentfaculty_16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewStudentfaculty_16ActionPerformed
         // TODO add your handling code here:
+            DefaultTableModel table = (DefaultTableModel)allTeachersByFaculty.getModel();
+             
+             tableRowNo = allTeachersByFaculty.getSelectedRow();
+             if(tableRowNo>=0){ 
+                ProjectTab.setSelectedIndex(26);
+             }else{ 
+               alert("error","true","No field selected");
+             }
     }//GEN-LAST:event_viewStudentfaculty_16ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton10ActionPerformed
+    
+    public boolean teacher() throws SQLException{
+            ResultSet rs1;
+            PreparedStatement pss1=null;
+            
+            conn cc = new conn();
+            String query = "SELECT * FROM teacher where fac='"+selectedFaculty+"'";
+            pss1 = cc.c.prepareStatement(query);
+            rs1  = pss1.executeQuery(query);
+        
+        
+        if(rs1.next()){ 
+          return true;
+        }else{
+          return false;
+        }
 
+        
+    }
+    
     private void adminFacultyTeacher_26ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_adminFacultyTeacher_26ComponentShown
-        // TODO add your handling code here:
+        try {
+            ResultSet rs1;
+            PreparedStatement pss1=null;
+            conn cc = new conn();
+            
+            DefaultTableModel table = (DefaultTableModel)allTeachersByFaculty.getModel();
+            for( int i = table.getRowCount() - 1; i >= 0; i-- ){
+                table.removeRow(i);
+            }
+            
+            pss1 = cc.c.prepareStatement("SELECT * FROM faculty ");
+            rs1  = pss1.executeQuery("SELECT * FROM faculty ");
+            if(rs1.next()){
+            facultyAllTeacher.removeAllItems();  
+                facultyAllTeacher.getModel().setSelectedItem(selectedFaculty);
+                    facultyAllTeacher.addItem("Select Faculty");
+                while (rs1.next()){
+                    facultyAllTeacher.addItem(rs1.getString("fac"));  
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_adminFacultyTeacher_26ComponentShown
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
 
-        showFacultyTeacher("cse",null);
-
+        try {
+            selectedFaculty = "cse";
+            if(teacher()){
+                ProjectTab.setSelectedIndex(25);
+            }else{
+                alert("error","true","Teacher is not avilable");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        // TODO add your handling code here:
-        showFacultyTeacher("agri",null);
+        try {
+            // TODO add your handling code here:
+            selectedFaculty = "agri";
+            if(teacher()){
+                ProjectTab.setSelectedIndex(25);
+            }else{
+                alert("error","true","Teacher is not avilable");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
-        // TODO add your handling code here:
-         
         try {
+            // TODO add your handling code here:
             selectedFaculty = "dvm";
-            findData_According_to_SingleDara("teacher","faculty",selectedFaculty);
-        } catch (SQLException ex){
+            if(teacher()){
+                ProjectTab.setSelectedIndex(25);
+            }else{
+                alert("error","true","Teacher is not avilable");
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jLabel18MouseClicked
 
     private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
-        // TODO add your handling code here:
         try {
+            // TODO add your handling code here:
             selectedFaculty = "bam";
-            findData_According_to_SingleDara("teacher","faculty",selectedFaculty);
-        } catch (SQLException ex){
+            if(teacher()){
+                ProjectTab.setSelectedIndex(25);
+            }else{
+                alert("error","true","Teacher is not avilable");
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jLabel19MouseClicked
 
     private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
-        // TODO add your handling code here:
         try {
+            // TODO add your handling code here:
             selectedFaculty = "fish";
-            findData_According_to_SingleDara("teacher","faculty",selectedFaculty);
-        } catch (SQLException ex){
+            if(teacher()){
+                ProjectTab.setSelectedIndex(25);
+            }else{
+                alert("error","true","Teacher is not avilable");
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jLabel20MouseClicked
 
     private void jLabel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseClicked
-        // TODO add your handling code here:
         try {
+            // TODO add your handling code here:
             selectedFaculty = "nfs";
-            findData_According_to_SingleDara("teacher","faculty",selectedFaculty);
-        } catch (SQLException ex){
+            if(teacher()){
+                ProjectTab.setSelectedIndex(25);
+            }else{
+                alert("error","true","Teacher is not avilable");
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jLabel21MouseClicked
 
     private void jLabel160MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel160MouseClicked
-        // TODO add your handling code here:
         try {
+            // TODO add your handling code here:
             selectedFaculty = "esdm";
-            findData_According_to_SingleDara("teacher","faculty",selectedFaculty);
-        } catch (SQLException ex){
+            if(teacher()){
+                ProjectTab.setSelectedIndex(25);
+            }else{
+                alert("error","true","Teacher is not avilable");
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jLabel160MouseClicked
 
     private void jLabel161MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel161MouseClicked
-        // TODO add your handling code here:
         try {
+            // TODO add your handling code here:
             selectedFaculty = "lla";
-            findData_According_to_SingleDara("teacher","faculty",selectedFaculty);
-        } catch (SQLException ex){
+            if(teacher()){
+                ProjectTab.setSelectedIndex(25);
+            }else{
+                alert("error","true","Teacher is not avilable");
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jLabel161MouseClicked
 
     private void jLabel162MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel162MouseClicked
-        // TODO add your handling code here:
         try {
+            // TODO add your handling code here:
             selectedFaculty = "ah";
-            findData_According_to_SingleDara("teacher","faculty",selectedFaculty);
-        } catch (SQLException ex){
+            if(teacher()){
+                ProjectTab.setSelectedIndex(25);
+            }else{
+                alert("error","true","Teacher is not avilable");
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jLabel162MouseClicked
+
+    private void facultyAllTeacherSession1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_facultyAllTeacherSession1ItemStateChanged
+        // TODO add your handling code here:
+        ResultSet rs = null;
+             conn cc = new conn();
+             String depert = (String)facultyAllTeacherSession1.getSelectedItem();
+             try{
+                 
+                 if("All".equals(depert)){ 
+                   rs = cc.s.executeQuery("select * from teacher where fac='"+selectedFaculty+"'");
+                 }else{ 
+                   rs = cc.s.executeQuery("select * from teacher where fac='"+selectedFaculty+"' and dept='"+depert+"' ");
+                 }
+                 
+                 DefaultTableModel table = (DefaultTableModel)allTeachersByFaculty.getModel();
+                 for( int i = table.getRowCount() - 1; i >= 0; i-- ){
+                     table.removeRow(i);
+                 }
+                 
+                 int counts=0;
+                 if(rs.next()){
+                     do{
+                         String name = rs.getString("name");
+                         String id = rs.getString("uid");
+                         String dep = rs.getString("dept");
+                         String email = rs.getString("email");
+                         String nid = rs.getString("nid");
+                         String st[] = {name,id,dep,email,nid};
+                         table.addRow(st);
+                         ++counts;
+                     }while(rs.next());
+                     
+                 }
+                 
+                 if(counts > 0){
+                     alert("success","true","Total "+counts+" Teachers found");
+                 }else{
+                 }
+                 
+             } catch (SQLException ex){
+                 Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+             }
+    }//GEN-LAST:event_facultyAllTeacherSession1ItemStateChanged
+
+    private void jLabel198MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel198MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel198MouseClicked
+
+    private void jLabel204MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel204MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel204MouseClicked
+
+    private void jLabel205MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel205MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel205MouseClicked
+
+    private void jLabel208MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel208MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel208MouseClicked
+
+    private void jLabel209MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel209MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel209MouseClicked
+
+    private void jLabel210MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel210MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel210MouseClicked
+
+    private void jLabel211MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel211MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel211MouseClicked
+
+    private void jLabel212MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel212MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel212MouseClicked
+
+    private void jLabel219MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel219MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel219MouseClicked
+
+    private void jLabel220MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel220MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel220MouseClicked
+
+    private void jLabel221MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel221MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel221MouseClicked
+
+    private void jLabel223MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel223MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel223MouseClicked
+
+    private void jLabel224MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel224MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel224MouseClicked
+
+    private void printbtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtn2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_printbtn2ActionPerformed
+
+    private void view5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_view5ActionPerformed
+        // TODO add your handling code here:
+         ProjectTab.setSelectedIndex(25);
+    }//GEN-LAST:event_view5ActionPerformed
+
+    private void jLabel227MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel227MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel227MouseClicked
+
+    private void sstatusBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sstatusBtn1ActionPerformed
+        // TODO add your handling code here:
+        
+        String text = sstatusBtn1.getText();
+        if("Active".equals(text)){
+            try {
+                status("teacher","Disable");
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{ 
+            try {
+                status("teacher","Active");
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }//GEN-LAST:event_sstatusBtn1ActionPerformed
+
+    private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton21ActionPerformed
+
+    private void sblood1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sblood1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sblood1ActionPerformed
+
+    private void sdept1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sdept1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sdept1ActionPerformed
+
+    private void adminTeacherDetails_27ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_adminTeacherDetails_27ComponentShown
+        // TODO add your handling code here:
+                sname1.setBorder(BorderFactory.createCompoundBorder(sname1.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+                saddr1.setBorder(BorderFactory.createCompoundBorder(sname1.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+                sdob1.setBorder(BorderFactory.createCompoundBorder(sname1.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+                sblood1.setBorder(BorderFactory.createCompoundBorder(sname1.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+                sphone1.setBorder(BorderFactory.createCompoundBorder(sname1.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+                snid1.setBorder(BorderFactory.createCompoundBorder(sname1.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+                sid1.setBorder(BorderFactory.createCompoundBorder(sname1.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+                sreg1.setBorder(BorderFactory.createCompoundBorder(sname1.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+                semail.setBorder(BorderFactory.createCompoundBorder(sname1.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+                sfac1.setBorder(BorderFactory.createCompoundBorder(sname1.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+                sdept1.setBorder(BorderFactory.createCompoundBorder(sname1.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+            
+        
+            
+        
+        
+        
+                    AdminDashboards.selectForPrint f = new AdminDashboards.selectForPrint();
+                    try {
+                        
+                        //  recive func meathoad return query result                   
+                        rs = f.findTeacher(studentsDetailsId);
+                        if(rs.next()){
+                                byte[] img = rs.getBytes("photo");
+                                
+                               if(img != null){
+                               
+                                int imgs = img[0];
+                                if(imgs == -1) {
+                                    ImageIcon MyImage1 = new ImageIcon(img);
+                                    Image img1 = MyImage1.getImage();
+                                    Image newImage1 = img1.getScaledInstance(sDetailsProfilePic1.getWidth(), sDetailsProfilePic1.getHeight(), Image.SCALE_SMOOTH);
+                                    ImageIcon image1 = new ImageIcon(newImage1);
+                                    sDetailsProfilePic1.setIcon(image1);
+                                }
+                               }else{
+                                   alert("error","true","Image is not inserted yet");
+                                    sDetailsProfilePic.setIcon(null);
+                               }
+                               
+                               if("active".equals(rs.getString("status"))){
+                                    sstatusBtn1.setText("Active");
+                                    sstatusBtn1.setBackground(Color.GREEN);
+                                    sstatusBtn1.setForeground(Color.BLACK);
+                               }else{ 
+                                    sstatusBtn1.setText("Disable");
+                                    sstatusBtn1.setBackground(Color.RED);
+                                    sstatusBtn1.setForeground(Color.WHITE);
+                               }
+                                
+                               
+                                sname1.setText(rs.getString("name"));
+                                saddr1.setText(rs.getString("addr"));
+                                sdob1.setText(rs.getString("dob"));
+                                sblood1.setText(rs.getString("blood"));
+                                sphone1.setText(rs.getString("phone"));
+                                snid1.setText(rs.getString("nid"));
+                                sid1.setText(rs.getString("uid"));
+                                sreg1.setText(rs.getString("reg"));
+                                semail1.setText(rs.getString("email"));
+                                sfac1.setText(rs.getString("fac"));
+                                sdept1.setText(rs.getString("dept"));
+                                
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Insert.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+    }//GEN-LAST:event_adminTeacherDetails_27ComponentShown
 
     /**
      * @param args the command line arguments
@@ -5455,6 +6322,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JLabel adminBlood;
     private javax.swing.JLabel adminBlood1;
     private javax.swing.JLabel adminBlood2;
+    private javax.swing.JLabel adminBlood6;
     private javax.swing.JButton adminDashboardBtn_01;
     private javax.swing.JPanel adminDashboard_01;
     private javax.swing.JLabel adminDob;
@@ -5463,7 +6331,16 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JLabel adminDob11;
     private javax.swing.JLabel adminDob13;
     private javax.swing.JLabel adminDob2;
+    private javax.swing.JLabel adminDob25;
+    private javax.swing.JLabel adminDob27;
+    private javax.swing.JLabel adminDob28;
+    private javax.swing.JLabel adminDob29;
     private javax.swing.JLabel adminDob3;
+    private javax.swing.JLabel adminDob30;
+    private javax.swing.JLabel adminDob31;
+    private javax.swing.JLabel adminDob33;
+    private javax.swing.JLabel adminDob34;
+    private javax.swing.JLabel adminDob36;
     private javax.swing.JLabel adminDob4;
     private javax.swing.JLabel adminDob5;
     private javax.swing.JLabel adminDob6;
@@ -5486,6 +6363,8 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JLabel adminNid;
     private javax.swing.JLabel adminNid2;
     private javax.swing.JLabel adminNid3;
+    private javax.swing.JLabel adminNid6;
+    private javax.swing.JLabel adminNid7;
     private javax.swing.JButton adminOrganaizationBtn_11;
     private javax.swing.JPanel adminOrganaization_11;
     private javax.swing.JButton adminPassEye;
@@ -5500,6 +6379,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JPanel adminStudent_03;
     private javax.swing.JPanel adminTeacherAdd_23;
     private javax.swing.JButton adminTeacherBtn_04;
+    private javax.swing.JPanel adminTeacherDetails_27;
     private javax.swing.JPanel adminTeacher_04;
     private javax.swing.JButton adminTransectionBtn_08;
     private javax.swing.JPanel adminTransection_08;
@@ -5537,7 +6417,8 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> esdmSession_16;
     private javax.swing.JComboBox<String> facVal;
     private javax.swing.JComboBox<String> facultyAllStudentSession;
-    private javax.swing.JComboBox<String> facultyAllTeacherSession;
+    private javax.swing.JComboBox<String> facultyAllTeacher;
+    private javax.swing.JComboBox<String> facultyAllTeacherSession1;
     private javax.swing.JLabel file;
     private javax.swing.JLabel file1;
     private javax.swing.JLabel file2;
@@ -5557,6 +6438,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton21;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -5637,9 +6519,34 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel195;
+    private javax.swing.JLabel jLabel197;
+    private javax.swing.JLabel jLabel198;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel200;
+    private javax.swing.JLabel jLabel201;
+    private javax.swing.JLabel jLabel202;
+    private javax.swing.JLabel jLabel203;
+    private javax.swing.JLabel jLabel204;
+    private javax.swing.JLabel jLabel205;
+    private javax.swing.JLabel jLabel208;
+    private javax.swing.JLabel jLabel209;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel210;
+    private javax.swing.JLabel jLabel211;
+    private javax.swing.JLabel jLabel212;
+    private javax.swing.JLabel jLabel213;
+    private javax.swing.JLabel jLabel214;
+    private javax.swing.JLabel jLabel216;
+    private javax.swing.JLabel jLabel217;
+    private javax.swing.JLabel jLabel219;
+    private javax.swing.JLabel jLabel220;
+    private javax.swing.JLabel jLabel221;
+    private javax.swing.JLabel jLabel223;
+    private javax.swing.JLabel jLabel224;
+    private javax.swing.JLabel jLabel226;
+    private javax.swing.JLabel jLabel227;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
@@ -5743,29 +6650,43 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> nfsSession_16;
     private javax.swing.JTextField nidVal;
     private javax.swing.JButton printbtn;
+    private javax.swing.JButton printbtn2;
     private javax.swing.JTextField regVal;
     private javax.swing.JLabel sDetailsProfilePic;
+    private javax.swing.JLabel sDetailsProfilePic1;
     private javax.swing.JTextField saddr;
+    private javax.swing.JTextField saddr1;
     private javax.swing.JTextField sblood;
+    private javax.swing.JTextField sblood1;
+    private javax.swing.JTextField sdept1;
     private javax.swing.JTextField sdob;
+    private javax.swing.JTextField sdob1;
     private javax.swing.JButton searchStudent_16;
     private javax.swing.JTextField semail;
+    private javax.swing.JTextField semail1;
     private javax.swing.JButton sendUpdateVerificationCode_14;
     private javax.swing.JTextField serchIdField;
     private javax.swing.JTextField serchIdField1;
     private javax.swing.JComboBox<String> sessionVal;
     private javax.swing.JTextField sfac;
+    private javax.swing.JTextField sfac1;
     private javax.swing.JTextField sfname;
     private javax.swing.JTextField shall;
     private javax.swing.JTextField sid;
+    private javax.swing.JTextField sid1;
     private javax.swing.JTextField smname;
     private javax.swing.JTextField sname;
+    private javax.swing.JTextField sname1;
     private javax.swing.JTextField snid;
+    private javax.swing.JTextField snid1;
     private javax.swing.JTextField sphone;
+    private javax.swing.JTextField sphone1;
     private javax.swing.JTextField sreg;
+    private javax.swing.JTextField sreg1;
     private javax.swing.JTextField ssem;
     private javax.swing.JTextField ssession;
     private javax.swing.JButton sstatusBtn;
+    private javax.swing.JButton sstatusBtn1;
     private javax.swing.JLabel studentBlood;
     private javax.swing.JButton studentDashboardBtn_18;
     private javax.swing.JPanel studentDashboard_18;
@@ -5825,6 +6746,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> userVerifyIdentity;
     private javax.swing.JTextField verifyUsername;
     private javax.swing.JButton view3;
+    private javax.swing.JButton view5;
     private javax.swing.JButton viewStudentfaculty_15;
     private javax.swing.JButton viewStudentfaculty_16;
     private javax.swing.JTextField vkey;

@@ -394,9 +394,6 @@ public class AdminDashboards extends javax.swing.JFrame {
     }
     public String getfirstLeter_replace_some_speacial_charecter_and_word(String str)
     {
-        // First remove and,& from string        
-        str = str.replaceAll("and", "");
-        str = str.replaceAll("&", "");
         
         
         
@@ -404,26 +401,35 @@ public class AdminDashboards extends javax.swing.JFrame {
         int wordCount = 0;
         String forLongString = "";
         String forShortString = "";
-        
-        
-        for (int i = 0; i < str.length(); i++)
-        {
-            if(i<4 && wordCount==0){ 
-                 forShortString += (str.charAt(i));
-            }
+        // First remove and,& from string    
+        if(str != null){ 
+            str = str.replaceAll("and", "");
+            str = str.replaceAll("&", "");
             
-            if (str.charAt(i) == ' ')
-            {
-                wordCount++;
-                continueAdding = true;
-            }else if (str.charAt(i) != ' ' && continueAdding == true)
-            {
-                forLongString += (str.charAt(i));
-                continueAdding = false;
-            }
+                    
+                for (int i = 0; i < str.length(); i++)
+                {
+                    if(i<4 && wordCount==0){ 
+                         forShortString += (str.charAt(i));
+                    }
+
+                    if (str.charAt(i) == ' ')
+                    {
+                        wordCount++;
+                        continueAdding = true;
+                    }else if (str.charAt(i) != ' ' && continueAdding == true)
+                    {
+                        forLongString += (str.charAt(i));
+                        continueAdding = false;
+                    }
+
+
+                }
             
-           
         }
+        
+        
+
         if(wordCount==0) { 
           return forShortString;
         }else{ 
@@ -1824,7 +1830,7 @@ public class AdminDashboards extends javax.swing.JFrame {
         adminStudent_03.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/student.png"))); // NOI18N
-        adminStudent_03.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 230, 410, 60));
+        adminStudent_03.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 300, 410, 60));
 
         addStudentBtn_13.setBackground(new java.awt.Color(14, 0, 82));
         addStudentBtn_13.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -1838,18 +1844,18 @@ public class AdminDashboards extends javax.swing.JFrame {
                 addStudentBtn_13ActionPerformed(evt);
             }
         });
-        adminStudent_03.add(addStudentBtn_13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, 170, 50));
+        adminStudent_03.add(addStudentBtn_13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 170, 50));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/adminStudentImage1.png"))); // NOI18N
-        adminStudent_03.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 390, 270));
+        adminStudent_03.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 80, 390, 270));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Faculty/cse.png"))); // NOI18N
         jLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        adminStudent_03.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 160, 130));
+        adminStudent_03.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, 160, 130));
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstulogo200_200.png"))); // NOI18N
         jLabel8.setText("jLabel8");
-        adminStudent_03.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 60, 200, 200));
+        adminStudent_03.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 130, 200, 200));
 
         serchIdField.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         serchIdField.setText("Search with student id");
@@ -1873,7 +1879,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 serchIdFieldActionPerformed(evt);
             }
         });
-        adminStudent_03.add(serchIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 350, 330, 50));
+        adminStudent_03.add(serchIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 410, 330, 50));
 
         searchStudent_16.setBackground(new java.awt.Color(14, 0, 82));
         searchStudent_16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/search.png"))); // NOI18N
@@ -1885,39 +1891,39 @@ public class AdminDashboards extends javax.swing.JFrame {
                 searchStudent_16ActionPerformed(evt);
             }
         });
-        adminStudent_03.add(searchStudent_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 350, 50, 50));
+        adminStudent_03.add(searchStudent_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 410, 50, 50));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Faculty/Ag.png"))); // NOI18N
         jLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        adminStudent_03.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 420, 160, 130));
+        adminStudent_03.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 480, 160, 130));
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Faculty/dvm.png"))); // NOI18N
         jLabel10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        adminStudent_03.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 420, 160, 130));
+        adminStudent_03.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 480, 160, 130));
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Faculty/bba.png"))); // NOI18N
         jLabel11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        adminStudent_03.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 420, 160, 130));
+        adminStudent_03.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 480, 160, 130));
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Faculty/fish.png"))); // NOI18N
         jLabel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        adminStudent_03.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 420, 160, 130));
+        adminStudent_03.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 480, 160, 130));
 
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Faculty/nfs.png"))); // NOI18N
         jLabel13.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        adminStudent_03.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 420, 160, 130));
+        adminStudent_03.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 480, 160, 130));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Faculty/disster.png"))); // NOI18N
         jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        adminStudent_03.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 600, 160, 130));
+        adminStudent_03.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 660, 160, 130));
 
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Faculty/land.png"))); // NOI18N
         jLabel14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        adminStudent_03.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 600, 160, 130));
+        adminStudent_03.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 660, 160, 130));
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Faculty/Ah.png"))); // NOI18N
         jLabel15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        adminStudent_03.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 600, 160, 130));
+        adminStudent_03.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 660, 160, 130));
 
         cseSession_16.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         cseSession_16.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cse Session", "2015-2016", "2016-2017", "2017-2018", "2018-2019", "2019-2020", "2020-2021", " " }));
@@ -1932,7 +1938,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 cseSession_16ActionPerformed(evt);
             }
         });
-        adminStudent_03.add(cseSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 550, 160, 40));
+        adminStudent_03.add(cseSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 610, 160, 40));
 
         agriSession_16.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         agriSession_16.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Agri Session", "2015-2016", "2016-2017", "2017-2018", "2018-2019", "2019-2020", "2020-2021", " " }));
@@ -1947,7 +1953,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 agriSession_16ActionPerformed(evt);
             }
         });
-        adminStudent_03.add(agriSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 550, 160, 40));
+        adminStudent_03.add(agriSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 610, 160, 40));
 
         dvmSession_16.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         dvmSession_16.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dvm Session", "2015-2016", "2016-2017", "2017-2018", "2018-2019", "2019-2020", "2020-20211" }));
@@ -1962,7 +1968,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 dvmSession_16ActionPerformed(evt);
             }
         });
-        adminStudent_03.add(dvmSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 550, 160, 40));
+        adminStudent_03.add(dvmSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 610, 160, 40));
 
         bamSession_16.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         bamSession_16.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bam Session", "2015-2016", "2016-2017", "2017-2018", "2018-2019", "2019-2020", "2020-2021" }));
@@ -1977,7 +1983,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 bamSession_16ActionPerformed(evt);
             }
         });
-        adminStudent_03.add(bamSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 550, 160, 40));
+        adminStudent_03.add(bamSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 610, 160, 40));
 
         fishSession_16.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         fishSession_16.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fish Session", "2015-2016", "2016-2017", "2017-2018", "2018-2019", "2019-2020", "2020-2021" }));
@@ -1992,7 +1998,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 fishSession_16ActionPerformed(evt);
             }
         });
-        adminStudent_03.add(fishSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 550, 160, 40));
+        adminStudent_03.add(fishSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 610, 160, 40));
 
         nfsSession_16.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         nfsSession_16.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nfs Session", "2015-2016", "2016-2017", "2017-2018", "2018-2019", "2019-2020", "2020-2021" }));
@@ -2007,7 +2013,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 nfsSession_16ActionPerformed(evt);
             }
         });
-        adminStudent_03.add(nfsSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 550, 160, 40));
+        adminStudent_03.add(nfsSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 610, 160, 40));
 
         esdmSession_16.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         esdmSession_16.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disaster Session", "2015-2016", "2016-2017", "2017-2018", "2018-2019", "2019-2020", "2020-2021", " " }));
@@ -2022,7 +2028,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 esdmSession_16ActionPerformed(evt);
             }
         });
-        adminStudent_03.add(esdmSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 730, 160, 40));
+        adminStudent_03.add(esdmSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 790, 160, 40));
 
         llaSession_16.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         llaSession_16.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lla Session", "2015-2016", "2016-2017", "2017-2018", "2018-2019", "2019-2020", "2020-2021", " " }));
@@ -2037,7 +2043,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 llaSession_16ActionPerformed(evt);
             }
         });
-        adminStudent_03.add(llaSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 730, 160, 40));
+        adminStudent_03.add(llaSession_16, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 790, 160, 40));
 
         ahSession_16.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         ahSession_16.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ah Session", "2015-2016", "2016-2017", "2017-2018", "2018-2019", "2019-2020", "2020-2021" }));
@@ -5565,15 +5571,20 @@ public class AdminDashboards extends javax.swing.JFrame {
         
         String fac = (String)ta_fac.getSelectedItem();
         fac = getfirstLeter_replace_some_speacial_charecter_and_word(fac).toLowerCase();
-        System.out.println(fac);
         String query = "SELECT dept FROM teacher where fac='"+fac+"'";
      
         try {
             ps = con.c.prepareStatement(query);
             rs  = ps.executeQuery(query);
+            
+            
+                ta_dept.removeAllItems();
+                ta_dept.addItem("Select depertment");
                 while (rs.next()){ 
                     ta_dept.addItem(rs.getString("dept"));  
                 }
+                 ta_dept.getModel().setSelectedItem("Select depertment");
+
         }catch (SQLException ex){
             Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -5600,9 +5611,11 @@ public class AdminDashboards extends javax.swing.JFrame {
         String reg =  ta_reg.getText();
         String nid =  ta_nid.getText();
         String fac = (String)ta_fac.getSelectedItem();
-        fac = getfirstLeter_replace_some_speacial_charecter_and_word(fac).toLowerCase();
         String dept = (String)ta_dept.getSelectedItem();
-        dept = getfirstLeter_replace_some_speacial_charecter_and_word(dept).toLowerCase();
+        fac = getfirstLeter_replace_some_speacial_charecter_and_word(fac).toLowerCase();
+        if(!"".equals(dept)){ 
+          dept = getfirstLeter_replace_some_speacial_charecter_and_word(dept).toLowerCase();
+        }
         
         String blood = (String)ta_blood.getSelectedItem();
              
@@ -6155,6 +6168,8 @@ public class AdminDashboards extends javax.swing.JFrame {
 
     private void printbtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtn2ActionPerformed
         // TODO add your handling code here:
+               teacherDetailsPrint ok = new teacherDetailsPrint(studentsDetailsId);
+               ok.prints();
     }//GEN-LAST:event_printbtn2ActionPerformed
 
     private void view5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_view5ActionPerformed

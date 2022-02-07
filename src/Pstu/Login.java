@@ -828,46 +828,6 @@ public class Login extends javax.swing.JFrame {
                 }else{
                     alert("error", "true", "Account credential is not match");
                 }
-//            if ("student".equals(user)) {
-//                String query = "SELECT * FROM student where(email='" + userName + "' and password='" + pss + "')"
-//                        + "or(roll='" + userName + "' and password='" + pss + "')"
-//                        + "or(username='" + userName + "' and password='" + pss + "')";
-//
-//                ResultSet rs = cc.s.executeQuery(query);
-//
-//                if (rs.next()) {
-//                    logeduser = userName;
-//                    logedUserIdentity = user;
-//                    this.setVisible(false);
-//
-//                    AdminDashboards home = new AdminDashboards(logeduser, logedUserIdentity);
-//                    home.setVisible(true);
-//                    LoginUsername.setText("");
-//                    LoginPassword.setText("");
-//                } else {
-//                    alert("error", "true", "Something going wrong !");
-//                }
-//            } else {
-//                String query = "SELECT * FROM users where(uid='" + userName + "' and role='" + user + "' and password='" + pss + "')"
-//                        + "or(username='"+userName+"'and role='" + user + "' and password='" + pss + "')";
-//
-//                ResultSet rs = cc.s.executeQuery(query);
-//
-//                if (rs.next()) {
-//                    if("active".equals(rs.getString("status"))){
-//                        logeduser = rs.getString("uid");
-//                        logedUserIdentity = user;
-//                        this.dispose();
-//                        AdminDashboards home = new AdminDashboards(logeduser, logedUserIdentity);
-//                        home.setVisible(true);
-//                    }else{
-//                      alert("error", "true", "Acount is diabled as a "+user.toUpperCase());
-//                    }
-//                } else {
-//                    alert("error", "true", "Account credential is not match");
-//                }
-//
-//            }
 
         } catch (SQLException e) {
         }

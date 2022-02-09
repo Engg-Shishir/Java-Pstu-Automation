@@ -811,14 +811,18 @@ public class Login extends javax.swing.JFrame {
             String pss = LoginPassword.getText();
             
             
-                String query = "SELECT * FROM users where(uid='" + userName + "' and role='" + user + "' and password='" + pss + "')"
-                        + "or(username='"+userName+"'and role='" + user + "' and password='" + pss + "')";
+//                String query = "SELECT * FROM users where(uid='" + userName + "' and role='" + user + "' and password='" + pss + "')"
+//                        + "or(username='"+userName+"'and role='" + user + "' and password='" + pss + "')";
+
+
+                String query = "SELECT * FROM users where(uid='" + userName + "' and password='" + pss + "')"
+                        + "or(username='"+userName+"' and password='" + pss + "')";
                 ResultSet rs = cc.s.executeQuery(query);
 
                 if (rs.next()){
                     if("active".equals(rs.getString("status"))){
                         logeduserId = rs.getString("uid");
-                        logedUserIdentity = user;
+                        logedUserIdentity = rs.getString("role");
                         this.dispose();
                         AdminDashboards home = new AdminDashboards(logeduserId, logedUserIdentity);
                         home.setVisible(true);

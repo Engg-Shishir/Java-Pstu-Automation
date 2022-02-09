@@ -90,7 +90,7 @@ public class teacherDetailsPrint extends javax.swing.JFrame {
                                 teacherPrintPhone.setText(rs.getString("phone"));
                                 teacherPrintEmail.setText(rs.getString("email"));
                                 teacherPrintReg.setText(rs.getString("reg"));
-                                teacherPrintId.setText(rs.getString("id"));
+                                teacherPrintId.setText(rs.getString("uid"));
                                 teacherPrintBlood.setText(rs.getString("blood"));
                                 teacherPrintDob.setText(rs.getString("dob"));
                                 teacherPrintNid.setText(rs.getString("nid"));
@@ -325,7 +325,8 @@ public class teacherDetailsPrint extends javax.swing.JFrame {
         print.add(name14, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 500, 80, 40));
 
         statusValue.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        print.add(statusValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 510, 150, 30));
+        statusValue.setText("fghfgh");
+        print.add(statusValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 500, 140, 40));
 
         name15.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         name15.setText("Email");

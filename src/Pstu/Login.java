@@ -39,6 +39,9 @@ public class Login extends javax.swing.JFrame {
     private int random;
     Boolean mailSendSuccessStatus = false;
 
+        String role="",requestEmail="";
+        
+        
     public Login() {
         initComponents();
     }
@@ -277,11 +280,19 @@ public class Login extends javax.swing.JFrame {
     private void initComponents() {
 
         bg = new javax.swing.JPanel();
+        alertPanel = new javax.swing.JPanel();
+        errorClose = new javax.swing.JButton();
+        errorLogo = new javax.swing.JLabel();
+        errorText = new javax.swing.JLabel();
+        error = new javax.swing.JLabel();
+        successLogo = new javax.swing.JLabel();
+        successText = new javax.swing.JLabel();
+        successClose = new javax.swing.JButton();
+        success = new javax.swing.JLabel();
         Login_Forgot = new javax.swing.JTabbedPane();
         LoginPanel = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        userIdentity = new javax.swing.JComboBox<>();
         LoginUsername = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jSeparator5 = new javax.swing.JSeparator();
@@ -293,15 +304,6 @@ public class Login extends javax.swing.JFrame {
         backtoVerify = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        alertPanel = new javax.swing.JPanel();
-        errorClose = new javax.swing.JButton();
-        errorLogo = new javax.swing.JLabel();
-        errorText = new javax.swing.JLabel();
-        error = new javax.swing.JLabel();
-        successLogo = new javax.swing.JLabel();
-        successText = new javax.swing.JLabel();
-        successClose = new javax.swing.JButton();
-        success = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         ForgotPanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -316,8 +318,6 @@ public class Login extends javax.swing.JFrame {
         backtoLogin = new javax.swing.JLabel();
         forgotVerificationCode = new javax.swing.JPasswordField();
         jLabel10 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        forgotUserIdentity = new javax.swing.JComboBox<>();
         forgotPassword = new javax.swing.JPasswordField();
         jLabel16 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -335,122 +335,6 @@ public class Login extends javax.swing.JFrame {
 
         bg.setBackground(new java.awt.Color(0, 51, 51));
         bg.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        Login_Forgot.setBackground(new java.awt.Color(0, 51, 51));
-        Login_Forgot.setAlignmentX(0.0F);
-        Login_Forgot.setAlignmentY(0.0F);
-        Login_Forgot.setPreferredSize(new java.awt.Dimension(900, 500));
-
-        LoginPanel.setBackground(new java.awt.Color(74, 0, 52));
-        LoginPanel.setPreferredSize(new java.awt.Dimension(900, 530));
-        LoginPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstall420_420.png"))); // NOI18N
-        jLabel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        LoginPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 380, 370));
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/login.png"))); // NOI18N
-        LoginPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 80, -1, 70));
-
-        userIdentity.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        userIdentity.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select yuor identity", "Student", "Teacher", "Admin" }));
-        userIdentity.setBorder(null);
-        userIdentity.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        userIdentity.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userIdentityActionPerformed(evt);
-            }
-        });
-        LoginPanel.add(userIdentity, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 190, 240, 40));
-
-        LoginUsername.setBackground(new java.awt.Color(74, 0, 52));
-        LoginUsername.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        LoginUsername.setForeground(new java.awt.Color(255, 255, 255));
-        LoginUsername.setBorder(null);
-        LoginUsername.addContainerListener(new java.awt.event.ContainerAdapter() {
-            public void componentRemoved(java.awt.event.ContainerEvent evt) {
-                LoginUsernameComponentRemoved(evt);
-            }
-        });
-        LoginUsername.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                LoginUsernameFocusGained(evt);
-            }
-        });
-        LoginPanel.add(LoginUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 260, 250, 40));
-
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/user.png"))); // NOI18N
-        jLabel13.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        LoginPanel.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 260, 30, 40));
-
-        jSeparator5.setForeground(new java.awt.Color(255, 255, 255));
-        LoginPanel.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 300, 390, 20));
-
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setText("Username :");
-        jLabel12.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        LoginPanel.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 260, 80, 40));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/key.png"))); // NOI18N
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        LoginPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 320, 40, 40));
-
-        LoginPassword.setBackground(new java.awt.Color(74, 0, 52));
-        LoginPassword.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        LoginPassword.setForeground(new java.awt.Color(255, 255, 255));
-        LoginPassword.setBorder(null);
-        LoginPassword.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                LoginPasswordFocusGained(evt);
-            }
-        });
-        LoginPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LoginPasswordActionPerformed(evt);
-            }
-        });
-        LoginPanel.add(LoginPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 320, 250, 40));
-
-        jSeparator4.setForeground(new java.awt.Color(255, 255, 255));
-        LoginPanel.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 360, 390, 10));
-
-        loginBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        loginBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/login.png"))); // NOI18N
-        loginBtn.setText("Login");
-        loginBtn.setBorder(null);
-        loginBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        loginBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loginBtnActionPerformed(evt);
-            }
-        });
-        LoginPanel.add(loginBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 390, 100, 40));
-
-        backtoVerify.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        backtoVerify.setForeground(new java.awt.Color(0, 153, 153));
-        backtoVerify.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/refresh.png"))); // NOI18N
-        backtoVerify.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        backtoVerify.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                backtoVerifyMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                backtoVerifyMouseEntered(evt);
-            }
-        });
-        LoginPanel.add(backtoVerify, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 400, 40, 30));
-
-        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("Forgot Password ?");
-        LoginPanel.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 400, -1, 30));
-
-        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel17.setText("Password  :");
-        jLabel17.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        LoginPanel.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 320, 80, 40));
 
         alertPanel.setBackground(new java.awt.Color(74, 0, 52));
         alertPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -500,7 +384,112 @@ public class Login extends javax.swing.JFrame {
         success.setOpaque(true);
         alertPanel.add(success, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 5, 450, 60));
 
-        LoginPanel.add(alertPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 0, -1, 70));
+        bg.add(alertPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 0, -1, 70));
+
+        Login_Forgot.setBackground(new java.awt.Color(0, 51, 51));
+        Login_Forgot.setAlignmentX(0.0F);
+        Login_Forgot.setAlignmentY(0.0F);
+        Login_Forgot.setPreferredSize(new java.awt.Dimension(900, 500));
+
+        LoginPanel.setBackground(new java.awt.Color(74, 0, 52));
+        LoginPanel.setPreferredSize(new java.awt.Dimension(900, 530));
+        LoginPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstall420_420.png"))); // NOI18N
+        jLabel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        LoginPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 380, 370));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/login.png"))); // NOI18N
+        LoginPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 120, -1, 70));
+
+        LoginUsername.setBackground(new java.awt.Color(74, 0, 52));
+        LoginUsername.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        LoginUsername.setForeground(new java.awt.Color(255, 255, 255));
+        LoginUsername.setBorder(null);
+        LoginUsername.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentRemoved(java.awt.event.ContainerEvent evt) {
+                LoginUsernameComponentRemoved(evt);
+            }
+        });
+        LoginUsername.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                LoginUsernameFocusGained(evt);
+            }
+        });
+        LoginPanel.add(LoginUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 230, 250, 40));
+
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/user.png"))); // NOI18N
+        jLabel13.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        LoginPanel.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 230, 30, 40));
+
+        jSeparator5.setForeground(new java.awt.Color(255, 255, 255));
+        LoginPanel.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 270, 390, 20));
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("Username :");
+        jLabel12.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        LoginPanel.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 230, 80, 40));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/key.png"))); // NOI18N
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        LoginPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 290, 40, 40));
+
+        LoginPassword.setBackground(new java.awt.Color(74, 0, 52));
+        LoginPassword.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        LoginPassword.setForeground(new java.awt.Color(255, 255, 255));
+        LoginPassword.setBorder(null);
+        LoginPassword.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                LoginPasswordFocusGained(evt);
+            }
+        });
+        LoginPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LoginPasswordActionPerformed(evt);
+            }
+        });
+        LoginPanel.add(LoginPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 290, 250, 40));
+
+        jSeparator4.setForeground(new java.awt.Color(255, 255, 255));
+        LoginPanel.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 330, 390, 10));
+
+        loginBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        loginBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/login.png"))); // NOI18N
+        loginBtn.setText("Login");
+        loginBtn.setBorder(null);
+        loginBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        loginBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginBtnActionPerformed(evt);
+            }
+        });
+        LoginPanel.add(loginBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 360, 100, 40));
+
+        backtoVerify.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        backtoVerify.setForeground(new java.awt.Color(0, 153, 153));
+        backtoVerify.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/refresh.png"))); // NOI18N
+        backtoVerify.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        backtoVerify.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backtoVerifyMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                backtoVerifyMouseEntered(evt);
+            }
+        });
+        LoginPanel.add(backtoVerify, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 370, 40, 30));
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Forgot Password ?");
+        LoginPanel.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 370, -1, 30));
+
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel17.setText("Password  :");
+        jLabel17.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        LoginPanel.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 290, 80, 40));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Alert Icon/close.png"))); // NOI18N
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -521,7 +510,7 @@ public class Login extends javax.swing.JFrame {
         ForgotPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 410, 370));
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/verify.png"))); // NOI18N
-        ForgotPanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 80, -1, 70));
+        ForgotPanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 120, -1, 70));
 
         forgotUsername.setBackground(new java.awt.Color(74, 0, 52));
         forgotUsername.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -548,7 +537,7 @@ public class Login extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("Email :");
+        jLabel15.setText("ID :");
         jLabel15.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         ForgotPanel.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 220, 50, 40));
 
@@ -602,20 +591,6 @@ public class Login extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Back to Login ?");
         ForgotPanel.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 420, 140, 30));
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/bordertop left270_270.png"))); // NOI18N
-        ForgotPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 290, 260));
-
-        forgotUserIdentity.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        forgotUserIdentity.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select yuor identity", "Student", "Teacher", "Admin" }));
-        forgotUserIdentity.setBorder(null);
-        forgotUserIdentity.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        forgotUserIdentity.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                forgotUserIdentityActionPerformed(evt);
-            }
-        });
-        ForgotPanel.add(forgotUserIdentity, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 170, 240, 40));
 
         forgotPassword.setBackground(new java.awt.Color(74, 0, 52));
         forgotPassword.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -684,84 +659,103 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         conn cc = new conn();
-
-        String identity = (String) forgotUserIdentity.getSelectedItem();
-        identity = identity.toLowerCase();
         String userName = forgotUsername.getText();
         String vkey = forgotVerificationCode.getText();
         String pass = forgotPassword.getText();
 
-        if (!checkWordIsFoundOrnOT(identity,"select")) {
-            alert("error", "true", "Selct your identity first");
-        } else {
             if ("".equals(userName)) {
-                alert("error", "true", "Email address is required");
+                alert("error", "true", "User id is required");
             } else {
                 if ("".equals(vkey)) {
                     alert("error", "true", "Write your verification code");
                 } else {
                     if ("".equals(pass)) {
                         alert("error", "true", "Write your secure Password");
-                    } else {
-                        if ("student".equals(identity)) {
-                            String query = "SELECT * FROM student where(email='" + userName + "')";
-
-                            try {
-                                rs= cc.s.executeQuery(query);
-                                if (rs.next()) {
-                                    
-                                     String q = "SELECT * FROM users where(uid='" + rs.getString("uid") + "' and token='" + vkey + "')";
-                                     rs = cc.s.executeQuery(q);
-                                      if (rs.next()){
-                                        updatePasswordFormverification(identity, rs.getString("uid"), pass);
-                                      }
-                                } else {
-                                    alert("error", "true", "Your creadential is not match");
-                                }
-                            } catch (SQLException ex) {
-                                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    }else{ 
+                        try {
+                            String  query = "SELECT * FROM users where(uid='" +userName+"' and token='" +vkey+"')";
+                            ResultSet rs1 = cc.s.executeQuery(query);
+                            if(rs1.next()){
+                                System.out.println("loadig.....");
+                               updatePasswordFormverification(role, userName, pass);
                             }
-                        } else if("admin".equals(identity)){
-                            String query = "SELECT * FROM administrator where(email='" + userName + "')";
-
-                            try {
-                                rs = cc.s.executeQuery(query);
-                                if (rs.next()) {
-                                    
-                                     String q = "SELECT * FROM users where(uid='" + rs.getString("uid") + "' and token='" + vkey + "')";
-                                     rs = cc.s.executeQuery(q);
-                                      if (rs.next()){
-                                        updatePasswordFormverification(identity, rs.getString("uid"), pass);
-                                      }
-                                } else {
-                                    alert("error", "true", "Your creadential is not match");
-                                }
-                            } catch (SQLException ex) {
-                                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        } else if("teacher".equals(identity)){
-                            String query = "SELECT * FROM teacher where(email='" + userName + "')";
-
-                            try {
-                                rs = cc.s.executeQuery(query);
-                                if (rs.next()) {
-                                    
-                                     String q = "SELECT * FROM users where(uid='" + rs.getString("uid") + "' and token='" + vkey + "')";
-                                     rs = cc.s.executeQuery(q);
-                                      if (rs.next()){
-                                        updatePasswordFormverification(identity, rs.getString("uid"), pass);
-                                      }
-                                } else {
-                                    alert("error", "true", "Your creadential is not match");
-                                }
-                            } catch (SQLException ex) {
-                                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                        
                     }
                 }
             }
-        }
+//        if (!checkWordIsFoundOrnOT(identity,"select")) {
+//            alert("error", "true", "Selct your identity first");
+//        } else {
+//            if ("".equals(userName)) {
+//                alert("error", "true", "Email address is required");
+//            } else {
+//                if ("".equals(vkey)) {
+//                    alert("error", "true", "Write your verification code");
+//                } else {
+//                    if ("".equals(pass)) {
+//                        alert("error", "true", "Write your secure Password");
+//                    } else {
+//                        if ("student".equals(identity)) {
+//                            String query = "SELECT * FROM student where(email='" + userName + "')";
+//
+//                            try {
+//                                rs= cc.s.executeQuery(query);
+//                                if (rs.next()) {
+//                                    
+//                                     String q = "SELECT * FROM users where(uid='" + rs.getString("uid") + "' and token='" + vkey + "')";
+//                                     rs = cc.s.executeQuery(q);
+//                                      if (rs.next()){
+//                                        updatePasswordFormverification(identity, rs.getString("uid"), pass);
+//                                      }
+//                                } else {
+//                                    alert("error", "true", "Your creadential is not match");
+//                                }
+//                            } catch (SQLException ex) {
+//                                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
+//                        } else if("admin".equals(identity)){
+//                            String query = "SELECT * FROM administrator where(email='" + userName + "')";
+//
+//                            try {
+//                                rs = cc.s.executeQuery(query);
+//                                if (rs.next()) {
+//                                    
+//                                     String q = "SELECT * FROM users where(uid='" + rs.getString("uid") + "' and token='" + vkey + "')";
+//                                     rs = cc.s.executeQuery(q);
+//                                      if (rs.next()){
+//                                        updatePasswordFormverification(identity, rs.getString("uid"), pass);
+//                                      }
+//                                } else {
+//                                    alert("error", "true", "Your creadential is not match");
+//                                }
+//                            } catch (SQLException ex) {
+//                                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
+//                        } else if("teacher".equals(identity)){
+//                            String query = "SELECT * FROM teacher where(email='" + userName + "')";
+//
+//                            try {
+//                                rs = cc.s.executeQuery(query);
+//                                if (rs.next()) {
+//                                    
+//                                     String q = "SELECT * FROM users where(uid='" + rs.getString("uid") + "' and token='" + vkey + "')";
+//                                     rs = cc.s.executeQuery(q);
+//                                      if (rs.next()){
+//                                        updatePasswordFormverification(identity, rs.getString("uid"), pass);
+//                                      }
+//                                } else {
+//                                    alert("error", "true", "Your creadential is not match");
+//                                }
+//                            } catch (SQLException ex) {
+//                                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
     }//GEN-LAST:event_forgotbtnActionPerformed
 
     private void backtoLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backtoLoginMouseClicked
@@ -778,10 +772,6 @@ public class Login extends javax.swing.JFrame {
     private void forgotVerificationCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotVerificationCodeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_forgotVerificationCodeActionPerformed
-
-    private void userIdentityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIdentityActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_userIdentityActionPerformed
 
     private void LoginUsernameComponentRemoved(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_LoginUsernameComponentRemoved
         // TODO add your handling code here:
@@ -805,16 +795,9 @@ public class Login extends javax.swing.JFrame {
         try {
             conn cc = new conn();
 
-            String user = (String) userIdentity.getSelectedItem();
-            user = user.toLowerCase();
             String userName = LoginUsername.getText();
             String pss = LoginPassword.getText();
             
-            
-//                String query = "SELECT * FROM users where(uid='" + userName + "' and role='" + user + "' and password='" + pss + "')"
-//                        + "or(username='"+userName+"'and role='" + user + "' and password='" + pss + "')";
-
-
                 String query = "SELECT * FROM users where(uid='" + userName + "' and password='" + pss + "')"
                         + "or(username='"+userName+"' and password='" + pss + "')";
                 ResultSet rs = cc.s.executeQuery(query);
@@ -827,7 +810,7 @@ public class Login extends javax.swing.JFrame {
                         AdminDashboards home = new AdminDashboards(logeduserId, logedUserIdentity);
                         home.setVisible(true);
                     }else{
-                      alert("error", "true", "Acount is diabled as a "+user.toUpperCase());
+                      alert("error", "true", "Acount is diabled as a "+rs.getString("role").toUpperCase());
                     }
                 }else{
                     alert("error", "true", "Account credential is not match");
@@ -839,55 +822,60 @@ public class Login extends javax.swing.JFrame {
 
     private void backtoVerifyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backtoVerifyMouseClicked
         // TODO add your handling code here:
-        String email = LoginUsername.getText();
-        email = email.toLowerCase();
-        String identity = (String) userIdentity.getSelectedItem();
-        identity = identity.toLowerCase();
-        
-        
-         // Just methoad ke call korar janno emty perameter pass korci
-         
-        
-
-        
-        
-        if (!checkWordIsFoundOrnOT(identity,"select")){
-            alert("error", "true", "At first select your identity");
-        } else {
-            if ("".equals(email)) {
-                alert("error", "true", "Insert your registared Email");
-            } else {
-                    String query = null;
+        String id = LoginUsername.getText();
+            conn cc = new conn();
+                        ResultSet rs1;
+            if ("".equals(id)) {
+                alert("error", "true", "Insert your Id");
+            }else {
+                String query = null;
                 try {
-                    if ("student".equals(identity)) {
-                        query = "SELECT * FROM student where(email='" + email + "') ";
-                    } else if("admin".equals(identity)){
-                        query = "SELECT * FROM administrator where(email='" + email + "') ";
-                    }else if("teacher".equals(identity)){
-                        query = "SELECT * FROM teacher where(email='" + email + "') ";
-                    }
-                    
-                    conn cc = new conn();
+                    query = "SELECT * FROM users where uid='"+id+"' ";
                     ResultSet rs = cc.s.executeQuery(query);
                     if (rs.next()) {
-                        int randoms = new Random().nextInt(900000) + 100000;
-                        String data = String.valueOf(randoms);
-                        sendMail mail = new sendMail(email,randoms,"Reset Password Verification Code");
-                        if(mail.send()){
-                            UpdateToken token = new UpdateToken(identity,"token",data,rs.getString("uid"));
-                            if(token.UpadetData()){ 
-                                Login_Forgot.setSelectedIndex(1);
-                                alert("success", "true", "Please verify your mail");
-                            }
+                        System.out.println("Pass 01");
+                        role = rs.getString("role");
+                        if("student".equals(rs.getString("role"))){ 
+                          String query1 = "SELECT * FROM student where(uid='" +id+"')";
+                           rs1 = cc.s.executeQuery(query1);
+                        }else{ 
+                          String query1 = "SELECT * FROM teacher where(uid='"+id+"')";
+                          rs1 = cc.s.executeQuery(query1);
                         }
+                        
+                        if(rs1.next()){ 
+                        System.out.println("Pass 02");
+                            if(rs1.getString("email") != null){
+                              System.out.println("Email ace");
+                                requestEmail = rs1.getString("email");
+                                System.out.println(requestEmail);
+                                int randoms = new Random().nextInt(900000) + 100000;
+                                String data = String.valueOf(randoms);
+                                sendMail mail = new sendMail(requestEmail,randoms,"Reset Password Verification Code");
+                                if(mail.send()){
+                                    UpdateToken token = new UpdateToken(role,"token",data,id);
+                                    if(token.UpadetData()){ 
+                                       System.out.println("Token updated");
+                                        System.out.println("asce");
+                                        Login_Forgot.setSelectedIndex(1);
+                                        alert("success", "true", "Please verify your mail");
+                                    }
+                                }
+                            }else{
+                              alert("error", "true", "No email found this account");
+                            }
+                        }else{
+                            alert("error", "true", "Account is not avilable now");
+                        }
+                        
+
                     }else{
-                     alert("error", "true", "Email is not registered yet");
+                     alert("error", "true", "Uid is not registered yet");
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }
     }//GEN-LAST:event_backtoVerifyMouseClicked
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
@@ -905,10 +893,6 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         alert("success", "false", "");
     }//GEN-LAST:event_successCloseActionPerformed
-
-    private void forgotUserIdentityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotUserIdentityActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_forgotUserIdentityActionPerformed
 
     private void forgotPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_forgotPasswordFocusGained
         // TODO add your handling code here:
@@ -1008,7 +992,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel errorLogo;
     private javax.swing.JLabel errorText;
     private javax.swing.JPasswordField forgotPassword;
-    private javax.swing.JComboBox<String> forgotUserIdentity;
     private javax.swing.JTextField forgotUsername;
     private javax.swing.JPasswordField forgotVerificationCode;
     private javax.swing.JButton forgotbtn;
@@ -1023,7 +1006,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1040,6 +1022,5 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton successClose;
     private javax.swing.JLabel successLogo;
     private javax.swing.JLabel successText;
-    private javax.swing.JComboBox<String> userIdentity;
     // End of variables declaration//GEN-END:variables
 }

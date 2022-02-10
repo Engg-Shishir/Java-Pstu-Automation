@@ -192,7 +192,6 @@ public class print extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
-        border1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         Jid = new javax.swing.JLabel();
         name13 = new javax.swing.JLabel();
@@ -337,7 +336,7 @@ public class print extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("This page is fully justified, this students details by PSTU ");
-        print.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 1300, 470, 40));
+        print.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 1210, 470, 40));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Student Signature");
@@ -346,9 +345,6 @@ public class print extends javax.swing.JFrame {
         jSeparator2.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator2.setForeground(new java.awt.Color(0, 0, 0));
         print.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 1040, 300, 10));
-
-        border1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/under line design .png"))); // NOI18N
-        print.add(border1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 1260, 620, 60));
 
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
@@ -483,7 +479,6 @@ public class print extends javax.swing.JFrame {
     private javax.swing.JLabel Jsem;
     private javax.swing.JLabel Jsession;
     private javax.swing.JLabel background;
-    private javax.swing.JLabel border1;
     private javax.swing.JLabel border2;
     private javax.swing.JLabel datePrint;
     private javax.swing.JLabel dot;

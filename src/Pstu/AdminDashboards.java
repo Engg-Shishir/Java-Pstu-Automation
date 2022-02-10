@@ -348,7 +348,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                try{		
 //                    String sql = "DELETE FROM student WHERE roll ='"+id+"'";
                     String sql = "DELETE student, users FROM student INNER JOIN users ON student.uid = users.uid WHERE users.uid='"+id+"'";
-                    conn.s.executeUpdate(sql);
+//                    conn.s.executeUpdate(sql);
                     PreparedStatement pst =  conn.c.prepareStatement(sql);
                     int numRowsChanged = pst.executeUpdate(sql);
                     if(numRowsChanged==0){

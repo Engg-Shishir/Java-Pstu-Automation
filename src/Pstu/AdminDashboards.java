@@ -111,14 +111,11 @@ public class AdminDashboards extends javax.swing.JFrame {
            if("student".equals(identity)){
               StudentSideBarPanel.setVisible(true);
               ProjectTab.setSelectedIndex(17);
-           }
-//           else if("admin".equals(identity)){
-//              AdminSideBarPanel.setVisible(true);
-//             ProjectTab.setSelectedIndex(0);
-//           }
-           else{
+           }else{
+               if("admin".equals(identity)){
+                  ProjectTab.setSelectedIndex(0); 
+               }
               teacherSideBarPanel.setVisible(true);
-              ProjectTab.setSelectedIndex(24); 
            }
     }
     
@@ -346,9 +343,7 @@ public class AdminDashboards extends javax.swing.JFrame {
 
             conn conn = new conn();
                try{		
-//                    String sql = "DELETE FROM student WHERE roll ='"+id+"'";
                     String sql = "DELETE student, users FROM student INNER JOIN users ON student.uid = users.uid WHERE users.uid='"+id+"'";
-//                    conn.s.executeUpdate(sql);
                     PreparedStatement pst =  conn.c.prepareStatement(sql);
                     int numRowsChanged = pst.executeUpdate(sql);
                     if(numRowsChanged==0){
@@ -565,35 +560,6 @@ public class AdminDashboards extends javax.swing.JFrame {
     public boolean showFacultyTeacher(String fac,String dept){
         String depert;
         selectedFacultyName = fac;
-        
-//        conn cc = new conn();
-//        try{
-//            if(dept==null || "All".equals(dept)){
-//                rs = cc.s.executeQuery("select * from teacher where  fac='"+fac+"' ");
-//            }else{
-//                rs = cc.s.executeQuery("select * from teacher where fac='"+fac+"' and dept='"+dept+"' ");
-//            }
-//
-//            DefaultTableModel table = (DefaultTableModel)allTeachersByFaculty.getModel();
-//            for( int i = table.getRowCount() - 1; i >= 0; i-- ){
-//                table.removeRow(i);
-//            }
-//
-//            if(rs.next()){
-//                do{
-//                    String name = rs.getString("name");
-//                    String id = rs.getString("uid");
-//                    depert = rs.getString("dept");
-//                    String email = rs.getString("email");
-//                    String nid = rs.getString("nid");
-//                    String st[] = {name,id,depert,email,nid};
-//                    table.addRow(st);
-//                }while(rs.next());
-//            }else{
-//                alert("error","true","No data found");
-//            }
-//        }catch(SQLException e){
-//        }
         return false;
     } 
     
@@ -657,42 +623,15 @@ public class AdminDashboards extends javax.swing.JFrame {
                     }
                       
                }
-//               else if("admin".equals(identity)){
-//                   System.out.println("asce"+ rs.getString("name"));
-//                    byte[] img = rs.getBytes("photo");
-//                    
-//                    if(img != null){ 
-//                        ImageIcon MyImage1 = new ImageIcon(img);
-//                        Image img1 = MyImage1.getImage();
-//                        Image newImage1 = img1.getScaledInstance(adminProfilepic.getWidth(), adminProfilepic.getHeight(), Image.SCALE_SMOOTH);
-//                        ImageIcon image1 = new ImageIcon(newImage1);
-//                        adminProfilepic.setIcon(image1);
-//                        adminUpdateProfilePic.setIcon(image1);
-//                    }
-//                    
-//                    
-//                        adminName.setText(rs.getString("name"));
-//                        adminNid.setText(rs.getString("nid"));
-//                        adminBlood.setText(rs.getString("blood"));
-//                        adminDob.setText(rs.getString("dob"));
-//                        adminId.setText(rs.getString("uid"));
-//                        adminUsername.setText(rs.getString("username"));
-//                        adminPhone.setText(rs.getString("phone"));
-//                        adminPassword.setText(rs.getString("password"));
-//                        adminPassword.setEchoChar('*');
-//                        adminEmail.setText(rs.getString("email"));
-//               }
                else{
                     if("admin".equals(identity)){         
                         labelForShowTeacherAdminTitlePic.setVisible(true);
-                        dashAdminTitle.setVisible(true);
                         adminSidebar.setVisible(true);
                     }else if("register".equals(identity)){
                         
                     }else if("controller".equals(identity)){
                         
                     }else if("din".equals(identity)){
-                        dashDinTitle.setVisible(true);
                         labelForShowTeacherDinTitlePic.setVisible(true);
                         DinSidebar.setVisible(true);
                     }else{ 
@@ -802,7 +741,6 @@ public class AdminDashboards extends javax.swing.JFrame {
         teacherSidebarLogoutBtn = new javax.swing.JButton();
         teacherProfileViewBtn_ = new javax.swing.JButton();
         teacherDashboardBtn_ = new javax.swing.JButton();
-        teacherFacultyBtn_ = new javax.swing.JButton();
         DinSidebar = new javax.swing.JPanel();
         adminStudentBtn_4 = new javax.swing.JButton();
         adminTeacherBtn_5 = new javax.swing.JButton();
@@ -813,12 +751,9 @@ public class AdminDashboards extends javax.swing.JFrame {
         adminTeacherBtn_04 = new javax.swing.JButton();
         adminTransectionBtn_08 = new javax.swing.JButton();
         adminHallBtn_06 = new javax.swing.JButton();
-        adminFacultyBtn_05 = new javax.swing.JButton();
-        adminAdministrationBtn_10 = new javax.swing.JButton();
         adminLibraryBtn_07 = new javax.swing.JButton();
         adminHealthCareBtn_09 = new javax.swing.JButton();
-        adminTranspoartBtn_13 = new javax.swing.JButton();
-        adminOrganaizationBtn_11 = new javax.swing.JButton();
+        adminCourseBtn_28 = new javax.swing.JButton();
         bg2 = new javax.swing.JLabel();
         StudentSideBarPanel = new javax.swing.JPanel();
         studentSidebarProfilepic = new javax.swing.JLabel();
@@ -842,7 +777,12 @@ public class AdminDashboards extends javax.swing.JFrame {
         success = new javax.swing.JLabel();
         ProjectTab = new javax.swing.JTabbedPane();
         adminDashboard_01 = new javax.swing.JPanel();
+        jLabel26 = new javax.swing.JLabel();
+        serchIdField1 = new javax.swing.JTextField();
+        searchStudent_17 = new javax.swing.JButton();
         jLabel120 = new javax.swing.JLabel();
+        serchTeacherWithId1 = new javax.swing.JTextField();
+        addNewStudent4 = new javax.swing.JButton();
         adminProfile_02 = new javax.swing.JPanel();
         jLabel55 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -899,7 +839,7 @@ public class AdminDashboards extends javax.swing.JFrame {
         ahSession_16 = new javax.swing.JComboBox<>();
         llaSession_17 = new javax.swing.JComboBox<>();
         adminTeacher_04 = new javax.swing.JPanel();
-        serchIdField1 = new javax.swing.JTextField();
+        serchTeacherWithId = new javax.swing.JTextField();
         addNewStudent3 = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
@@ -1172,14 +1112,11 @@ public class AdminDashboards extends javax.swing.JFrame {
         teacherPassword = new javax.swing.JPasswordField();
         studentPassEye1 = new javax.swing.JButton();
         teacherDashboard_25 = new javax.swing.JPanel();
-        jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
-        dashAdminTitle = new javax.swing.JLabel();
-        dashDinTitle = new javax.swing.JLabel();
-        dashRegisterTitle = new javax.swing.JLabel();
-        dashControllerTitle = new javax.swing.JLabel();
-        jLabel129 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        totalStudent = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        totalStudent1 = new javax.swing.JLabel();
         adminFacultyTeacher_26 = new javax.swing.JPanel();
         back_4 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -1256,8 +1193,18 @@ public class AdminDashboards extends javax.swing.JFrame {
         tfac = new javax.swing.JTextField();
         tdept = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
-        ForAdminButton_28 = new javax.swing.JPanel();
-        jLabel157 = new javax.swing.JLabel();
+        course_28 = new javax.swing.JPanel();
+        cocode = new javax.swing.JTextField();
+        jLabel129 = new javax.swing.JLabel();
+        jLabel159 = new javax.swing.JLabel();
+        coname = new javax.swing.JTextField();
+        jLabel163 = new javax.swing.JLabel();
+        cohour = new javax.swing.JTextField();
+        cofac = new javax.swing.JComboBox<>();
+        jLabel166 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        courseTable = new javax.swing.JTable();
+        addStudentBtn_14 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -1315,21 +1262,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 teacherDashboardBtn_ActionPerformed(evt);
             }
         });
-        teacherSideBarPanel.add(teacherDashboardBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 300, 40));
-
-        teacherFacultyBtn_.setBackground(new java.awt.Color(14, 0, 82));
-        teacherFacultyBtn_.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        teacherFacultyBtn_.setForeground(new java.awt.Color(255, 255, 255));
-        teacherFacultyBtn_.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/faculty.png"))); // NOI18N
-        teacherFacultyBtn_.setText("   Faculty");
-        teacherFacultyBtn_.setBorder(null);
-        teacherFacultyBtn_.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        teacherFacultyBtn_.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                teacherFacultyBtn_ActionPerformed(evt);
-            }
-        });
-        teacherSideBarPanel.add(teacherFacultyBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 300, 40));
+        teacherSideBarPanel.add(teacherDashboardBtn_, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 300, 40));
 
         DinSidebar.setBackground(new java.awt.Color(0, 5, 42));
         DinSidebar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1390,7 +1323,7 @@ public class AdminDashboards extends javax.swing.JFrame {
         });
         DinSidebar.add(adminHallBtn_7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 140, 40));
 
-        teacherSideBarPanel.add(DinSidebar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, 330, 350));
+        teacherSideBarPanel.add(DinSidebar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 340, 130));
 
         adminSidebar.setBackground(new java.awt.Color(0, 5, 42));
         adminSidebar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1451,39 +1384,11 @@ public class AdminDashboards extends javax.swing.JFrame {
         });
         adminSidebar.add(adminHallBtn_06, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 140, 40));
 
-        adminFacultyBtn_05.setBackground(new java.awt.Color(14, 0, 82));
-        adminFacultyBtn_05.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        adminFacultyBtn_05.setForeground(new java.awt.Color(255, 255, 255));
-        adminFacultyBtn_05.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/faculty.png"))); // NOI18N
-        adminFacultyBtn_05.setText("Faculty");
-        adminFacultyBtn_05.setBorder(null);
-        adminFacultyBtn_05.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        adminFacultyBtn_05.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adminFacultyBtn_05ActionPerformed(evt);
-            }
-        });
-        adminSidebar.add(adminFacultyBtn_05, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 140, 40));
-
-        adminAdministrationBtn_10.setBackground(new java.awt.Color(14, 0, 82));
-        adminAdministrationBtn_10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        adminAdministrationBtn_10.setForeground(new java.awt.Color(255, 255, 255));
-        adminAdministrationBtn_10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/bulb.png"))); // NOI18N
-        adminAdministrationBtn_10.setText("Administration");
-        adminAdministrationBtn_10.setBorder(null);
-        adminAdministrationBtn_10.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        adminAdministrationBtn_10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adminAdministrationBtn_10ActionPerformed(evt);
-            }
-        });
-        adminSidebar.add(adminAdministrationBtn_10, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, 140, 40));
-
         adminLibraryBtn_07.setBackground(new java.awt.Color(14, 0, 82));
         adminLibraryBtn_07.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         adminLibraryBtn_07.setForeground(new java.awt.Color(255, 255, 255));
         adminLibraryBtn_07.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/library.png"))); // NOI18N
-        adminLibraryBtn_07.setText("Library");
+        adminLibraryBtn_07.setText("Others");
         adminLibraryBtn_07.setBorder(null);
         adminLibraryBtn_07.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         adminLibraryBtn_07.addActionListener(new java.awt.event.ActionListener() {
@@ -1491,7 +1396,7 @@ public class AdminDashboards extends javax.swing.JFrame {
                 adminLibraryBtn_07ActionPerformed(evt);
             }
         });
-        adminSidebar.add(adminLibraryBtn_07, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 140, 40));
+        adminSidebar.add(adminLibraryBtn_07, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 140, 40));
 
         adminHealthCareBtn_09.setBackground(new java.awt.Color(14, 0, 82));
         adminHealthCareBtn_09.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -1505,37 +1410,23 @@ public class AdminDashboards extends javax.swing.JFrame {
                 adminHealthCareBtn_09ActionPerformed(evt);
             }
         });
-        adminSidebar.add(adminHealthCareBtn_09, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 170, 140, 40));
+        adminSidebar.add(adminHealthCareBtn_09, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, 140, 40));
 
-        adminTranspoartBtn_13.setBackground(new java.awt.Color(14, 0, 82));
-        adminTranspoartBtn_13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        adminTranspoartBtn_13.setForeground(new java.awt.Color(255, 255, 255));
-        adminTranspoartBtn_13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/bus.png"))); // NOI18N
-        adminTranspoartBtn_13.setText("Transport");
-        adminTranspoartBtn_13.setBorder(null);
-        adminTranspoartBtn_13.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        adminTranspoartBtn_13.addActionListener(new java.awt.event.ActionListener() {
+        adminCourseBtn_28.setBackground(new java.awt.Color(14, 0, 82));
+        adminCourseBtn_28.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        adminCourseBtn_28.setForeground(new java.awt.Color(255, 255, 255));
+        adminCourseBtn_28.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/library.png"))); // NOI18N
+        adminCourseBtn_28.setText("Library");
+        adminCourseBtn_28.setBorder(null);
+        adminCourseBtn_28.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        adminCourseBtn_28.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adminTranspoartBtn_13ActionPerformed(evt);
+                adminCourseBtn_28ActionPerformed(evt);
             }
         });
-        adminSidebar.add(adminTranspoartBtn_13, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, 140, 40));
+        adminSidebar.add(adminCourseBtn_28, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 170, 140, 40));
 
-        adminOrganaizationBtn_11.setBackground(new java.awt.Color(14, 0, 82));
-        adminOrganaizationBtn_11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        adminOrganaizationBtn_11.setForeground(new java.awt.Color(255, 255, 255));
-        adminOrganaizationBtn_11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/organaization.png"))); // NOI18N
-        adminOrganaizationBtn_11.setText("Oraniztion");
-        adminOrganaizationBtn_11.setBorder(null);
-        adminOrganaizationBtn_11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        adminOrganaizationBtn_11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adminOrganaizationBtn_11ActionPerformed(evt);
-            }
-        });
-        adminSidebar.add(adminOrganaizationBtn_11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 140, 40));
-
-        teacherSideBarPanel.add(adminSidebar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, 330, 350));
+        teacherSideBarPanel.add(adminSidebar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 330, 250));
 
         bg2.setBackground(new java.awt.Color(0, 5, 42));
         bg2.setOpaque(true);
@@ -1717,10 +1608,86 @@ public class AdminDashboards extends javax.swing.JFrame {
         });
         adminDashboard_01.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel120.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
-        jLabel120.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel120.setText("Admin Dashboard");
-        adminDashboard_01.add(jLabel120, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 250, 560, 87));
+        jLabel26.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/student.png"))); // NOI18N
+        adminDashboard_01.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, 400, 60));
+
+        serchIdField1.setBackground(new java.awt.Color(255, 153, 0));
+        serchIdField1.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        serchIdField1.setText("   Search with student id");
+        serchIdField1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        serchIdField1.setMargin(new java.awt.Insets(2, 20, 2, 2));
+        serchIdField1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                serchIdField1FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                serchIdField1FocusLost(evt);
+            }
+        });
+        serchIdField1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                serchIdField1ComponentShown(evt);
+            }
+        });
+        serchIdField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                serchIdField1ActionPerformed(evt);
+            }
+        });
+        adminDashboard_01.add(serchIdField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 300, 310, 50));
+
+        searchStudent_17.setBackground(new java.awt.Color(14, 0, 82));
+        searchStudent_17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/search.png"))); // NOI18N
+        searchStudent_17.setActionCommand("Add Student");
+        searchStudent_17.setBorder(null);
+        searchStudent_17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        searchStudent_17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchStudent_17ActionPerformed(evt);
+            }
+        });
+        adminDashboard_01.add(searchStudent_17, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 300, 50, 50));
+
+        jLabel120.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/teaher.png"))); // NOI18N
+        adminDashboard_01.add(jLabel120, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 240, 390, 60));
+
+        serchTeacherWithId1.setBackground(new java.awt.Color(255, 153, 0));
+        serchTeacherWithId1.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        serchTeacherWithId1.setText("   Search with Teacher id");
+        serchTeacherWithId1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        serchTeacherWithId1.setMargin(new java.awt.Insets(2, 20, 2, 2));
+        serchTeacherWithId1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                serchTeacherWithId1FocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                serchTeacherWithId1FocusLost(evt);
+            }
+        });
+        serchTeacherWithId1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                serchTeacherWithId1ComponentShown(evt);
+            }
+        });
+        serchTeacherWithId1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                serchTeacherWithId1ActionPerformed(evt);
+            }
+        });
+        adminDashboard_01.add(serchTeacherWithId1, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 300, 310, 50));
+
+        addNewStudent4.setBackground(new java.awt.Color(14, 0, 82));
+        addNewStudent4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        addNewStudent4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/search.png"))); // NOI18N
+        addNewStudent4.setActionCommand("Add Student");
+        addNewStudent4.setBorder(null);
+        addNewStudent4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addNewStudent4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addNewStudent4ActionPerformed(evt);
+            }
+        });
+        adminDashboard_01.add(addNewStudent4, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 300, 50, 50));
 
         ProjectTab.addTab("tab1", adminDashboard_01);
 
@@ -1901,7 +1868,7 @@ public class AdminDashboards extends javax.swing.JFrame {
         adminStudent_03.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/student.png"))); // NOI18N
-        adminStudent_03.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 300, 410, 60));
+        adminStudent_03.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 340, 410, 60));
 
         addStudentBtn_13.setBackground(new java.awt.Color(14, 0, 82));
         addStudentBtn_13.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -1926,7 +1893,7 @@ public class AdminDashboards extends javax.swing.JFrame {
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstulogo200_200.png"))); // NOI18N
         jLabel8.setText("jLabel8");
-        adminStudent_03.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 130, 200, 200));
+        adminStudent_03.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 160, 200, 200));
 
         serchIdField.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         serchIdField.setText("Search with student id");
@@ -2158,30 +2125,30 @@ public class AdminDashboards extends javax.swing.JFrame {
         });
         adminTeacher_04.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        serchIdField1.setBackground(new java.awt.Color(255, 153, 0));
-        serchIdField1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        serchIdField1.setText(" Search with Teacher id");
-        serchIdField1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        serchIdField1.setMargin(new java.awt.Insets(2, 20, 2, 2));
-        serchIdField1.addFocusListener(new java.awt.event.FocusAdapter() {
+        serchTeacherWithId.setBackground(new java.awt.Color(255, 153, 0));
+        serchTeacherWithId.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        serchTeacherWithId.setText(" Search with Teacher id");
+        serchTeacherWithId.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        serchTeacherWithId.setMargin(new java.awt.Insets(2, 20, 2, 2));
+        serchTeacherWithId.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                serchIdField1FocusGained(evt);
+                serchTeacherWithIdFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                serchIdField1FocusLost(evt);
+                serchTeacherWithIdFocusLost(evt);
             }
         });
-        serchIdField1.addComponentListener(new java.awt.event.ComponentAdapter() {
+        serchTeacherWithId.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
-                serchIdField1ComponentShown(evt);
+                serchTeacherWithIdComponentShown(evt);
             }
         });
-        serchIdField1.addActionListener(new java.awt.event.ActionListener() {
+        serchTeacherWithId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                serchIdField1ActionPerformed(evt);
+                serchTeacherWithIdActionPerformed(evt);
             }
         });
-        adminTeacher_04.add(serchIdField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 350, 330, 50));
+        adminTeacher_04.add(serchTeacherWithId, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 350, 330, 50));
 
         addNewStudent3.setBackground(new java.awt.Color(14, 0, 82));
         addNewStudent3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -4057,48 +4024,25 @@ public class AdminDashboards extends javax.swing.JFrame {
         teacherDashboard_25.setPreferredSize(new java.awt.Dimension(1200, 855));
         teacherDashboard_25.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/teaher.png"))); // NOI18N
-        jLabel23.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        teacherDashboard_25.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, 400, 80));
-
         jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstulogo200_200.png"))); // NOI18N
         jLabel24.setText("jLabel8");
         teacherDashboard_25.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 70, 200, 240));
 
-        jLabel26.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/adminTeacher.png"))); // NOI18N
-        jLabel26.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(14, 8, 82), new java.awt.Color(14, 8, 82), new java.awt.Color(14, 8, 82), new java.awt.Color(14, 8, 82)));
-        jLabel26.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        teacherDashboard_25.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, 400, 420));
+        jLabel23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/controllerTitle.png"))); // NOI18N
+        teacherDashboard_25.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 290, 50));
 
-        dashAdminTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/adminTitle.png"))); // NOI18N
-        dashAdminTitle.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        dashAdminTitle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        teacherDashboard_25.add(dashAdminTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 270, 290, 70));
+        totalStudent.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        totalStudent.setForeground(new java.awt.Color(255, 255, 255));
+        totalStudent.setText("ppp");
+        teacherDashboard_25.add(totalStudent, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 220, 50, 40));
 
-        dashDinTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/dinTitle.png"))); // NOI18N
-        dashDinTitle.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        dashDinTitle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        teacherDashboard_25.add(dashDinTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 270, 250, 70));
+        jLabel25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/controllerTitle.png"))); // NOI18N
+        teacherDashboard_25.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 220, 290, 50));
 
-        dashRegisterTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/registerTitle.png"))); // NOI18N
-        dashRegisterTitle.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        dashRegisterTitle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        teacherDashboard_25.add(dashRegisterTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 270, 310, 70));
-
-        dashControllerTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/controllerTitle.png"))); // NOI18N
-        dashControllerTitle.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        dashControllerTitle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        teacherDashboard_25.add(dashControllerTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 270, 320, 70));
-
-        jLabel129.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Border/Admin.png"))); // NOI18N
-        jLabel129.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(14, 8, 82), new java.awt.Color(14, 8, 82), new java.awt.Color(14, 8, 82), new java.awt.Color(14, 8, 82)));
-        jLabel129.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel129.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel129MouseClicked(evt);
-            }
-        });
-        teacherDashboard_25.add(jLabel129, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 270, 350, 420));
+        totalStudent1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        totalStudent1.setForeground(new java.awt.Color(255, 255, 255));
+        totalStudent1.setText("ppp");
+        teacherDashboard_25.add(totalStudent1, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 220, 70, 30));
 
         ProjectTab.addTab("tab1", teacherDashboard_25);
 
@@ -4558,6 +4502,11 @@ public class AdminDashboards extends javax.swing.JFrame {
         roleDin.setForeground(new java.awt.Color(255, 255, 255));
         roleDin.setText("Din");
         roleDin.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        roleDin.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                roleDinStateChanged(evt);
+            }
+        });
         roleDin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 roleDinActionPerformed(evt);
@@ -4729,15 +4678,106 @@ public class AdminDashboards extends javax.swing.JFrame {
 
         ProjectTab.addTab("tab28", adminTeacherDetails_27);
 
-        ForAdminButton_28.setBackground(new java.awt.Color(0, 5, 42));
-        ForAdminButton_28.setPreferredSize(new java.awt.Dimension(1200, 855));
-        ForAdminButton_28.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        course_28.setBackground(new java.awt.Color(0, 5, 42));
+        course_28.setPreferredSize(new java.awt.Dimension(1200, 855));
+        course_28.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                course_28ComponentShown(evt);
+            }
+        });
+        course_28.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel157.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Pstu/pstulogo200_200.png"))); // NOI18N
-        jLabel157.setText("jLabel8");
-        ForAdminButton_28.add(jLabel157, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 70, 230, 240));
+        cocode.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        cocode.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        cocode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cocodeActionPerformed(evt);
+            }
+        });
+        course_28.add(cocode, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 260, 300, 40));
 
-        ProjectTab.addTab("tab1", ForAdminButton_28);
+        jLabel129.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel129.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel129.setText("Course Code : ");
+        course_28.add(jLabel129, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 260, 120, 40));
+
+        jLabel159.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel159.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel159.setText("Faculty   :");
+        course_28.add(jLabel159, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 90, 40));
+
+        coname.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        coname.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        coname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                conameActionPerformed(evt);
+            }
+        });
+        course_28.add(coname, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 210, 300, 40));
+
+        jLabel163.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel163.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel163.setText("Credit Hour  :");
+        course_28.add(jLabel163, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 260, 120, 40));
+
+        cohour.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        cohour.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        cohour.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cohourActionPerformed(evt);
+            }
+        });
+        course_28.add(cohour, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 260, 300, 40));
+
+        cofac.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        cofac.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Faculty", "Computer Science & Engineering", "Agriculture", "Business Administration & Management", "Animal Husbandry", "Doctor Veterinary Medicine", "Fisheries", "Environmental Science and Disaster Management", "Nutrition and Food Science", "Land Management and Administration" }));
+        cofac.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        cofac.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cofac.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cofacItemStateChanged(evt);
+            }
+        });
+        cofac.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cofacActionPerformed(evt);
+            }
+        });
+        course_28.add(cofac, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 210, 300, 40));
+
+        jLabel166.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel166.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel166.setText("Course Name :");
+        course_28.add(jLabel166, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 210, 120, 40));
+
+        courseTable.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        courseTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Faculty", "Course Name", "Course Code", "Credit Hour"
+            }
+        ));
+        jScrollPane4.setViewportView(courseTable);
+
+        course_28.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 340, 1020, 480));
+
+        addStudentBtn_14.setBackground(new java.awt.Color(14, 0, 82));
+        addStudentBtn_14.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        addStudentBtn_14.setForeground(new java.awt.Color(255, 255, 255));
+        addStudentBtn_14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/Btn/addNew.png"))); // NOI18N
+        addStudentBtn_14.setText(" Add New");
+        addStudentBtn_14.setBorder(null);
+        addStudentBtn_14.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addStudentBtn_14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addStudentBtn_14ActionPerformed(evt);
+            }
+        });
+        course_28.add(addStudentBtn_14, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 150, 170, 50));
+
+        ProjectTab.addTab("tab1", course_28);
 
         contentPanel.add(ProjectTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -35, 1120, 935));
 
@@ -4757,11 +4797,6 @@ public class AdminDashboards extends javax.swing.JFrame {
         ProjectTab.setSelectedIndex(6);
     }//GEN-LAST:event_adminLibraryBtn_07ActionPerformed
 
-    private void adminFacultyBtn_05ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminFacultyBtn_05ActionPerformed
-        // TODO add your handling code here:
-        ProjectTab.setSelectedIndex(4);
-    }//GEN-LAST:event_adminFacultyBtn_05ActionPerformed
-
     private void adminTeacherBtn_04ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminTeacherBtn_04ActionPerformed
         // TODO add your handling code here:
         ProjectTab.setSelectedIndex(3);
@@ -4776,16 +4811,6 @@ public class AdminDashboards extends javax.swing.JFrame {
         // TODO add your handling code here:
         ProjectTab.setSelectedIndex(8);
     }//GEN-LAST:event_adminHealthCareBtn_09ActionPerformed
-
-    private void adminAdministrationBtn_10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminAdministrationBtn_10ActionPerformed
-        // TODO add your handling code here:
-        ProjectTab.setSelectedIndex(9);
-    }//GEN-LAST:event_adminAdministrationBtn_10ActionPerformed
-
-    private void adminOrganaizationBtn_11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminOrganaizationBtn_11ActionPerformed
-        // TODO add your handling code here:
-        ProjectTab.setSelectedIndex(10);
-    }//GEN-LAST:event_adminOrganaizationBtn_11ActionPerformed
 
     private void adminStudentBtn_03ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminStudentBtn_03ActionPerformed
         // TODO add your handling code here:
@@ -4886,11 +4911,6 @@ public class AdminDashboards extends javax.swing.JFrame {
              ProjectTab.setSelectedIndex(15);     
                serchIdField.setText("Search with student id");
              }
-//        System.out.println(serchIdField.getText());
-////        new print(serchIdField.getText()).setVisible(true);
-//        print ok = new print(serchIdField.getText());
-//        ok.prints();
-//        serchIdField.setText("Search with student id");
     }//GEN-LAST:event_searchStudent_16ActionPerformed
 
     private void agriSession_16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agriSession_16ActionPerformed
@@ -4925,22 +4945,29 @@ public class AdminDashboards extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ahSession_16ActionPerformed
 
-    private void serchIdField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_serchIdField1FocusGained
+    private void serchTeacherWithIdFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_serchTeacherWithIdFocusGained
         // TODO add your handling code here:
-        serchIdField1.setText("");
-    }//GEN-LAST:event_serchIdField1FocusGained
+        serchTeacherWithId.setText("");
+    }//GEN-LAST:event_serchTeacherWithIdFocusGained
 
-    private void serchIdField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_serchIdField1FocusLost
+    private void serchTeacherWithIdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_serchTeacherWithIdFocusLost
         // TODO add your handling code here:
-    }//GEN-LAST:event_serchIdField1FocusLost
+    }//GEN-LAST:event_serchTeacherWithIdFocusLost
 
-    private void serchIdField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serchIdField1ActionPerformed
+    private void serchTeacherWithIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serchTeacherWithIdActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_serchIdField1ActionPerformed
+    }//GEN-LAST:event_serchTeacherWithIdActionPerformed
 
     private void addNewStudent3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewStudent3ActionPerformed
         // TODO add your handling code here:
-        serchIdField1.setText("Search with teacher id");
+             teacherDetailsId = serchTeacherWithId.getText();
+             if("".equals(teacherDetailsId) || " Search with Teacher id".equals(teacherDetailsId)){ 
+             
+                alert("error","true","Insert Teacher id");
+             }else{ 
+                 ProjectTab.setSelectedIndex(26);     
+                 serchTeacherWithId.setText("Search with teacher id");
+             }
     }//GEN-LAST:event_addNewStudent3ActionPerformed
 
     private void addStudentBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStudentBtn2ActionPerformed
@@ -5030,20 +5057,25 @@ public class AdminDashboards extends javax.swing.JFrame {
                 jPanel1.setVisible(false);
                 
                   serchIdField.setBorder(BorderFactory.createCompoundBorder(serchIdField.getBorder(), BorderFactory.createEmptyBorder(18, 18, 18, 18)));
-                 serchIdField1.setBorder(BorderFactory.createCompoundBorder(serchIdField1.getBorder(), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+                 serchTeacherWithId.setBorder(BorderFactory.createCompoundBorder(serchTeacherWithId.getBorder(), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
                  
                  
                 labelForShowTeacherTitlePic.setVisible(false);
                 labelForShowTeacherAdminTitlePic.setVisible(false);
                 labelForShowTeacherDinTitlePic.setVisible(false);
                 
+                serchIdField1.setBorder(BorderFactory.createCompoundBorder(serchIdField1.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+                serchTeacherWithId1.setBorder(BorderFactory.createCompoundBorder(serchTeacherWithId1.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
                 
-                dashAdminTitle.setVisible(false);
-                 dashDinTitle.setVisible(false);
-                  dashRegisterTitle.setVisible(false);
-                   dashControllerTitle.setVisible(false);
-                   
-                   
+                coname.setBorder(BorderFactory.createCompoundBorder(coname.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+                cocode.setBorder(BorderFactory.createCompoundBorder(cocode.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+                cohour.setBorder(BorderFactory.createCompoundBorder(cohour.getBorder(), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+                
+                
+                
+                
+                
+                
                    adminSidebar.setVisible(false);
                    DinSidebar.setVisible(false);
                  
@@ -6021,12 +6053,12 @@ public class AdminDashboards extends javax.swing.JFrame {
 
     private void teacherDashboardBtn_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teacherDashboardBtn_ActionPerformed
         // TODO add your handling code here:
-        ProjectTab.setSelectedIndex(24);
+        if("admin".equals(identity)){ 
+          ProjectTab.setSelectedIndex(0);
+        }else{
+          ProjectTab.setSelectedIndex(24);
+        }
     }//GEN-LAST:event_teacherDashboardBtn_ActionPerformed
-
-    private void teacherFacultyBtn_ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teacherFacultyBtn_ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_teacherFacultyBtn_ActionPerformed
 
     private void file2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_file2MouseClicked
         // TODO add your handling code here:
@@ -6140,77 +6172,7 @@ public class AdminDashboards extends javax.swing.JFrame {
         }catch (SQLException ex){
             Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
-        
-        
-//                conn cc = new conn();
-//                try {
-//                    String query = "SELECT dept FROM faculty where fac='"+depert+"'";
-//                    ps = cc.c.prepareStatement(query);
-//                    ResultSet  rs1  = ps.executeQuery(query);
-//                        while (rs1.next()){ 
-//                            facultyAllTeacherSession1.addItem(rs.getString("dept"));  
-//                        }
-//                }catch (SQLException ex){
-//                    Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                
-////            try{
-////                conn cc = new conn();
-////                
-////                try (ResultSet rs = cc.s.executeQuery("select dept from faculty where fac='"+depert+"'")) {
-////                    
-////                    if(rs.next()){ 
-////                        facultyAllTeacher.addItem("Select Depertment");  
-////                        if(rs.next()){
-////                               while (rs.next()){ 
-////                                   facultyAllTeacherSession1.addItem(rs.getString("dept"));  
-////                               }
-////                        }
-////                    
-////                    }
-////                    
-////                    
-////                    try {
-////                        String query = "SELECT dept FROM faculty where fac='"+depert+"'";
-////                        ps = cc.c.prepareStatement(query);
-////                       ResultSet  rs1  = ps.executeQuery(query);
-////                            while (rs1.next()){ 
-////                                facultyAllTeacherSession1.addItem(rs.getString("dept"));  
-////                            }
-////                    }catch (SQLException ex){
-////                        Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
-////                    }
-////                    
-////                    
-//////                    DefaultTableModel table = (DefaultTableModel)allTeachersByFaculty.getModel();
-//////                    for( int i = table.getRowCount() - 1; i >= 0; i-- ){
-//////                        table.removeRow(i);
-//////                    }
-//////
-//////                    if(rs.next()){
-//////                        int count=0;
-//////                        do{
-//////                            count++;
-//////                            String name = rs.getString("name");
-//////                            String id = rs.getString("uid");
-//////                            String dept = rs.getString("dept");
-//////                            String email = rs.getString("email");
-//////                            String nid = rs.getString("nid");
-//////                            String st[] = {name,id,dept,email,nid};
-//////                            table.addRow(st);
-//////                        }while(rs.next());
-//////                         alert("success","true","Total "+count+" data found");
-//////                    }else{ 
-//////                         alert("error","true","No student found");
-//////                    }
-////                }
-////                   cc.s.close();
-////
-////            }catch(SQLException e){
-////            }
+
     }//GEN-LAST:event_facultyAllTeacherItemStateChanged
 
     private void facultyAllTeacherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facultyAllTeacherActionPerformed
@@ -6280,33 +6242,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     }
     
     private void adminFacultyTeacher_26ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_adminFacultyTeacher_26ComponentShown
-       
-        
-        
 
-//        try {
-//            ResultSet rs1;
-//            PreparedStatement pss1=null;
-//            conn cc = new conn();
-//            
-//            DefaultTableModel table = (DefaultTableModel)allTeachersByFaculty.getModel();
-//            for( int i = table.getRowCount() - 1; i >= 0; i-- ){
-//                table.removeRow(i);
-//            }
-//            
-//            pss1 = cc.c.prepareStatement("SELECT * FROM faculty ");
-//            rs1  = pss1.executeQuery("SELECT * FROM faculty ");
-//            if(rs1.next()){
-//            facultyAllTeacher.removeAllItems();  
-//                facultyAllTeacher.getModel().setSelectedItem(selectedFaculty);
-//                    facultyAllTeacher.addItem("Select Faculty");
-//                while (rs1.next()){
-//                    facultyAllTeacher.addItem(rs1.getString("fac"));  
-//                }
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
-//        }
     }//GEN-LAST:event_adminFacultyTeacher_26ComponentShown
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
@@ -6573,93 +6509,7 @@ public class AdminDashboards extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton21ActionPerformed
 
-    public void teachersDetails(){ 
-                            
-//                    AdminDashboards.selectForPrint f = new AdminDashboards.selectForPrint();
-//                    try {
-//                        
-//                        //  recive func meathoad return query result                   
-//                        rs = f.findTeacher(studentsDetailsId);
-//                        if(rs.next()){
-//                                byte[] img = rs.getBytes("photo");
-//                                
-//                               if(img != null){
-//                                   
-//                               
-//                                int imgs = img[0];
-//                                if(imgs == -1) {
-//                                    ImageIcon MyImage1 = new ImageIcon(img);
-//                                    Image img1 = MyImage1.getImage();
-//                                    Image newImage1 = img1.getScaledInstance(tDetailsProfilePic.getWidth(), tDetailsProfilePic.getHeight(), Image.SCALE_SMOOTH);
-//                                    ImageIcon image1 = new ImageIcon(newImage1);
-//                                    tDetailsProfilePic.setIcon(image1);
-//                                }
-//                               }else{
-//                                   alert("error","true","Image is not inserted yet");
-//                                    tDetailsProfilePic.setIcon(null);
-//                               }
-//                               
-//                               if("active".equals(rs.getString("status"))){
-//                                    sstatusBtn1.setText("Active");
-//                                    sstatusBtn1.setBackground(Color.GREEN);
-//                                    sstatusBtn1.setForeground(Color.BLACK);
-//                               }else{ 
-//                                    sstatusBtn1.setText("Disable");
-//                                    sstatusBtn1.setBackground(Color.RED);
-//                                    sstatusBtn1.setForeground(Color.WHITE);
-//                               }
-//                                
-//                                tname.setText("");
-//                                taddr.setText("");
-//                                tdob.setText("");
-//                                tblood.setText("");
-//                                tphone.setText("");
-//                                tnid.setText("");
-//                                tuid.setText("");
-//                                treg.setText("");
-//                                temail.setText("");
-//                                tfac.setText("");
-//                                tdep.setText("");
-//                                
-//                                
-//                                tname.setText(rs.getString("name"));
-//                                taddr.setText(rs.getString("addr"));
-//                                tdob.setText(rs.getString("dob"));
-//                                tblood.setText(rs.getString("blood"));
-//                                tphone.setText(rs.getString("phone"));
-//                                tnid.setText(rs.getString("nid"));
-//                                tuid.setText(rs.getString("uid"));
-//                                treg.setText(rs.getString("reg"));
-//                                temail.setText(rs.getString("email"));
-//                                tfac.setText(rs.getString("fac"));
-//                                tdep.setText(rs.getString("dept"));
-////                                storeFac.setText(rs.getString("fac"));
-////                                storeDep.setText(rs.getString("dept"));
-//                                
-//                        }
-//                    } catch (SQLException ex) {
-//                        Logger.getLogger(Insert.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                    
-//                try {
-//                    ResultSet rs1;
-//                    PreparedStatement pss1=null;
-//                    conn cc = new conn();
-//
-//                    pss1 = cc.c.prepareStatement("SELECT * FROM faculty ");
-//                    rs1  = pss1.executeQuery("SELECT * FROM faculty ");
-//                    if(rs1.next()){
-//                        System.out.println(tdep.getText());
-//                            facultyAllTeacher1.removeAllItems();  
-//                            facultyAllTeacher1.addItem("Faculty");
-//                        while (rs1.next()){
-//                            facultyAllTeacher1.addItem(rs1.getString("fac"));  
-//                        }
-//                    }
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
-//                } 
-                    
+    public void teachersDetails(){         
     }
     private void adminTeacherDetails_27ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_adminTeacherDetails_27ComponentShown
         // TODO add your handling code here:
@@ -6678,13 +6528,6 @@ public class AdminDashboards extends javax.swing.JFrame {
         if(roleController.isSelected()){ 
             
         } 
-       
-               
-                storeFac.setText("");
-                storeDep.setText("");
-                
-                tnid.setText("");
-                
                 
                             
                     AdminDashboards.selectForPrint f = new AdminDashboards.selectForPrint();
@@ -6733,8 +6576,6 @@ public class AdminDashboards extends javax.swing.JFrame {
                                 temail.setText(rs.getString("email"));
                                 tfac.setText(rs.getString("fac"));
                                 tdept.setText(rs.getString("dept"));
-                                storeFac.setText(rs.getString("fac"));
-                                storeDep.setText(rs.getString("dept"));
                                 
                                 if("din".equals(rs.getString("role"))){ 
                                     roleDin.setSelected(true);
@@ -6742,6 +6583,14 @@ public class AdminDashboards extends javax.swing.JFrame {
                                 
                                 if("register".equals(rs.getString("role"))){ 
                                     roleRegister.setSelected(true);
+                                }
+                                
+                                if("Co-Admin".equals(rs.getString("role"))){ 
+                                    roleCoAdmin.setSelected(true);
+                                }
+                                
+                                if("Controller".equals(rs.getString("role"))){ 
+                                    roleController.setSelected(true);
                                 }
                         }
                     } catch (SQLException ex) {
@@ -6767,10 +6616,6 @@ public class AdminDashboards extends javax.swing.JFrame {
                     
     }//GEN-LAST:event_adminTeacherDetails_27ComponentShown
 
-    private void adminTranspoartBtn_13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminTranspoartBtn_13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_adminTranspoartBtn_13ActionPerformed
-
     private void adminDashboard_01ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_adminDashboard_01ComponentShown
 
     }//GEN-LAST:event_adminDashboard_01ComponentShown
@@ -6784,11 +6629,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     }//GEN-LAST:event_roleDinActionPerformed
 
     private void roleCoAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleCoAdminActionPerformed
-        // TODO add your handling code here:
-//        boolean selected = jCheckBox3.isSelected();
-//        if(selected){ 
-//           System.out.println(jCheckBox3.getText());
-//         }
+
     }//GEN-LAST:event_roleCoAdminActionPerformed
 
     private void printbtn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printbtn3ActionPerformed
@@ -6798,17 +6639,6 @@ public class AdminDashboards extends javax.swing.JFrame {
     }//GEN-LAST:event_printbtn3ActionPerformed
 
     private void facultyAllTeacher2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_facultyAllTeacher2ItemStateChanged
-        // TODO add your handling code here: 
-        
-//           String deprtment = (String)facultyAllTeacher2.getSelectedItem();  
-//           if(!"Depertment".equals(deprtment)){
-//                tdep.setText(deprtment);
-//                if(!storeDep.getText().equals(deprtment)){
-//                   tdep.setForeground(Color.yellow);
-//                }else{ 
-//                   tdep.setForeground(Color.white);
-//                }
-//           }
 
     }//GEN-LAST:event_facultyAllTeacher2ItemStateChanged
 
@@ -6817,42 +6647,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     }//GEN-LAST:event_facultyAllTeacher2ActionPerformed
 
     private void facultyAllTeacher1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_facultyAllTeacher1ItemStateChanged
-        // TODO add your handling code here:
 
-//        String faculty = (String)facultyAllTeacher1.getSelectedItem();
-//        
-//        if("Faculty".equals(faculty)){ 
-//            facultyAllTeacher2.removeAllItems();
-//        }else{
-//            conn con = new conn();
-//            tfac.setText(faculty);
-//            if(!storeFac.getText().equals(faculty)){
-//               tfac.setForeground(Color.yellow);
-//            }else{ 
-//               tfac.setForeground(Color.white);
-//            }
-//            
-//            String query = "SELECT dept FROM faculty where fac='"+faculty+"'";
-//            try {
-//                    ps = con.c.prepareStatement(query);
-//                    rs  = ps.executeQuery(query);
-//
-//                    facultyAllTeacher2.removeAllItems();
-//                    facultyAllTeacher2.addItem("Depertment");
-//                    while (rs.next()){ 
-//                        facultyAllTeacher2.addItem(rs.getString("dept"));  
-//                    }
-//
-//
-//            }catch (SQLException ex){
-//                Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        
-                
-//        String dept = (String)ta_dept.getSelectedItem();
-//        System.out.println(dept);
-//        semail3.setText(dept);
     }//GEN-LAST:event_facultyAllTeacher1ItemStateChanged
 
     private void facultyAllTeacher1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facultyAllTeacher1ActionPerformed
@@ -6896,9 +6691,9 @@ public class AdminDashboards extends javax.swing.JFrame {
            
     }//GEN-LAST:event_adminTeacher_04ComponentShown
 
-    private void serchIdField1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_serchIdField1ComponentShown
+    private void serchTeacherWithIdComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_serchTeacherWithIdComponentShown
         // TODO add your handling code here:
-    }//GEN-LAST:event_serchIdField1ComponentShown
+    }//GEN-LAST:event_serchTeacherWithIdComponentShown
 
     private void jLabel22MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel22MouseClicked
         // TODO add your handling code here:
@@ -6913,12 +6708,6 @@ public class AdminDashboards extends javax.swing.JFrame {
             ip=0;
         }
     }//GEN-LAST:event_jLabel22MouseClicked
-
-    private void jLabel129MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel129MouseClicked
-        // TODO add your handling code here:
-        
-        ProjectTab.setSelectedIndex(27);
-    }//GEN-LAST:event_jLabel129MouseClicked
 
     private void adminHallBtn_7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminHallBtn_7ActionPerformed
         // TODO add your handling code here:
@@ -6943,6 +6732,187 @@ public class AdminDashboards extends javax.swing.JFrame {
     private void llaSession_17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_llaSession_17ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_llaSession_17ActionPerformed
+
+    private void roleDinStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_roleDinStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_roleDinStateChanged
+
+    private void serchIdField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_serchIdField1FocusGained
+        // TODO add your handling code here:
+        serchIdField1.setText("");
+    }//GEN-LAST:event_serchIdField1FocusGained
+
+    private void serchIdField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_serchIdField1FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_serchIdField1FocusLost
+
+    private void serchIdField1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_serchIdField1ComponentShown
+        // TODO add your handling code here:
+    }//GEN-LAST:event_serchIdField1ComponentShown
+
+    private void serchIdField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serchIdField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_serchIdField1ActionPerformed
+
+    private void searchStudent_17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchStudent_17ActionPerformed
+        // TODO add your handling code here:
+             studentsDetailsId = serchIdField1.getText();
+             if("".equals(studentsDetailsId) || "Search with student id".equals(studentsDetailsId)){ 
+                alert("error","true","Insert student id");
+             }else{ 
+             ProjectTab.setSelectedIndex(15);     
+               serchIdField1.setText("Search with student id");
+             }
+    }//GEN-LAST:event_searchStudent_17ActionPerformed
+
+    private void serchTeacherWithId1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_serchTeacherWithId1FocusGained
+        // TODO add your handling code here:
+        serchTeacherWithId1.setText("");
+    }//GEN-LAST:event_serchTeacherWithId1FocusGained
+
+    private void serchTeacherWithId1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_serchTeacherWithId1FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_serchTeacherWithId1FocusLost
+
+    private void serchTeacherWithId1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_serchTeacherWithId1ComponentShown
+        // TODO add your handling code here:
+    }//GEN-LAST:event_serchTeacherWithId1ComponentShown
+
+    private void serchTeacherWithId1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serchTeacherWithId1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_serchTeacherWithId1ActionPerformed
+
+    private void addNewStudent4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewStudent4ActionPerformed
+        // TODO add your handling code here:
+            teacherDetailsId = serchTeacherWithId1.getText();
+            if("".equals(teacherDetailsId) || " Search with Teacher id".equals(teacherDetailsId)){ 
+               alert("error","true","Insert Teacher id");
+            }else{ 
+                ProjectTab.setSelectedIndex(26);     
+                serchTeacherWithId1.setText("Search with teacher id");
+            }
+    }//GEN-LAST:event_addNewStudent4ActionPerformed
+
+    private void adminCourseBtn_28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminCourseBtn_28ActionPerformed
+        // TODO add your handling code here:
+        ProjectTab.setSelectedIndex(27);
+    }//GEN-LAST:event_adminCourseBtn_28ActionPerformed
+
+    private void cocodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cocodeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cocodeActionPerformed
+
+    private void conameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_conameActionPerformed
+
+    private void cohourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cohourActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cohourActionPerformed
+
+    private void cofacItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cofacItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cofacItemStateChanged
+
+    private void cofacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cofacActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cofacActionPerformed
+
+    private void addStudentBtn_14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStudentBtn_14ActionPerformed
+        // TODO add your handling code here:
+        String fac = (String)cofac.getSelectedItem();
+        fac = fac.toLowerCase();
+        
+        String name = coname.getText();
+        String code = cocode.getText();
+        String hour = cohour.getText();
+        System.out.println(fac);
+          conn cc = new conn();
+          ResultSet rs = null;
+        if(checkWordIsFoundOrnOT(fac,"select")){ 
+            fac = getfirstLeter_replace_some_speacial_charecter_and_word(fac);
+           if(!"".equals(name)){ 
+                if(!"".equals(code)){
+                    if(!"".equals(hour)){
+                        try {
+                            rs = cc.s.executeQuery("select * from course where faculty='"+fac+"' and name='"+name+"' and code='"+code+"' ") ;
+                            
+                            if(rs.next()){
+                                alert("error","true","This course is already inserted");
+                            }else{ 
+                                    String query = " insert into course (faculty,name,code,creadit)"
+                                        + " values (?, ?, ?, ?)";
+
+                                      PreparedStatement preparedStmt = cc.c.prepareStatement(query);
+                                      preparedStmt.setString (1, fac);
+                                      preparedStmt.setString (2, name);
+                                      preparedStmt.setString (3, code);
+                                      preparedStmt.setString (4, hour);
+                                      preparedStmt.execute();
+                                      cc.c.close();
+                                      
+                                      getCourse();
+                                   alert("success","true","Course Successfully Added");
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }else{ 
+                        alert("error","true","Course Credit hour is empty");
+                    }
+                }else{ 
+                    alert("error","true","Course code is empty");
+                 }
+           }else{ 
+              alert("error","true","Course name is empty");
+           }
+        }else{ 
+           alert("error","true","Select faculty");
+        }
+    }//GEN-LAST:event_addStudentBtn_14ActionPerformed
+
+    public void getCourse(){
+             conn cc = new conn();
+             ResultSet rs = null;
+             try{
+                
+                 rs = cc.s.executeQuery("select * from course");
+                 
+                 DefaultTableModel table = (DefaultTableModel)courseTable.getModel();
+                 for( int i = table.getRowCount() - 1; i >= 0; i-- ){
+                     table.removeRow(i);
+                 }
+                 
+                 int counts=0;
+                 if(rs.next()){
+                     do{
+                         String fac = rs.getString("faculty");
+                         String code = rs.getString("code");
+                         String name = rs.getString("name");
+                         String credits = rs.getString("creadit");
+                        
+                         String st[] = {fac,name,code,credits};
+                         table.addRow(st);
+                         ++counts;
+                     }while(rs.next());
+                     
+                 }
+                 
+                 if(counts > 0){
+                     alert("success","true","Total "+counts+" Course found");
+                 }else{
+                     alert("error","true","No course added yet");
+                 }
+                 
+             } catch (SQLException ex){
+                 Logger.getLogger(AdminDashboards.class.getName()).log(Level.SEVERE, null, ex);
+             }
+    }
+    
+    private void course_28ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_course_28ComponentShown
+        // TODO add your handling code here:
+       getCourse();
+    }//GEN-LAST:event_course_28ComponentShown
 
     /**
      * @param args the command line arguments
@@ -6985,20 +6955,21 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JPanel AccountVerify_14;
     private javax.swing.JPanel AlertPanel;
     private javax.swing.JPanel DinSidebar;
-    private javax.swing.JPanel ForAdminButton_28;
     private javax.swing.JTabbedPane ProjectTab;
     private javax.swing.JPanel StudentSideBarPanel;
     private javax.swing.JButton accountverifyForUpdateProfile;
     private javax.swing.JButton addNewStudent3;
+    private javax.swing.JButton addNewStudent4;
     private javax.swing.JButton addStudentBtn2;
     private javax.swing.JButton addStudentBtn_13;
+    private javax.swing.JButton addStudentBtn_14;
     private javax.swing.JTextField addrVal;
-    private javax.swing.JButton adminAdministrationBtn_10;
     private javax.swing.JPanel adminAdministration_10;
     private javax.swing.JLabel adminBlood;
     private javax.swing.JLabel adminBlood1;
     private javax.swing.JLabel adminBlood2;
     private javax.swing.JLabel adminBlood6;
+    private javax.swing.JButton adminCourseBtn_28;
     private javax.swing.JPanel adminDashboard_01;
     private javax.swing.JLabel adminDob;
     private javax.swing.JLabel adminDob1;
@@ -7024,7 +6995,6 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JLabel adminDob8;
     private javax.swing.JLabel adminDob9;
     private javax.swing.JTextField adminEmail;
-    private javax.swing.JButton adminFacultyBtn_05;
     private javax.swing.JPanel adminFacultyStudent_15;
     private javax.swing.JPanel adminFacultyTeacher_26;
     private javax.swing.JPanel adminFaculty_05;
@@ -7042,7 +7012,6 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JLabel adminNid3;
     private javax.swing.JLabel adminNid6;
     private javax.swing.JLabel adminNid7;
-    private javax.swing.JButton adminOrganaizationBtn_11;
     private javax.swing.JPanel adminOrganaization_11;
     private javax.swing.JButton adminPassEye;
     private javax.swing.JPasswordField adminPassword;
@@ -7063,7 +7032,6 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JButton adminTransectionBtn_08;
     private javax.swing.JButton adminTransectionBtn_9;
     private javax.swing.JPanel adminTransection_08;
-    private javax.swing.JButton adminTranspoartBtn_13;
     private javax.swing.JPanel adminTranspoart_12;
     private javax.swing.JLabel adminUpdateProfilePic;
     private javax.swing.JTextField adminUsername;
@@ -7079,12 +7047,14 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JLabel bg2;
     private javax.swing.JComboBox<String> bloodVal;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JTextField cocode;
+    private javax.swing.JComboBox<String> cofac;
+    private javax.swing.JTextField cohour;
+    private javax.swing.JTextField coname;
     private javax.swing.JPanel contentPanel;
+    private javax.swing.JTable courseTable;
+    private javax.swing.JPanel course_28;
     private javax.swing.JComboBox<String> cseSession_16;
-    private javax.swing.JLabel dashAdminTitle;
-    private javax.swing.JLabel dashControllerTitle;
-    private javax.swing.JLabel dashDinTitle;
-    private javax.swing.JLabel dashRegisterTitle;
     private com.toedter.calendar.JDateChooser dobVal;
     private javax.swing.JComboBox<String> dvmSession_16;
     private javax.swing.JLabel error;
@@ -7189,12 +7159,14 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel154;
     private javax.swing.JLabel jLabel155;
     private javax.swing.JLabel jLabel156;
-    private javax.swing.JLabel jLabel157;
     private javax.swing.JLabel jLabel158;
+    private javax.swing.JLabel jLabel159;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel160;
     private javax.swing.JLabel jLabel161;
     private javax.swing.JLabel jLabel162;
+    private javax.swing.JLabel jLabel163;
+    private javax.swing.JLabel jLabel166;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -7231,6 +7203,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel227;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
@@ -7315,6 +7288,7 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
@@ -7350,10 +7324,13 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JTextField sblood;
     private javax.swing.JTextField sdob;
     private javax.swing.JButton searchStudent_16;
+    private javax.swing.JButton searchStudent_17;
     private javax.swing.JTextField semail;
     private javax.swing.JButton sendUpdateVerificationCode_14;
     private javax.swing.JTextField serchIdField;
     private javax.swing.JTextField serchIdField1;
+    private javax.swing.JTextField serchTeacherWithId;
+    private javax.swing.JTextField serchTeacherWithId1;
     private javax.swing.JComboBox<String> sessionVal;
     private javax.swing.JTextField sfac;
     private javax.swing.JTextField sfname;
@@ -7419,7 +7396,6 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JPanel teacherDashboard_25;
     private javax.swing.JLabel teacherDob;
     private javax.swing.JTextField teacherEmail;
-    private javax.swing.JButton teacherFacultyBtn_;
     private javax.swing.JLabel teacherName;
     private javax.swing.JLabel teacherNid;
     private javax.swing.JPasswordField teacherPassword;
@@ -7436,6 +7412,8 @@ public class AdminDashboards extends javax.swing.JFrame {
     private javax.swing.JTextField tid;
     private javax.swing.JTextField tname;
     private javax.swing.JTextField tnid;
+    private javax.swing.JLabel totalStudent;
+    private javax.swing.JLabel totalStudent1;
     private javax.swing.JTextField tphone;
     private javax.swing.JTextField treg;
     private javax.swing.JTextField verifyUsername;
